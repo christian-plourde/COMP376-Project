@@ -6,3 +6,6 @@
 /COMP376-Project/*.csproj
 /COMP376-Project/*.sln
 /COMP376-Project/.vs
+/Documentation/*.aux
+/Documentation/*.log
+/Documentation/*.gz
