@@ -9,3 +9,6 @@
 /Documentation/*.aux
 /Documentation/*.log
 /Documentation/*.gz
+/Documentation/MeetingSummaries/*.aux
+/Documentation/MeetingSummaries/*.log
+/Documentation/MeetingSummaries/*.gz
