@@ -26,6 +26,16 @@ public class camera_script : MonoBehaviour
         {
             transform.Translate(Vector3.left * move_speed * Time.deltaTime);
         }
-            
+
+        if(Input.GetAxis("Vertical") < 0)
+        {
+            transform.Translate(Vector3.down * move_speed * Time.deltaTime);
+        }
+
+        if (Input.GetAxis("Vertical") > 0)
+        {
+            transform.Translate(Vector3.up * move_speed * Time.deltaTime);
+        }
+
     }
 }
