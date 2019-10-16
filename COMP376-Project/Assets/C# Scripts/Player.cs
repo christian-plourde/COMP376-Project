@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 3.5f;
+    private const float SPEED = 5f, JUMPFORCE = 4f;
 
     private float speed=5f;                     // Movement speed       
-    private float jumpForce = 3.5f;
+    private float jumpForce = 4f;
     private int health = 8;                  // assuming we have 8 bars of health and lose one health every hit 
     private int faceDirection = 1;         // default facing negative z axis
 
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=25f;
-    float pewterSpeedBoost=15.5f; float pewterJumpBoost = 8.5f;
+    float pewterSpeedBoost=7.5f; float pewterJumpBoost = 5.5f;
 
     //respawn point
     [HideInInspector]public Vector3 checkpoint;                      // update value at checkpoints (update from trigger objects that are checkpoints)
@@ -56,6 +56,9 @@ public class Player : MonoBehaviour
         //init variables
         //checkpoint = spawn postion
         checkpoint = transform.position;
+        steelCountCheckpoint = steelCount;
+        ironCountCheckpoint = ironCount;
+        pewterCountCheckpoint = pewterCount;
         animator = GetComponent<Animator>();
         isRunning = false;
         isGrounded = true;
@@ -71,13 +74,14 @@ public class Player : MonoBehaviour
             playerMovement();
 
         //powerups
-        if (activePower && usingIron && !usingSteel)
+        if (activePower && usingIron)
         {
             useIron();
+            //implement animation delay, turn on control lock for 4 seconds
         }
         
 
-        if(activePower && usingSteel && !usingIron)
+        if(activePower && usingSteel)
         {
             useSteel();
         }
@@ -142,6 +146,10 @@ public class Player : MonoBehaviour
         {
             if (ironCount > 0 && !activePower)
             {
+                if (activePower)
+                {
+                    usingSteel = false;          // stop using the other power
+                }
                 ironCount--;
                 activePower = true;
                 usingIron = true;
@@ -156,6 +164,10 @@ public class Player : MonoBehaviour
         {
             if (steelCount > 0 && !activePower)
             {
+                if (activePower)
+                {
+                    usingIron = false;          // stop using the other power
+                }
                 steelCount--;
                 activePower = true;
                 usingSteel = true;
@@ -165,7 +177,7 @@ public class Player : MonoBehaviour
             {
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
-        }          
+        }
         if (Input.GetKey(KeyCode.Alpha3))       // pewter
         {
             if (pewterCount > 0 && !activePower)
@@ -179,8 +191,18 @@ public class Player : MonoBehaviour
             {
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
-        }          
 
+
+
+            
+        }
+
+        // respawn key for testing
+        if (Input.GetKey(KeyCode.R))
+        {
+            
+            respawnPlayer();
+        }
 
         // other things to do
         // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
