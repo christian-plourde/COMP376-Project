@@ -16,7 +16,7 @@ public class CameraFollow_Script : MonoBehaviour
     void Update()
     {
         Vector3 playerpos= player.GetComponent<Transform>().position;
-        transform.position=new Vector3(transform.position.x,transform.position.y,playerpos.z+3.5f);
+        transform.position=new Vector3(transform.position.x,playerpos.y+1.5f,playerpos.z+3.5f);
         
     }
 }

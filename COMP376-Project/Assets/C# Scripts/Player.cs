@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     //Player Variables
     private float speed=5f;                     // Movement speed       
-    private float jumpForce = 2f;
+    private float jumpForce = 3.5f;
     private int health = 8;                  // assuming we have 8 bars of health and lose one health every hit 
     private int faceDirection = 1;         // default facing negative z axis
 
@@ -28,8 +28,8 @@ public class Player : MonoBehaviour
     Animator animator;
 
     //potions
-    int steelCount;
-    public int ironCount;
+    int steelCount; bool usingSteel;
+    public int ironCount;   bool usingIron; float ironPotionTime = 10f;         // low for testing purpose, increase later
     int pewterCount; float pewterSpeedBoost=1.5f;
 
     //respawn point
@@ -64,7 +64,13 @@ public class Player : MonoBehaviour
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
             playerMovement();
 
-        
+        //powerups
+        if (activePower && usingIron)
+        {
+            useIron();
+        }
+
+        //if active and using steel
     }
 
     //helper methods
@@ -120,12 +126,13 @@ public class Player : MonoBehaviour
             if (ironCount > 0 && !activePower)
             {
                 ironCount--;
+                activePower = true;
+                usingIron = true;
                 Debug.Log("iron consumed.");
-                useIron();
             }
             else
             {
-                //instantiate UI prefab that says not enough iron (dissappears after 2 seconds)
+                //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }          
         if (Input.GetKey(KeyCode.Alpha2))       // steel
@@ -212,30 +219,6 @@ public class Player : MonoBehaviour
 
 
     //potion powers
-    private void useSteel() { }
-
-    private void useIron()
-    {
-        //call function to
-        //highlightInteractables();
-        if (!activePower)
-        {
-            activePower = true;
-            Cursor.visible = true;
-            if (potiontime < 3f)
-            {
-                potiontime += Time.deltaTime;
-                GameObject clickedOn = acceptMouseInput();
-                Debug.Log("potion time "+potiontime);
-            }
-            else
-            {
-                Debug.Log("Iron potion expired");
-                activePower = false;
-                potiontime = 0f;
-            }  
-        }
-    }
 
     private void usePewter()
     {
@@ -261,16 +244,22 @@ public class Player : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             //Vector3 mousePosition = Camera.main.ScreenPointToRay(Input.mousePosition);
             //if (Physics.Raycast(ray, hit, 250f))
-            if (Physics.Raycast(ray,out hit, 250f))
+            if (Physics.Raycast(ray, out hit, 250f))
             {
                 if (hit.collider.gameObject.tag == "Interactable")
                 {
                     Debug.Log("Click on an interacble");
+                    return hit.collider.gameObject;
                 }
+                else
+                    return null;
             }
+            else
+                return null;
+            
         }
-
-        return null;
+        else
+            return null;
     }
 
     private void highlightInteractables(float time)
@@ -280,5 +269,39 @@ public class Player : MonoBehaviour
 
         // foreach (GameObject in array) { some how hight light them}
         // on time expiry dont high light them anymore.
+    }
+
+    //potion functions
+
+    private void useIron()                                   // is only called after validating iron stats.
+    {
+        if (potiontime < ironPotionTime)
+        {
+            Cursor.visible = true;
+            potiontime += Time.deltaTime;
+
+            // actual clicking calculations
+            GameObject clickedOn = acceptMouseInput();
+            if (clickedOn != null)              // meaning its interactable
+            {
+                // apply force of pull
+                int forceDir;
+                //if (faceDirection == 1)
+                if (clickedOn.GetComponent<Transform>().position.z - transform.position.z > 0)
+                    forceDir = -1;
+                else
+                    forceDir = 1;
+                clickedOn.GetComponent<Rigidbody>().AddForce(forceDir*50f*Vector3.forward);
+            }
+        }
+        else
+        {
+            //potion expired
+            Debug.Log("Potion expired");
+            usingIron = false;
+            activePower = false;
+            potiontime = 0.0f;
+            Cursor.visible = false;
+        }
     }
 }
