@@ -18,12 +18,18 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
 
+    //powerups bool
+    bool activePower = false;
+
+    //powerups variable
+    float potiontime = 0.0f;
+
     //animator component
     Animator animator;
 
     //potions
     int steelCount;
-    int ironCount;
+    public int ironCount;
     int pewterCount; float pewterSpeedBoost=1.5f;
 
     //respawn point
@@ -32,13 +38,15 @@ public class Player : MonoBehaviour
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
 
-   // UI object references
-   // health
-   // potions
+    // UI object references
+    // health
+    // potions
 
 
+    
     void Start()
     {
+        Cursor.visible = false;             // we dont want the cursor to show unless player is using the push or pull ability
         //init variables
         //checkpoint = spawn postion
         checkpoint = transform.position;
@@ -55,6 +63,8 @@ public class Player : MonoBehaviour
         checkGrounded();
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
             playerMovement();
+
+        
     }
 
     //helper methods
@@ -107,9 +117,10 @@ public class Player : MonoBehaviour
         /// change hot keys if you want
         if (Input.GetKey(KeyCode.Alpha1))       // iron
         {
-            if (ironCount > 0)
+            if (ironCount > 0 && !activePower)
             {
                 ironCount--;
+                Debug.Log("iron consumed.");
                 useIron();
             }
             else
@@ -133,15 +144,16 @@ public class Player : MonoBehaviour
         // see if any of these 3 points touch something (i.e. middle point of character, and two offsets on each side)
         // if any of them return true we are on the ground.
         Vector3 castPoint = new Vector3( transform.position.x,transform.position.y+0.05f,transform.position.z);
-        if (Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z+0.215f))
+        if (Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z+0.115f))
             ||
             Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z))
             ||
-            Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z-0.215f)))
+            Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z-0.115f)))
         {
             //Debug.Log("Touching.");
             isGrounded = true;
             animator.SetBool("isGrounded",true);
+            
         }
     }
 
@@ -156,10 +168,10 @@ public class Player : MonoBehaviour
 
     public void registerHit()                 // public method, enemy call this method to damage player
     {
-        if (health > 0)
-            health--;
-        else
+        health--;
+        if (health <= 0)
             killPlayer();
+        
     }
 
     public void registerHit(int damage)                 // overloaded public method, enemy call this method to damage player with damage parameter
@@ -202,7 +214,28 @@ public class Player : MonoBehaviour
     //potion powers
     private void useSteel() { }
 
-    private void useIron() { }
+    private void useIron()
+    {
+        //call function to
+        //highlightInteractables();
+        if (!activePower)
+        {
+            activePower = true;
+            Cursor.visible = true;
+            if (potiontime < 3f)
+            {
+                potiontime += Time.deltaTime;
+                GameObject clickedOn = acceptMouseInput();
+                Debug.Log("potion time "+potiontime);
+            }
+            else
+            {
+                Debug.Log("Iron potion expired");
+                activePower = false;
+                potiontime = 0f;
+            }  
+        }
+    }
 
     private void usePewter()
     {
@@ -215,10 +248,37 @@ public class Player : MonoBehaviour
     }
 
 
-    private void acceptMouseInput()                       // called from useiron, useSteel & usePewter
+    private GameObject acceptMouseInput()                       // called from useiron, useSteel & usePewter
     {
         //enable cursor
         // raycast on mouse click (raycast on negative x axis)
         // use force if you click on interactable objects
+
+        if (Input.GetMouseButton(0))
+        {
+            //ray cast from this position:
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //Vector3 mousePosition = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //if (Physics.Raycast(ray, hit, 250f))
+            if (Physics.Raycast(ray,out hit, 250f))
+            {
+                if (hit.collider.gameObject.tag == "Interactable")
+                {
+                    Debug.Log("Click on an interacble");
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private void highlightInteractables(float time)
+    {
+        if (time == 0f)          // if nothing was given to this
+            time = 30f;
+
+        // foreach (GameObject in array) { some how hight light them}
+        // on time expiry dont high light them anymore.
     }
 }
