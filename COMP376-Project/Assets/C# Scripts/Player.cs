@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //Player Variables
+    private const float SPEED = 5f, JUMPFORCE = 3.5f;
+
     private float speed=5f;                     // Movement speed       
     private float jumpForce = 3.5f;
     private int health = 8;                  // assuming we have 8 bars of health and lose one health every hit 
@@ -30,7 +32,11 @@ public class Player : MonoBehaviour
     //potions
     public int steelCount; bool usingSteel; float steelPotionTime=15f;
     public int ironCount;   bool usingIron; float ironPotionTime = 10f;         // low for testing purpose, increase later
-    int pewterCount; float pewterSpeedBoost=1.5f;
+    public int pewterCount; bool usingPewter; float pewterPotionTime = 20f;
+
+    //abilities parameters
+    float ironPullPower=25f; float steelPushPower=25f;
+    float pewterSpeedBoost=15.5f; float pewterJumpBoost = 8.5f;
 
     //respawn point
     [HideInInspector]public Vector3 checkpoint;                      // update value at checkpoints (update from trigger objects that are checkpoints)
@@ -75,9 +81,13 @@ public class Player : MonoBehaviour
         {
             useSteel();
         }
-        
 
-        //if active and using steel
+        if (activePower && usingPewter)
+        {
+            usePewter();
+        }
+
+        
     }
 
     //helper methods
@@ -157,7 +167,19 @@ public class Player : MonoBehaviour
             }
         }          
         if (Input.GetKey(KeyCode.Alpha3))       // pewter
-        { }          // pewter
+        {
+            if (pewterCount > 0 && !activePower)
+            {
+                pewterCount--;
+                activePower = true;
+                usingPewter = true;
+                Debug.Log("pewter consumed.");
+            }
+            else
+            {
+                //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
+            }
+        }          
 
 
         // other things to do
@@ -239,15 +261,7 @@ public class Player : MonoBehaviour
 
     //potion powers
 
-    private void usePewter()
-    {
-        //speed boost
-        // speed+=pewterSpeedBoost
 
-        //onExpiry
-        //speed-=pewterSpeedBoost
-
-    }
 
 
     private GameObject acceptMouseInput()                       // called from useiron, useSteel & usePewter
@@ -301,21 +315,18 @@ public class Player : MonoBehaviour
 
             // actual clicking calculations
             GameObject clickedOn = acceptMouseInput();
-            if (clickedOn != null)              // meaning its interactable
+            if (clickedOn != null)              // clicked on interactable, tag check in acceptMouseInput function.
             {
-                // apply force of pull
-                int forceDir;
-                if (clickedOn.GetComponent<Transform>().position.z - transform.position.z > 0)
-                    forceDir = -1;
-                else
-                    forceDir = 1;
-                clickedOn.GetComponent<Rigidbody>().AddForce(forceDir*50f*Vector3.forward);   // forward i.e. towards you
+                Vector3 towardsPlayer=transform.position-clickedOn.GetComponent<Transform>().position;
+                
+                towardsPlayer.y += 2f;         // aim at the head instead of the chest
+                clickedOn.GetComponent<Rigidbody>().AddForce(ironPullPower*towardsPlayer);   // pulls towards your direction
             }
         }
         else
         {
             //potion expired
-            Debug.Log("Potion expired");
+            Debug.Log("Iron Potion expired");
             usingIron = false;
             activePower = false;
             potiontime = 0.0f;
@@ -336,20 +347,16 @@ public class Player : MonoBehaviour
             GameObject clickedOn = acceptMouseInput();
             if (clickedOn != null)              // meaning its interactable
             {
+                Vector3 awayFromPlayer =clickedOn.GetComponent<Transform>().position-transform.position;
                 // apply force of pull
-                int forceDir;
-                if (clickedOn.GetComponent<Transform>().position.z - transform.position.z > 0)
-                    forceDir = -1;
-                else
-                    forceDir = 1;
-                clickedOn.GetComponent<Rigidbody>().AddForce(forceDir * 50f * Vector3.back);    // backward i.e. away from you
+                clickedOn.GetComponent<Rigidbody>().AddForce(steelPushPower * awayFromPlayer);    // direction away from the player
             }
         }
         else
         {
             //potion expired
-            Debug.Log("Potion expired");
-            usingIron = false;
+            Debug.Log("Steel Potion expired");
+            usingSteel = false;
             activePower = false;
             potiontime = 0.0f;
             Cursor.visible = false;
@@ -357,5 +364,29 @@ public class Player : MonoBehaviour
     }
 
     //pewter potion
-    private void usePewter();
+    private void usePewter()
+    {
+        //for prototype just boost speed duration
+        if (potiontime < pewterPotionTime)
+        {
+            
+            potiontime += Time.deltaTime;
+            speed = pewterSpeedBoost;
+            jumpForce = pewterJumpBoost;
+        }
+        else
+        {
+            //reset speed and jump values
+            speed = SPEED;
+            jumpForce = JUMPFORCE;
+
+            //potion expired
+            Debug.Log("Pewter Potion expired");
+            usingPewter = false;
+            activePower = false;
+            potiontime = 0.0f;
+            
+        }
+    }
+    
 }
