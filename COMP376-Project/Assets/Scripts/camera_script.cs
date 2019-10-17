@@ -7,8 +7,6 @@ public class camera_script : MonoBehaviour
     // Start is called before the first frame update
 
     public float move_speed;
-    public float snow_height;
-    public float snow_distance;
 
     void Start()
     {
