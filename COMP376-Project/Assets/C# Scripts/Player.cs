@@ -6,8 +6,12 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //experimental - delete or relocate
+    float mouseHoldTime = 1f;
+
+
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 4f;
+    private const float SPEED = 5f, JUMPFORCE = 4f;        // make sure to update constants when  you update the speed and jump below
 
     private float speed=5f;                     // Movement speed       
     private float jumpForce = 4f;
@@ -142,17 +146,14 @@ public class Player : MonoBehaviour
         /// _____________________________________________________________________
         /// //power inputs:
         /// change hot keys if you want
-        if (Input.GetKey(KeyCode.Alpha1))       // iron
+        if (Input.GetKeyDown(KeyCode.Alpha1))       // iron
         {
-            if (ironCount > 0 && !activePower)
+            if (ironCount > 0)
             {
-                if (activePower)
-                {
-                    usingSteel = false;          // stop using the other power
-                }
                 ironCount--;
                 activePower = true;
                 usingIron = true;
+                usingSteel = false;usingPewter = false;
                 Debug.Log("iron consumed.");
             }
             else
@@ -160,17 +161,14 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }          
-        if (Input.GetKey(KeyCode.Alpha2))       // steel
+        if (Input.GetKeyDown(KeyCode.Alpha2))       // steel
         {
-            if (steelCount > 0 && !activePower)
+            if (steelCount > 0)
             {
-                if (activePower)
-                {
-                    usingIron = false;          // stop using the other power
-                }
                 steelCount--;
                 activePower = true;
                 usingSteel = true;
+                usingIron = false;usingPewter = false;
                 Debug.Log("steel consumed.");
             }
             else
@@ -178,13 +176,14 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }
-        if (Input.GetKey(KeyCode.Alpha3))       // pewter
+        if (Input.GetKeyDown(KeyCode.Alpha3))       // pewter
         {
-            if (pewterCount > 0 && !activePower)
+            if (pewterCount > 0)
             {
                 pewterCount--;
                 activePower = true;
                 usingPewter = true;
+                usingIron = false;usingSteel = false;
                 Debug.Log("pewter consumed.");
             }
             else
@@ -199,10 +198,12 @@ public class Player : MonoBehaviour
 
         // respawn key for testing
         if (Input.GetKey(KeyCode.R))
-        {
-            
             respawnPlayer();
-        }
+        //if (Input.GetMouseButtonDown(0))
+           // Debug.Log("Mouse down");
+
+        //if (Input.GetMouseButtonUp(0))
+         //   Debug.Log("Mouse up");
 
         // other things to do
         // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
@@ -292,29 +293,21 @@ public class Player : MonoBehaviour
         // raycast on mouse click (raycast on negative x axis)
         // use force if you click on interactable objects
 
-        if (Input.GetMouseButton(0))
-        {
+        //if (Input.GetMouseButton(0) || true)
+        //{
             //ray cast from this position:
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //Vector3 mousePosition = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //if (Physics.Raycast(ray, hit, 250f))
+
             if (Physics.Raycast(ray, out hit, 250f))
             {
                 if (hit.collider.gameObject.tag == "Interactable")
                 {
-                    //Debug.Log("Click on an interacble");
                     return hit.collider.gameObject;
                 }
-                else
-                    return null;
             }
-            else
-                return null;
-            
-        }
-        else
-            return null;
+        //}
+        return null;
     }
 
     private void highlightInteractables(float time)
@@ -336,18 +329,29 @@ public class Player : MonoBehaviour
             potiontime += Time.deltaTime;
 
             // actual clicking calculations
-            GameObject clickedOn = acceptMouseInput();
-            if (clickedOn != null)              // clicked on interactable, tag check in acceptMouseInput function.
+            //experimental
+            if (Input.GetMouseButton(0) && mouseHoldTime<3f)
+                mouseHoldTime += Time.deltaTime;                    // we use this time to increase the force
+
+
+            if (Input.GetMouseButtonUp(0))
             {
-                Vector3 towardsPlayer=transform.position-clickedOn.GetComponent<Transform>().position;
-                
-                towardsPlayer.y += 2f;         // aim at the head instead of the chest
-                clickedOn.GetComponent<Rigidbody>().AddForce(ironPullPower*towardsPlayer);   // pulls towards your direction
+                GameObject clickedOn = acceptMouseInput();
+                if (clickedOn != null)              // clicked on interactable, tag check in acceptMouseInput function.
+                {
+                    Vector3 towardsPlayer = transform.position - clickedOn.GetComponent<Transform>().position;
+                    towardsPlayer.y += 2f;         // aim at the head instead of the chest
+                    Debug.Log("Force added mouse: "+mouseHoldTime + " and force: "+ironPullPower);
+                    clickedOn.GetComponent<Rigidbody>().AddForce((mouseHoldTime*2)*ironPullPower * towardsPlayer);   // pulls towards your direction
+                    mouseHoldTime = 1f;
+                    Debug.Log("Velocity on clicked body: "+clickedOn.GetComponent<Rigidbody>().velocity);
+                }
             }
         }
         else
         {
             //potion expired
+            Debug.Log("Time you held the click:"+ mouseHoldTime);
             Debug.Log("Iron Potion expired");
             usingIron = false;
             activePower = false;
@@ -366,12 +370,23 @@ public class Player : MonoBehaviour
             potiontime += Time.deltaTime;
 
             // actual clicking calculations
-            GameObject clickedOn = acceptMouseInput();
-            if (clickedOn != null)              // meaning its interactable
+            //experimental
+            if (Input.GetMouseButton(0) && mouseHoldTime < 3f)
+                mouseHoldTime += Time.deltaTime;                    // we use this time to increase the force
+
+
+            if (Input.GetMouseButtonUp(0))
             {
-                Vector3 awayFromPlayer =clickedOn.GetComponent<Transform>().position-transform.position;
-                // apply force of pull
-                clickedOn.GetComponent<Rigidbody>().AddForce(steelPushPower * awayFromPlayer);    // direction away from the player
+                GameObject clickedOn = acceptMouseInput();
+                if (clickedOn != null)              // clicked on interactable, tag check in acceptMouseInput function.
+                {
+                    Vector3 awayFromPlayer = clickedOn.GetComponent<Transform>().position-transform.position;
+                    awayFromPlayer.y += 1f;         // little positive offset on y so that object can actually fly
+                    Debug.Log("Force added mouse: " + mouseHoldTime + " and force: " + steelPushPower);
+                    clickedOn.GetComponent<Rigidbody>().AddForce((mouseHoldTime * 2) * steelPushPower * awayFromPlayer);   // pulls towards your direction
+                    mouseHoldTime = 1f;
+                    Debug.Log("Velocity on clicked body: " + clickedOn.GetComponent<Rigidbody>().velocity);
+                }
             }
         }
         else
