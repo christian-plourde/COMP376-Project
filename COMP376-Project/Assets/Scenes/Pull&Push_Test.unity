@@ -1527,6 +1527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  isGrounded: 0
   potiontime: 0
   steelCount: 2
   ironCount: 10
@@ -1546,8 +1547,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5267086, y: 1.7451792, z: 0.40157366}
-  m_Center: {x: -0.0035996437, y: 0.87952805, z: -0.0060638785}
+  m_Size: {x: 0.5267086, y: 1.754767, z: 0.40157366}
+  m_Center: {x: -0.0035996437, y: 0.87473416, z: -0.0060638785}
 --- !u!54 &1913131586
 Rigidbody:
   m_ObjectHideFlags: 0

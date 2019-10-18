@@ -11,18 +11,18 @@ public class Player : MonoBehaviour
 
 
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 4f;        // make sure to update constants when  you update the speed and jump below
+    private const float SPEED = 5f, JUMPFORCE = 10f;        // make sure to update constants when  you update the speed and jump below
     private const int MAXHEALTH = 3;
 
     private float speed=5f;                     // Movement speed       
-    private float jumpForce = 4f;
+    private float jumpForce = 8.5f;
     public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
     private int faceDirection = 1;         // default facing negative z axis
 
     //bools for animation & states
     bool isDead=false;
     bool isRunning;
-    private bool isGrounded;
+    public bool isGrounded;
     bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
 
     //powerups bool
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=25f;
-    float pewterSpeedBoost=7.5f; float pewterJumpBoost = 5.5f;
+    float pewterSpeedBoost=7.5f; float pewterJumpBoost = 12f;
     float mouseHoldTime = 1f;                        // for how much force
 
     //respawn point
@@ -106,6 +106,7 @@ public class Player : MonoBehaviour
                 usePotionAnim = false;
                 controlLock = false;
                 potionAnimTimer = 0f;
+                animator.SetBool("isRunning", false);
             }
             else
             {
@@ -177,7 +178,7 @@ public class Player : MonoBehaviour
         }
 
         //jump
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             isGrounded = false;
             //GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -252,14 +253,8 @@ public class Player : MonoBehaviour
     private void checkGrounded()
     {
         // i m using line cast, but we can change to raycast later, line cast is cheaper
-        // see if any of these 3 points touch something (i.e. middle point of character, and two offsets on each side)
-        // if any of them return true we are on the ground.
-        Vector3 castPoint = new Vector3( transform.position.x,transform.position.y+0.05f,transform.position.z);
-        if (Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z+0.115f))
-            ||
-            Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z))
-            ||
-            Physics.Linecast(castPoint, new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z-0.115f)))
+        Vector3 castPoint = new Vector3( transform.position.x,transform.position.y,transform.position.z);
+        if(Physics.Linecast(castPoint,new Vector3(transform.position.x,transform.position.y-0.05f,transform.position.z)))
         {
             //Debug.Log("Touching.");
             isGrounded = true;
@@ -310,6 +305,7 @@ public class Player : MonoBehaviour
             activePower = false;
             potiontime = 0f;
             Debug.Log("You are dead.");
+            transform.Translate(new Vector3(0,0,transform.position.z+0.2f));
             // respawn delay in update
             
         }
@@ -322,6 +318,13 @@ public class Player : MonoBehaviour
         animator.SetBool("isDead",false);
         health = MAXHEALTH;
         transform.position = checkpoint;
+        activePower = false;
+        potiontime = 0f;
+
+        //if pewter was active
+        speed = SPEED;
+        jumpForce = JUMPFORCE;
+
 
         //restore potion count to that of checkpoint
         steelCount = steelCountCheckpoint;
@@ -338,24 +341,18 @@ public class Player : MonoBehaviour
 
     private GameObject acceptMouseInput()                       // called from useiron, useSteel & usePewter
     {
-        //enable cursor
-        // raycast on mouse click (raycast on negative x axis)
-        // use force if you click on interactable objects
+        
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        //if (Input.GetMouseButton(0) || true)
-        //{
-            //ray cast from this position:
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 250f))
-            {
-                if (hit.collider.gameObject.tag == "Interactable")
-                {
+        if (Physics.Raycast(ray, out hit, 250f))
+        {
+              if (hit.collider.gameObject.tag == "Interactable")
+              {
                     return hit.collider.gameObject;
-                }
-            }
-        //}
+              }
+        }
+        
         return null;
     }
 
@@ -496,6 +493,7 @@ public class Player : MonoBehaviour
     private void potionAnimationEnable()
     {
         usePotionAnim = true;
+        
     }
 
 }
