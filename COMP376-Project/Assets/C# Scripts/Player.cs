@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     bool activePower = false;
 
     //powerups variable
-    float potiontime = 0.0f;
+    public float potiontime = 0.0f;
 
     //animator component
     Animator animator;
@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
         isRunning = false;
         isGrounded = true;
 
+        
         //init potion count from save?? or set to zero if no saves, 
     }
 
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour
         //powerups
         if (activePower && usingIron)
         {
+            
             useIron();
             //implement animation delay, turn on control lock for 4 seconds
         }
@@ -92,6 +94,7 @@ public class Player : MonoBehaviour
 
         if (activePower && usingPewter)
         {
+            
             usePewter();
         }
 
@@ -150,6 +153,7 @@ public class Player : MonoBehaviour
         {
             if (ironCount > 0)
             {
+                potiontime = 0f;
                 ironCount--;
                 activePower = true;
                 usingIron = true;
@@ -165,6 +169,7 @@ public class Player : MonoBehaviour
         {
             if (steelCount > 0)
             {
+                potiontime = 0f;
                 steelCount--;
                 activePower = true;
                 usingSteel = true;
@@ -180,6 +185,7 @@ public class Player : MonoBehaviour
         {
             if (pewterCount > 0)
             {
+                potiontime = 0f;
                 pewterCount--;
                 activePower = true;
                 usingPewter = true;
@@ -199,12 +205,7 @@ public class Player : MonoBehaviour
         // respawn key for testing
         if (Input.GetKey(KeyCode.R))
             respawnPlayer();
-        //if (Input.GetMouseButtonDown(0))
-           // Debug.Log("Mouse down");
-
-        //if (Input.GetMouseButtonUp(0))
-         //   Debug.Log("Mouse up");
-
+        
         // other things to do
         // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
     }
@@ -262,8 +263,10 @@ public class Player : MonoBehaviour
         else
         {
             isDead = true;
-            // respawn delay
-            // respawn
+            activePower = false;
+            potiontime = 0f;
+            // respawn delay in update
+            
         }
     }
 
@@ -284,7 +287,7 @@ public class Player : MonoBehaviour
 
     //potion powers
 
-
+        
 
 
     private GameObject acceptMouseInput()                       // called from useiron, useSteel & usePewter
@@ -344,7 +347,7 @@ public class Player : MonoBehaviour
                     Debug.Log("Force added mouse: "+mouseHoldTime + " and force: "+ironPullPower);
                     clickedOn.GetComponent<Rigidbody>().AddForce((mouseHoldTime*2)*ironPullPower * towardsPlayer);   // pulls towards your direction
                     mouseHoldTime = 1f;
-                    Debug.Log("Velocity on clicked body: "+clickedOn.GetComponent<Rigidbody>().velocity);
+                    //Debug.Log("Velocity on clicked body: "+clickedOn.GetComponent<Rigidbody>().velocity);
                 }
             }
         }
@@ -425,5 +428,15 @@ public class Player : MonoBehaviour
             
         }
     }
-    
+
+
+    //experimental if objects hit you too fast
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Interactable")
+        {
+            Debug.Log("Object hit you at: "+collision.collider.GetComponent<Rigidbody>().velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
+        }
+    }
+
 }
