@@ -44,7 +44,7 @@ public class EnemyAttack : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Player" && m_isAttacking)
+        if (other.gameObject == m_playerRef.gameObject && m_isAttacking)
         {
             AttackPlayer(other.gameObject);
         }

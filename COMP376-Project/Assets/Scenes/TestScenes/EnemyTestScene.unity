@@ -658,5 +658,10 @@ PrefabInstance:
       propertyPath: m_startPatrolWaitTime
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3892477974393231517, guid: 7c5c908e6d8caa749a12782a39335a00,
+        type: 3}
+      propertyPath: m_rangeToEngage
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c5c908e6d8caa749a12782a39335a00, type: 3}

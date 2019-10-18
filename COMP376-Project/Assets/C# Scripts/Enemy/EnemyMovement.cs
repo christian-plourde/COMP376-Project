@@ -37,7 +37,17 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Patrol();
+        //chase the player if the player is in field of vision and patrol otherwise
+        if (IsPlayerInVision())
+        {
+            ChasePlayer();
+        }
+        else
+        {
+            Patrol();
+        }
+
+        //check every frame if player is in attack range to start attacking
         IsPlayerInRange();
     }
 
@@ -45,7 +55,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if(m_isWalking)
             transform.position = Vector3.MoveTowards(transform.position, m_moveSpots[m_randomSpot].position, m_walkSpeed * Time.deltaTime);
-
+            
         //When it reaches the move spot, wait before going to another location
         if(Vector3.Distance(transform.position, m_moveSpots[m_randomSpot].position) < 0.2f)
         {
@@ -66,8 +76,14 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    //returns true if player is in LOS (not sure if needed yet)
-    //Depends on if enemies will chase the player 
+    //walks towards the player
+    void ChasePlayer()
+    {
+        if (m_isWalking)
+            transform.position = Vector3.MoveTowards(transform.position, m_playerRef.position, m_walkSpeed * Time.deltaTime);
+    }
+
+    //returns true if player is in LOS 
     public bool IsPlayerInVision()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -76,7 +92,6 @@ public class EnemyMovement : MonoBehaviour
 
         if (Vector3.Dot(forward, toPlayer) > 0 && distanceToPlayer < m_rangeToEngage)
         {
-            Debug.Log("Player in sight");
             return true;
         }
         return false;
