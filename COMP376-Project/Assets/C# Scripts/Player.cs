@@ -21,12 +21,12 @@ public class Player : MonoBehaviour
 
     //bools for animation & states
     bool isDead=false;
-    bool isRunning;
+    bool isRunning=false;
     public bool isGrounded;
     bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
 
     //powerups bool
-    bool activePower = false;
+    public bool activePower = false;
 
     //powerups variable
     public float potiontime = 0.0f;
@@ -67,16 +67,12 @@ public class Player : MonoBehaviour
     {
         Cursor.visible = false;             // we dont want the cursor to show unless player is using the push or pull ability
         //init variables
-        //checkpoint = spawn postion
         checkpoint = transform.position;
         steelCountCheckpoint = steelCount;
         ironCountCheckpoint = ironCount;
         pewterCountCheckpoint = pewterCount;
         animator = GetComponent<Animator>();
-        isRunning = false;
         isGrounded = true;
-
-        
         //init potion count from save?? or set to zero if no saves, 
     }
 
@@ -85,38 +81,15 @@ public class Player : MonoBehaviour
     {
         checkGrounded();
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
-            playerMovement();
-
-        //powerups
-        if (activePower && usingIron && !usePotionAnim)
-            useIron();
-        
-        if(activePower && usingSteel && !usePotionAnim)
-            useSteel();
-
-        if (activePower && usingPewter && !usePotionAnim)
-            usePewter();
+        {
+            playerMovement();                                         // wasd, space
+            powerControls();                                          // hotkeys for powers
+            activePowerUps();                                         // active power up will function when this method is called every frame
+        }
 
         // delay animation --> works
         if (usePotionAnim)
-        {
-            if (potionAnimTimer > 3.8f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
-            {
-                animator.SetBool("isUsingPotion",false);
-                usePotionAnim = false;
-                controlLock = false;
-                potionAnimTimer = 0f;
-                animator.SetBool("isRunning", false);
-            }
-            else
-            {
-                potiontime = 0f;                           // you dont want the potion time to go down when drinking animation is happening
-                potionAnimTimer += Time.deltaTime;
-                controlLock = true;
-                animator.SetBool("isUsingPotion", true);
-            }
-
-        }
+            potionAnimationDelay();                                    // just a function that locks player control for a while
 
         //take damage anim
         if (tookDamageAnim)
@@ -186,6 +159,14 @@ public class Player : MonoBehaviour
             animator.SetBool("isGrounded",false);
         }
 
+        
+        // other things to do
+        // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
+    }
+
+    private void powerControls()
+    {
+
         /// _____________________________________________________________________
         /// //power inputs:
         /// change hot keys if you want
@@ -193,29 +174,31 @@ public class Player : MonoBehaviour
         {
             if (ironCount > 0)
             {
+                mouseHoldTime = 1f;
                 usePotionAnim = true;
                 potiontime = 0f;
                 ironCount--;
                 activePower = true;
                 usingIron = true;
-                usingSteel = false;usingPewter = false;
+                usingSteel = false; usingPewter = false;
                 Debug.Log("iron consumed.");
             }
             else
             {
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
-        }          
+        }
         if (Input.GetKeyDown(KeyCode.Alpha2) && isGrounded)       // steel
         {
             if (steelCount > 0)
             {
+                mouseHoldTime = 1f;
                 usePotionAnim = true;
                 potiontime = 0f;
                 steelCount--;
                 activePower = true;
                 usingSteel = true;
-                usingIron = false;usingPewter = false;
+                usingIron = false; usingPewter = false;
                 Debug.Log("steel consumed.");
             }
             else
@@ -227,12 +210,13 @@ public class Player : MonoBehaviour
         {
             if (pewterCount > 0)
             {
+                mouseHoldTime = 1f;
                 usePotionAnim = true;
                 potiontime = 0f;
                 pewterCount--;
                 activePower = true;
                 usingPewter = true;
-                usingIron = false;usingSteel = false;
+                usingIron = false; usingSteel = false;
                 Debug.Log("pewter consumed.");
             }
             else
@@ -242,12 +226,22 @@ public class Player : MonoBehaviour
 
 
 
-            
+
         }
 
-        
-        // other things to do
-        // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
+    }
+
+    private void activePowerUps()
+    {
+        //powerups
+        if (activePower && usingIron && !usePotionAnim)
+            useIron();
+
+        if (activePower && usingSteel && !usePotionAnim)
+            useSteel();
+
+        if (activePower && usingPewter && !usePotionAnim)
+            usePewter();
     }
 
     private void checkGrounded()
@@ -277,6 +271,15 @@ public class Player : MonoBehaviour
         health--;
         tookDamageAnim = true;
         animator.SetBool("tookDamage",true);
+        //experimental
+        if (usePotionAnim)            // cancel effect
+        {
+            activePower = false;
+            usePotionAnim = false;
+            animator.SetBool("isUsingPotion",false);
+            controlLock = false;
+        }
+
         if (health <= 0)
             killPlayer();
 
@@ -305,7 +308,7 @@ public class Player : MonoBehaviour
             activePower = false;
             potiontime = 0f;
             Debug.Log("You are dead.");
-            transform.Translate(new Vector3(0,0,transform.position.z+0.2f));
+            
             // respawn delay in update
             
         }
@@ -335,10 +338,6 @@ public class Player : MonoBehaviour
 
 
     //potion powers
-
-        
-
-
     private GameObject acceptMouseInput()                       // called from useiron, useSteel & usePewter
     {
         
@@ -366,7 +365,6 @@ public class Player : MonoBehaviour
     }
 
     //potion functions
-
     private void useIron()                                   // is only called after validating iron stats.
     {
         if (potiontime < ironPotionTime)
@@ -405,7 +403,6 @@ public class Player : MonoBehaviour
             Cursor.visible = false;
         }
     }
-
 
     //steel potion
     private void useSteel()                                   // is only called after validating iron stats.
@@ -496,4 +493,22 @@ public class Player : MonoBehaviour
         
     }
 
+    private void potionAnimationDelay()
+    {
+        if (potionAnimTimer > 3.8f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
+        {
+            animator.SetBool("isUsingPotion", false);
+            usePotionAnim = false;
+            controlLock = false;
+            potionAnimTimer = 0f;
+            animator.SetBool("isRunning", false);
+        }
+        else
+        {
+            potiontime = 0f;                           // you dont want the potion time to go down when drinking animation is happening
+            potionAnimTimer += Time.deltaTime;
+            controlLock = true;
+            animator.SetBool("isUsingPotion", true);
+        }
+    }
 }
