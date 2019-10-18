@@ -7,15 +7,16 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //experimental - delete or relocate
-    float mouseHoldTime = 1f;
+    
 
 
     //Player Variables
     private const float SPEED = 5f, JUMPFORCE = 4f;        // make sure to update constants when  you update the speed and jump below
+    private const int MAXHEALTH = 3;
 
     private float speed=5f;                     // Movement speed       
     private float jumpForce = 4f;
-    private int health = 8;                  // assuming we have 8 bars of health and lose one health every hit 
+    public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
     private int faceDirection = 1;         // default facing negative z axis
 
     //bools for animation & states
@@ -33,14 +34,22 @@ public class Player : MonoBehaviour
     //animator component
     Animator animator;
 
+    //animation variables
+    bool usePotionAnim;
+    float potionAnimTimer = 0f;
+    bool tookDamageAnim;
+    float tookDamageTimer = 0f;
+
+
     //potions
     public int steelCount; bool usingSteel; float steelPotionTime=15f;
-    public int ironCount;   bool usingIron; float ironPotionTime = 10f;         // low for testing purpose, increase later
+    public int ironCount;   bool usingIron; float ironPotionTime = 30f;         // low for testing purpose, increase later
     public int pewterCount; bool usingPewter; float pewterPotionTime = 20f;
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=25f;
     float pewterSpeedBoost=7.5f; float pewterJumpBoost = 5.5f;
+    float mouseHoldTime = 1f;                        // for how much force
 
     //respawn point
     [HideInInspector]public Vector3 checkpoint;                      // update value at checkpoints (update from trigger objects that are checkpoints)
@@ -79,26 +88,56 @@ public class Player : MonoBehaviour
             playerMovement();
 
         //powerups
-        if (activePower && usingIron)
-        {
-            
+        if (activePower && usingIron && !usePotionAnim)
             useIron();
-            //implement animation delay, turn on control lock for 4 seconds
-        }
         
-
-        if(activePower && usingSteel)
-        {
+        if(activePower && usingSteel && !usePotionAnim)
             useSteel();
-        }
 
-        if (activePower && usingPewter)
-        {
-            
+        if (activePower && usingPewter && !usePotionAnim)
             usePewter();
+
+        // delay animation --> works
+        if (usePotionAnim)
+        {
+            if (potionAnimTimer > 3.8f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
+            {
+                animator.SetBool("isUsingPotion",false);
+                usePotionAnim = false;
+                controlLock = false;
+                potionAnimTimer = 0f;
+            }
+            else
+            {
+                potiontime = 0f;                           // you dont want the potion time to go down when drinking animation is happening
+                potionAnimTimer += Time.deltaTime;
+                controlLock = true;
+                animator.SetBool("isUsingPotion", true);
+            }
+
         }
 
-        
+        //take damage anim
+        if (tookDamageAnim)
+        {
+            if (tookDamageTimer > 0.5f)
+            {
+                tookDamageTimer = 0f;
+                tookDamageAnim = false;
+                animator.SetBool("tookDamage", false);
+            }
+            else
+            {
+                tookDamageTimer += Time.deltaTime;
+            }
+        }
+
+
+        //testing purposes:
+        // respawn key for testing
+        if (Input.GetKey(KeyCode.R))
+            respawnPlayer();
+
     }
 
     //helper methods
@@ -149,10 +188,11 @@ public class Player : MonoBehaviour
         /// _____________________________________________________________________
         /// //power inputs:
         /// change hot keys if you want
-        if (Input.GetKeyDown(KeyCode.Alpha1))       // iron
+        if (Input.GetKeyDown(KeyCode.Alpha1) && isGrounded)       // iron
         {
             if (ironCount > 0)
             {
+                usePotionAnim = true;
                 potiontime = 0f;
                 ironCount--;
                 activePower = true;
@@ -165,10 +205,11 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }          
-        if (Input.GetKeyDown(KeyCode.Alpha2))       // steel
+        if (Input.GetKeyDown(KeyCode.Alpha2) && isGrounded)       // steel
         {
             if (steelCount > 0)
             {
+                usePotionAnim = true;
                 potiontime = 0f;
                 steelCount--;
                 activePower = true;
@@ -181,10 +222,11 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))       // pewter
+        if (Input.GetKeyDown(KeyCode.Alpha3) && isGrounded)       // pewter
         {
             if (pewterCount > 0)
             {
+                usePotionAnim = true;
                 potiontime = 0f;
                 pewterCount--;
                 activePower = true;
@@ -202,9 +244,6 @@ public class Player : MonoBehaviour
             
         }
 
-        // respawn key for testing
-        if (Input.GetKey(KeyCode.R))
-            respawnPlayer();
         
         // other things to do
         // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
@@ -241,8 +280,11 @@ public class Player : MonoBehaviour
     public void registerHit()                 // public method, enemy call this method to damage player
     {
         health--;
+        tookDamageAnim = true;
+        animator.SetBool("tookDamage",true);
         if (health <= 0)
             killPlayer();
+
         
     }
 
@@ -262,9 +304,12 @@ public class Player : MonoBehaviour
             Debug.Log("Wrong Call killplayer on Player.");
         else
         {
+            Cursor.visible = false;
             isDead = true;
+            animator.SetBool("isDead",true);
             activePower = false;
             potiontime = 0f;
+            Debug.Log("You are dead.");
             // respawn delay in update
             
         }
@@ -274,7 +319,8 @@ public class Player : MonoBehaviour
     {
         //reset states
         isDead = false;
-        health = 8;
+        animator.SetBool("isDead",false);
+        health = MAXHEALTH;
         transform.position = checkpoint;
 
         //restore potion count to that of checkpoint
@@ -435,8 +481,21 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.tag == "Interactable")
         {
-            Debug.Log("Object hit you at: "+collision.collider.GetComponent<Rigidbody>().velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
+            Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
+            Debug.Log("Object hit you at: "+collided.velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
+            if (Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
+            {
+                registerHit();
+            }
         }
+
+        //if collision from an enemy collider or use istrigger
+    }
+
+
+    private void potionAnimationEnable()
+    {
+        usePotionAnim = true;
     }
 
 }
