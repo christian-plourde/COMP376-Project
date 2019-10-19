@@ -62,6 +62,7 @@ public class EnemyMovement : MonoBehaviour
             if (m_patrolWaitTime <= 0)
             {
                 m_randomSpot = Random.Range(0, m_moveSpots.Length);
+                //set idle to false and walking to true when enemy patrols again
                 m_isWalking = true;
                 m_isIdle = false;
                 m_patrolWaitTime = m_startPatrolWaitTime;
@@ -76,9 +77,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    //walks towards the player
+    //Chase the player when not in attacking range but when in field of vision
     void ChasePlayer()
     {
+        //This is so the enemy doesnt walk and attack at the same time. 
+        //Maybe we will have that functionality?
         if (m_isWalking)
             transform.position = Vector3.MoveTowards(transform.position, m_playerRef.position, m_walkSpeed * Time.deltaTime);
     }

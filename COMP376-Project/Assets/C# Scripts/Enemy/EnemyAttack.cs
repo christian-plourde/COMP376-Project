@@ -13,6 +13,9 @@ public class EnemyAttack : MonoBehaviour
 
     bool m_isAttacking;
 
+    float m_attackTimer;
+
+
     void Awake()
     {
         //set references
@@ -31,7 +34,8 @@ public class EnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (m_movement.IsPlayerInRange())
+        //if player is in attack range and the enemy attack is off cooldown
+        if (m_movement.IsPlayerInRange() && (m_attackTimer >= m_timeBetweenAttacks))
         {
             m_isAttacking = true;
         }
@@ -39,11 +43,13 @@ public class EnemyAttack : MonoBehaviour
         {
             m_isAttacking = false;
         }
- 
+
+        m_attackTimer += Time.deltaTime;
     }
 
     void OnCollisionEnter(Collision other)
     {
+        //if enemy collides with the player and the enemy is attacking
         if (other.gameObject == m_playerRef.gameObject && m_isAttacking)
         {
             AttackPlayer(other.gameObject);
@@ -52,6 +58,8 @@ public class EnemyAttack : MonoBehaviour
 
     void AttackPlayer(GameObject player)
     {
+        m_attackTimer = 0.0f;
+
         Debug.Log("Player hit!");
         //Decrease player hp
         //add knockback to player
