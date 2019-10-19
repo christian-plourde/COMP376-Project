@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     private float speed=5f;                     // Movement speed       
     private float jumpForce = 8.5f;
     public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
-    private int faceDirection = 1;         // default facing negative z axis
+    public int faceDirection = 1;         // default facing negative z axis
 
     //bools for animation & states
     bool isDead=false;
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     public int pewterCount; bool usingPewter; float pewterPotionTime = 20f;
 
     //abilities parameters
-    float ironPullPower=25f; float steelPushPower=25f;
+    float ironPullPower=25f; float steelPushPower=20f;
     float pewterSpeedBoost=7.5f; float pewterJumpBoost = 12f;
     float mouseHoldTime = 1f;                        // for how much force
 
@@ -94,23 +94,22 @@ public class Player : MonoBehaviour
         //take damage anim
         if (tookDamageAnim)
         {
-            if (tookDamageTimer > 0.5f)
-            {
-                tookDamageTimer = 0f;
-                tookDamageAnim = false;
-                animator.SetBool("tookDamage", false);
-            }
-            else
-            {
-                tookDamageTimer += Time.deltaTime;
-            }
+            takeDamageAnimDelay();
         }
 
 
         //testing purposes:
-        // respawn key for testing
-        if (Input.GetKey(KeyCode.R))
-            respawnPlayer();
+        if (Input.GetMouseButtonDown(0))
+            animator.SetBool("mouseHeld", true);
+        else if (Input.GetMouseButtonUp(0))
+            animator.SetBool("mouseHeld", false);
+
+        if (Input.GetKey(KeyCode.K))
+            registerHit();
+
+            // respawn key for testing
+            if (Input.GetKeyDown(KeyCode.R))
+                respawnPlayer();
 
     }
 
@@ -181,6 +180,8 @@ public class Player : MonoBehaviour
                 activePower = true;
                 usingIron = true;
                 usingSteel = false; usingPewter = false;
+                speed = SPEED;
+                jumpForce = JUMPFORCE;
                 Debug.Log("iron consumed.");
             }
             else
@@ -199,6 +200,8 @@ public class Player : MonoBehaviour
                 activePower = true;
                 usingSteel = true;
                 usingIron = false; usingPewter = false;
+                speed = SPEED;
+                jumpForce = JUMPFORCE;
                 Debug.Log("steel consumed.");
             }
             else
@@ -509,6 +512,20 @@ public class Player : MonoBehaviour
             potionAnimTimer += Time.deltaTime;
             controlLock = true;
             animator.SetBool("isUsingPotion", true);
+        }
+    }
+
+    private void takeDamageAnimDelay()
+    {
+        if (tookDamageTimer > 0.5f)
+        {
+            tookDamageTimer = 0f;
+            tookDamageAnim = false;
+            animator.SetBool("tookDamage", false);
+        }
+        else
+        {
+            tookDamageTimer += Time.deltaTime;
         }
     }
 }
