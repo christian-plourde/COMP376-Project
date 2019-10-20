@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 7bfc7b0d47bb44748b802b68c417b14a
+guid: a0c4ddaa8dcb2b1428bac3cb9b927524
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: Jump
+    second: IronSteel Potion Idle
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Jump
+      name: IronSteel Potion Idle
       takeName: Take 001
       internalID: 0
       firstFrame: 1
-      lastFrame: 16
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

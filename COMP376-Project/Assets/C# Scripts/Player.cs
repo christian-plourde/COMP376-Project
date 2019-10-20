@@ -6,10 +6,6 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    //experimental - delete or relocate
-    
-
-
     //Player Variables
     private const float SPEED = 5f, JUMPFORCE = 10f;        // make sure to update constants when  you update the speed and jump below
     private const int MAXHEALTH = 3;
@@ -24,7 +20,7 @@ public class Player : MonoBehaviour
     bool isRunning=false;
     public bool isGrounded;
     bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
-
+    
     //powerups bool
     public bool activePower = false;
 
@@ -32,7 +28,7 @@ public class Player : MonoBehaviour
     public float potiontime = 0.0f;
 
     //animator component
-    Animator animator;
+    public Animator animator;
 
     //animation variables
     bool usePotionAnim;
@@ -57,12 +53,6 @@ public class Player : MonoBehaviour
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
 
-    // UI object references
-    // health
-    // potions
-
-
-    
     void Start()
     {
         Cursor.visible = false;             // we dont want the cursor to show unless player is using the push or pull ability
@@ -79,7 +69,9 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        checkGrounded();
+        // dont use regular checkGrounded, ray cast function works better
+        //checkGrounded();             
+        rayCastCheckGrounded();
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
         {
             playerMovement();                                         // wasd, space
@@ -93,23 +85,16 @@ public class Player : MonoBehaviour
 
         //take damage anim
         if (tookDamageAnim)
-        {
             takeDamageAnimDelay();
-        }
 
 
-        //testing purposes:
-        if (Input.GetMouseButtonDown(0))
-            animator.SetBool("mouseHeld", true);
-        else if (Input.GetMouseButtonUp(0))
-            animator.SetBool("mouseHeld", false);
 
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
             registerHit();
 
             // respawn key for testing
-            if (Input.GetKeyDown(KeyCode.R))
-                respawnPlayer();
+        if (Input.GetKeyDown(KeyCode.R))
+            respawnPlayer();
 
     }
 
@@ -152,9 +137,17 @@ public class Player : MonoBehaviour
         //jump
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            Vector3 jumpVector;
             isGrounded = false;
-            //GetComponent<Rigidbody>().velocity = Vector3.zero;
-            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            if (faceDirection == 1)
+                jumpVector = new Vector3(0,1,0.5f);
+            else
+                jumpVector = new Vector3(0, 1, -0.5f);
+            //GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            if(isRunning)
+                GetComponent<Rigidbody>().AddForce(jumpVector * jumpForce, ForceMode.Impulse);
+            else
+                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             animator.SetBool("isGrounded",false);
         }
 
@@ -247,16 +240,33 @@ public class Player : MonoBehaviour
             usePewter();
     }
 
+    // dont use, raycast works better
     private void checkGrounded()
     {
         // i m using line cast, but we can change to raycast later, line cast is cheaper
-        Vector3 castPoint = new Vector3( transform.position.x,transform.position.y,transform.position.z);
+        Vector3 castPoint = new Vector3( transform.position.x,transform.position.y+0.2f,transform.position.z);
         if(Physics.Linecast(castPoint,new Vector3(transform.position.x,transform.position.y-0.05f,transform.position.z)))
         {
             //Debug.Log("Touching.");
             isGrounded = true;
             animator.SetBool("isGrounded",true);
             
+        }
+    }
+
+
+    private void rayCastCheckGrounded()
+    {
+        Vector3 castPoint = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
+        if (Physics.Raycast(castPoint, Vector3.down, 0.8f))
+        {
+            isGrounded = true;
+            animator.SetBool("isGrounded", true);
+        }
+        else
+        {
+            isGrounded = false;
+            animator.SetBool("isGrounded", false);
         }
     }
 
@@ -292,6 +302,15 @@ public class Player : MonoBehaviour
     public void registerHit(int damage)                 // overloaded public method, enemy call this method to damage player with damage parameter
     {
         health -= damage;
+        tookDamageAnim = true;
+        animator.SetBool("tookDamage", true);
+        if (usePotionAnim)            // cancel effect
+        {
+            activePower = false;
+            usePotionAnim = false;
+            animator.SetBool("isUsingPotion", false);
+            controlLock = false;
+        }
         if (health <= 0)
         {
             health = 0;
@@ -498,7 +517,7 @@ public class Player : MonoBehaviour
 
     private void potionAnimationDelay()
     {
-        if (potionAnimTimer > 3.8f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
+        if (potionAnimTimer > 3f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
         {
             animator.SetBool("isUsingPotion", false);
             usePotionAnim = false;
