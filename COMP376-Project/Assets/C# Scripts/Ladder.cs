@@ -12,6 +12,8 @@ public class Ladder : MonoBehaviour
     public bool usingLadder;
 
     float climbSpeed = 3f;
+    int facingSide = 1;                    // if players facing side is different, flip player, so that player's front is towars the ladder
+
 
     void Start()
     {
@@ -23,6 +25,7 @@ public class Ladder : MonoBehaviour
     void Update()
     {
         ladderControls();
+        checkFacingDirection();
     }
 
     private void ladderControls()
@@ -32,6 +35,7 @@ public class Ladder : MonoBehaviour
         if (Input.GetKey(KeyCode.W) && onLadder)
         {
             usingLadder = true;
+            playerRef.GetComponent<Player>().usingLadder = true;
             playerRigidBody.useGravity = false;
             playerRigidBody.velocity = Vector3.zero;
             // controls
@@ -43,6 +47,7 @@ public class Ladder : MonoBehaviour
         if (Input.GetKey(KeyCode.S) && onLadder)
         {
             usingLadder = true;
+            playerRef.GetComponent<Player>().usingLadder=true;
             playerRigidBody.useGravity = false;
             playerRigidBody.velocity = Vector3.zero;
             // controls
@@ -55,6 +60,7 @@ public class Ladder : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             usingLadder = false;
+            playerRef.GetComponent<Player>().usingLadder = false;
             playerRigidBody.useGravity = true;
         }
 
@@ -64,8 +70,10 @@ public class Ladder : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            
             onLadder = true;
             playerRef.GetComponent<Animator>().SetBool("onLadder",true);
+            playerRef.GetComponent<Player>().onLadder = true;
         }
     }
 
@@ -74,11 +82,21 @@ public class Ladder : MonoBehaviour
         if (other.gameObject.tag == "Player")
         { 
             onLadder = false;
+            playerRef.GetComponent<Player>().onLadder = false;
             playerRef.GetComponent<Animator>().SetBool("onLadder", false);
             usingLadder = false;
+            playerRef.GetComponent<Player>().usingLadder = false;
             playerRigidBody.useGravity = true;
             Debug.Log("Exited ladder");
 
+        }
+    }
+
+    private void checkFacingDirection()
+    {
+        if (playerRef.GetComponent<Player>().faceDirection == facingSide && usingLadder)
+        {
+            playerRef.GetComponent<Player>().changePlayerDirection();
         }
     }
 }

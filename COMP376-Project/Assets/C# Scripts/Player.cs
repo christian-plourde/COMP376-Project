@@ -6,29 +6,35 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //experimental
+    float jumpDelay;
+    public bool onLadder;
+    public bool usingLadder;
+
+
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 10f;        // make sure to update constants when  you update the speed and jump below
+    private const float SPEED = 5f, JUMPFORCE = 9f;        // make sure to update constants when  you update the speed and jump below
     private const int MAXHEALTH = 3;
 
     private float speed=5f;                     // Movement speed       
-    private float jumpForce = 8.5f;
+    private float jumpForce = 9f;
     public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
-    public int faceDirection = 1;         // default facing negative z axis
+    [HideInInspector]public int faceDirection = 1;         // default facing negative z axis
 
     //bools for animation & states
     bool isDead=false;
     bool isRunning=false;
-    public bool isGrounded;
+    bool isGrounded;
     bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
     
     //powerups bool
-    public bool activePower = false;
+    [HideInInspector]public bool activePower = false;
 
     //powerups variable
-    public float potiontime = 0.0f;
+    [HideInInspector]public float potiontime = 0.0f;
 
     //animator component
-    public Animator animator;
+    [HideInInspector]public Animator animator;
 
     //animation variables
     bool usePotionAnim;
@@ -87,7 +93,10 @@ public class Player : MonoBehaviour
         if (tookDamageAnim)
             takeDamageAnimDelay();
 
+      
 
+
+        //____________________________________________________
 
         if (Input.GetKeyDown(KeyCode.K))
             registerHit();
@@ -104,7 +113,7 @@ public class Player : MonoBehaviour
         // Horizontal Movemnet: Character default faces -ve Z, initial rotation 180 degrees, so he has to move on -ve z axis of his local scale
         //                      which translates to positive z axis on the world.
         //                      if player puts down opposite button, calls changeDirection() and rotates player 180 degrees again.
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && !usingLadder)
         {
             if (faceDirection == (-1))
             {
@@ -116,7 +125,7 @@ public class Player : MonoBehaviour
                 changePlayerDirection();
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) && !usingLadder)
         {
             if (faceDirection == 1)
             {
@@ -135,7 +144,8 @@ public class Player : MonoBehaviour
         }
 
         //jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder))
         {
             Vector3 jumpVector;
             isGrounded = false;
@@ -257,6 +267,12 @@ public class Player : MonoBehaviour
 
     private void rayCastCheckGrounded()
     {
+        // allows  to jump off edge properly
+        if (!isGrounded)
+            jumpDelay += Time.deltaTime;
+        else if (isGrounded)
+            jumpDelay = 0;
+
         Vector3 castPoint = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
         if (Physics.Raycast(castPoint, Vector3.down, 0.8f))
         {
@@ -270,12 +286,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void changePlayerDirection()
+    public void changePlayerDirection()
     {
         if (faceDirection == 1)
             faceDirection = -1;
         else
             faceDirection = 1;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         transform.Rotate(new Vector3(0,180,0)); // flip player (rotate 180) when they press opposite button on horizontal movement
     }                    
 

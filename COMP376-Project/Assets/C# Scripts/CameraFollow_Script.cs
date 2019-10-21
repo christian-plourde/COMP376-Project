@@ -66,7 +66,7 @@ public class CameraFollow_Script : MonoBehaviour
         //Debug.Log(player.GetComponent<Player>().faceDirection);
         if (player.GetComponent<Player>().faceDirection == -1)
         {
-            if (xOffset >= -XOFFSET) // -5f
+            if (xOffset >= -XOFFSET+2.5f) // -5f
                 xOffset -= (smoothSpeed) * Time.deltaTime;
             
         }

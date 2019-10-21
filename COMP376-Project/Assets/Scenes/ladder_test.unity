@@ -622,6 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8201e74464640c942bab155960145512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableRotation: 0
 --- !u!1 &557799415
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,7 +764,7 @@ Transform:
   m_LocalScale: {x: 3.0996, y: 0.14762, z: 12.0130205}
   m_Children: []
   m_Father: {fileID: 1649113534}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &623961987
 BoxCollider:
@@ -965,7 +966,7 @@ Transform:
   m_LocalScale: {x: 3.0996, y: 4.7545643, z: 14.709943}
   m_Children: []
   m_Father: {fileID: 1649113534}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!65 &670446644
 BoxCollider:
@@ -1039,7 +1040,7 @@ GameObject:
   - component: {fileID: 1057819775}
   - component: {fileID: 1057819774}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Climb_block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1053,11 +1054,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057819772}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1301196, y: 3.2419329, z: 11.237532}
+  m_LocalPosition: {x: -3.983, y: 7.72, z: 22.32}
   m_LocalScale: {x: 3.0996, y: 0.14762, z: 12.0130205}
   m_Children: []
-  m_Father: {fileID: 1649113534}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1057819774
 BoxCollider:
@@ -1208,7 +1209,7 @@ Transform:
   m_LocalScale: {x: 3.0996, y: 0.14762, z: 14.709943}
   m_Children: []
   m_Father: {fileID: 1649113534}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1145440454
 GameObject:
@@ -1241,7 +1242,7 @@ Transform:
   m_LocalScale: {x: 3.0996, y: 0.14762, z: 4.5405617}
   m_Children: []
   m_Father: {fileID: 1649113534}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1145440456
 BoxCollider:
@@ -1421,7 +1422,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1769308988}
-  - {fileID: 1057819773}
   - {fileID: 1145440455}
   - {fileID: 1079377721}
   - {fileID: 623961986}
@@ -1554,7 +1554,7 @@ Transform:
   m_LocalScale: {x: 3.0996, y: 0.14762, z: 12.0130205}
   m_Children: []
   m_Father: {fileID: 1649113534}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1809083202
 BoxCollider:
@@ -1646,7 +1646,7 @@ Transform:
   m_LocalScale: {x: 3.0996, y: 0.14762, z: 12.0130205}
   m_Children: []
   m_Father: {fileID: 1649113534}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1879671396
 BoxCollider:
@@ -1725,11 +1725,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a40757e8830b974b9229b87e63e8c8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onLadder: 0
+  usingLadder: 0
   health: 3
   faceDirection: 1
-  isGrounded: 0
   activePower: 0
   potiontime: 0
+  animator: {fileID: 0}
   steelCount: 2
   ironCount: 10
   pewterCount: 3
