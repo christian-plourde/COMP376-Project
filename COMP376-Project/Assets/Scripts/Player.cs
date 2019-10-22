@@ -150,9 +150,9 @@ public class Player : MonoBehaviour
             Vector3 jumpVector;
             isGrounded = false;
             if (faceDirection == 1)
-                jumpVector = new Vector3(0.5f,1,0);
+                jumpVector = new Vector3(0.1f,1,0);
             else
-                jumpVector = new Vector3(-0.5f, 1, 0);
+                jumpVector = new Vector3(-0.1f, 1, 0);
             //GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             if(isRunning)
                 GetComponent<Rigidbody>().AddForce(jumpVector * jumpForce, ForceMode.Impulse);
