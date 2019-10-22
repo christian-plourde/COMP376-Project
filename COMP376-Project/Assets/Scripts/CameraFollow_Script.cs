@@ -9,8 +9,9 @@ public class CameraFollow_Script : MonoBehaviour
     private const float XOFFSET= -30f;
     private const float YOFFSET= 3f;
 
-    float xOffset=-30f;
-    float yOffset=3f;
+    public float xOffset;
+    public float yOffset;
+    public float ZOffset_Zoom;
 
     public bool enableRotation;
 
@@ -29,7 +30,9 @@ public class CameraFollow_Script : MonoBehaviour
     void Update()
     {
         Vector3 playerpos= player.GetComponent<Transform>().position;
-        transform.position=new Vector3(transform.position.x,playerpos.y+yOffset,playerpos.z+xOffset);
+        Vector3 camPos = transform.position;
+        //transform.position=new Vector3(transform.position.x,playerpos.y+yOffset,playerpos.z+xOffset);
+        transform.position=new Vector3(playerpos.x+xOffset,playerpos.y+yOffset,playerpos.z+ZOffset_Zoom);
         if(enableRotation)
             smoothRotate();
         smoothSwitchDirection2();

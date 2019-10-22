@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=20f;
-    float pewterSpeedBoost=7.5f; float pewterJumpBoost = 12f;
+    float pewterSpeedBoost=7.5f; float pewterJumpBoost = 7.5f;
     float mouseHoldTime = 1f;                        // for how much force
 
     //respawn point
@@ -258,20 +258,6 @@ public class Player : MonoBehaviour
 
         if (activePower && usingPewter && !usePotionAnim)
             usePewter();
-    }
-
-    // dont use, raycast works better
-    private void checkGrounded()
-    {
-        // i m using line cast, but we can change to raycast later, line cast is cheaper
-        Vector3 castPoint = new Vector3( transform.position.x,transform.position.y+0.2f,transform.position.z);
-        if(Physics.Linecast(castPoint,new Vector3(transform.position.x,transform.position.y-0.05f,transform.position.z)))
-        {
-            //Debug.Log("Touching.");
-            isGrounded = true;
-            animator.SetBool("isGrounded",true);
-            
-        }
     }
 
 
@@ -525,11 +511,16 @@ public class Player : MonoBehaviour
         if (collision.collider.tag == "Interactable")
         {
             Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
-            Debug.Log("Object hit you at: "+collided.velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
+            Debug.Log("Object hit you at: " + collided.velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
             if (Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
             {
                 registerHit();
             }
+        }
+        else if (collision.collider.tag == "Spikes")
+        {
+            //insta death
+            registerHit(100);
         }
 
         //if collision from an enemy collider or use istrigger
