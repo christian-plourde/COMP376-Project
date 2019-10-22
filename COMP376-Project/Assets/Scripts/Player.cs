@@ -13,11 +13,11 @@ public class Player : MonoBehaviour
 
 
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 9f;        // make sure to update constants when  you update the speed and jump below
+    private const float SPEED = 5f, JUMPFORCE = 4f;        // make sure to update constants when  you update the speed and jump below
     private const int MAXHEALTH = 3;
 
     private float speed=5f;                     // Movement speed       
-    private float jumpForce = 9f;
+    private float jumpForce = 4f;
     public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
     [HideInInspector]public int faceDirection = 1;         // default facing negative z axis
 
@@ -150,9 +150,9 @@ public class Player : MonoBehaviour
             Vector3 jumpVector;
             isGrounded = false;
             if (faceDirection == 1)
-                jumpVector = new Vector3(0,1,0.5f);
+                jumpVector = new Vector3(0.2f,1,0);
             else
-                jumpVector = new Vector3(0, 1, -0.5f);
+                jumpVector = new Vector3(-0.2f, 1, 0);
             //GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             if(isRunning)
                 GetComponent<Rigidbody>().AddForce(jumpVector * jumpForce, ForceMode.Impulse);
