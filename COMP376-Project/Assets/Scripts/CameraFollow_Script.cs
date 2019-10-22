@@ -7,10 +7,10 @@ public class CameraFollow_Script : MonoBehaviour
     // Start is called before the first frame update
     GameObject player;
     private const float XOFFSET= -30f;
-    private const float YOFFSET= 2f;
+    private const float YOFFSET= 3f;
 
     float xOffset=-30f;
-    float yOffset=2f;
+    float yOffset=3f;
 
     public bool enableRotation;
 
@@ -29,9 +29,7 @@ public class CameraFollow_Script : MonoBehaviour
     void Update()
     {
         Vector3 playerpos= player.GetComponent<Transform>().position;
-        
         transform.position=new Vector3(transform.position.x,playerpos.y+yOffset,playerpos.z+xOffset);
-
         if(enableRotation)
             smoothRotate();
         smoothSwitchDirection2();
