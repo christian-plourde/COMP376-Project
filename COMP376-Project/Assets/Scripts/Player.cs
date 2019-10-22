@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 
 public class Player : MonoBehaviour
 {
+
     //experimental
     float jumpDelay;
     public bool onLadder;
     public bool usingLadder;
+    public Animation camera_pan;
+    DateTime game_start;
 
 
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 5f;        // make sure to update constants when  you update the speed and jump below
+    private const float SPEED = 5f, JUMPFORCE = 6f;        // make sure to update constants when  you update the speed and jump below
     private const int MAXHEALTH = 3;
 
     private float speed=5f;                     // Movement speed       
-    private float jumpForce = 5f;
+    private float jumpForce = 6f;
     public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
     [HideInInspector]public int faceDirection = 1;         // default facing negative z axis
 
@@ -25,7 +29,7 @@ public class Player : MonoBehaviour
     bool isDead=false;
     bool isRunning=false;
     bool isGrounded;
-    bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
+    [HideInInspector] public bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
     
     //powerups bool
     [HideInInspector]public bool activePower = false;
@@ -61,6 +65,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        game_start = DateTime.Now;
+
         Cursor.visible = false;             // we dont want the cursor to show unless player is using the push or pull ability
         //init variables
         checkpoint = transform.position;
@@ -75,12 +81,15 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+
+
         // dont use regular checkGrounded, ray cast function works better
         //checkGrounded();             
         rayCastCheckGrounded();
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
         {
-            playerMovement();                                         // wasd, space
+            if((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
+                playerMovement();                                         // wasd, space
             powerControls();                                          // hotkeys for powers
             activePowerUps();                                         // active power up will function when this method is called every frame
         }
@@ -110,6 +119,7 @@ public class Player : MonoBehaviour
     //helper methods
     private void playerMovement()
     {
+        
         // Horizontal Movemnet: Character default faces -ve Z, initial rotation 180 degrees, so he has to move on -ve z axis of his local scale
         //                      which translates to positive z axis on the world.
         //                      if player puts down opposite button, calls changeDirection() and rotates player 180 degrees again.
@@ -150,9 +160,9 @@ public class Player : MonoBehaviour
             Vector3 jumpVector;
             isGrounded = false;
             if (faceDirection == 1)
-                jumpVector = new Vector3(0.1f,1,0);
+                jumpVector = new Vector3(0.3f,1.0f,0);
             else
-                jumpVector = new Vector3(-0.1f, 1, 0);
+                jumpVector = new Vector3(-0.3f, 1.0f, 0);
             //GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             if(isRunning)
                 GetComponent<Rigidbody>().AddForce(jumpVector * jumpForce, ForceMode.Impulse);
