@@ -28,7 +28,8 @@ public class Player : MonoBehaviour
     //bools for animation & states
     bool isDead=false;
     bool isRunning=false;
-    bool isGrounded;
+    [HideInInspector]public bool isGrounded;
+    public bool jumped = false;
     [HideInInspector] public bool controlLock=false;                       // stop playing movement, e.g. enable when using pull / push
     
     //powerups bool
@@ -155,10 +156,11 @@ public class Player : MonoBehaviour
 
         //jump
         //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder))
+        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder) && !jumped)
         {
             Vector3 jumpVector;
             isGrounded = false;
+            jumped = true;
             if (faceDirection == 1)
                 jumpVector = new Vector3(0.3f,1.0f,0);
             else
@@ -169,6 +171,7 @@ public class Player : MonoBehaviour
             else
                 GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             animator.SetBool("isGrounded",false);
+            
         }
 
         
@@ -274,6 +277,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(castPoint1, Vector3.down, 0.8f) || Physics.Raycast(castPoint2, Vector3.down, 0.8f))
         {
             isGrounded = true;
+            jumped = false;
             animator.SetBool("isGrounded", true);
         }
         else
@@ -289,7 +293,7 @@ public class Player : MonoBehaviour
             faceDirection = -1;
         else
             faceDirection = 1;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().velocity = new Vector3(0f, GetComponent<Rigidbody>().velocity.y, GetComponent<Rigidbody>().velocity.z);
         transform.Rotate(new Vector3(0,180,0)); // flip player (rotate 180) when they press opposite button on horizontal movement
     }                    
 
