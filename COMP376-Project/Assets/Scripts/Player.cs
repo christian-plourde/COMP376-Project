@@ -269,8 +269,9 @@ public class Player : MonoBehaviour
         else if (isGrounded)
             jumpDelay = 0;
 
-        Vector3 castPoint = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
-        if (Physics.Raycast(castPoint, Vector3.down, 0.8f))
+        Vector3 castPoint1 = new Vector3(transform.position.x+0.15f, transform.position.y + 0.2f, transform.position.z);
+        Vector3 castPoint2 = new Vector3(transform.position.x-0.15f, transform.position.y + 0.2f, transform.position.z);
+        if (Physics.Raycast(castPoint1, Vector3.down, 0.8f) || Physics.Raycast(castPoint2, Vector3.down, 0.8f))
         {
             isGrounded = true;
             animator.SetBool("isGrounded", true);
