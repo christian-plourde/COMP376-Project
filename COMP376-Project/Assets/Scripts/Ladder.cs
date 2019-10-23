@@ -26,6 +26,12 @@ public class Ladder : MonoBehaviour
     {
         ladderControls();
         checkFacingDirection();
+
+        if (usingLadder && playerRef.GetComponent<Player>().isGrounded)
+        {
+            usingLadder = false;
+            playerRef.GetComponent<Player>().usingLadder = false;
+        }
     }
 
     private void ladderControls()
