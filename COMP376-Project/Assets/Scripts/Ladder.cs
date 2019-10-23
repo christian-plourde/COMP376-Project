@@ -7,11 +7,12 @@ public class Ladder : MonoBehaviour
     // Start is called before the first frame update
     GameObject playerRef;
     Rigidbody playerRigidBody;
+    Animator playerAnimRef;
 
     public bool onLadder;
     public bool usingLadder;
 
-    float climbSpeed = 3f;
+    float climbSpeed = 1.2f;
     int facingSide = 1;                    // if players facing side is different, flip player, so that player's front is towars the ladder
 
 
@@ -19,6 +20,7 @@ public class Ladder : MonoBehaviour
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         playerRigidBody = playerRef.GetComponent<Rigidbody>();
+        playerAnimRef = playerRef.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -30,6 +32,7 @@ public class Ladder : MonoBehaviour
         if (usingLadder && playerRef.GetComponent<Player>().isGrounded)
         {
             usingLadder = false;
+            playerAnimRef.SetBool("usingLadder",false);
             playerRef.GetComponent<Player>().usingLadder = false;
         }
     }
@@ -41,6 +44,8 @@ public class Ladder : MonoBehaviour
         if (Input.GetKey(KeyCode.W) && onLadder)
         {
             usingLadder = true;
+            playerAnimRef.SetBool("usingLadder", true);
+            playerAnimRef.SetBool("climbingLadder", true);
             playerRef.GetComponent<Player>().usingLadder = true;
             playerRigidBody.useGravity = false;
             playerRigidBody.velocity = Vector3.zero;
@@ -53,6 +58,8 @@ public class Ladder : MonoBehaviour
         if (Input.GetKey(KeyCode.S) && onLadder)
         {
             usingLadder = true;
+            playerAnimRef.SetBool("usingLadder", true);
+            playerAnimRef.SetBool("climbingLadder", true);
             playerRef.GetComponent<Player>().usingLadder=true;
             playerRigidBody.useGravity = false;
             playerRigidBody.velocity = Vector3.zero;
@@ -62,10 +69,16 @@ public class Ladder : MonoBehaviour
 
 
 
+        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
+        {
+            playerAnimRef.SetBool("climbingLadder", false);
+        }
+
         // space
         if (Input.GetKey(KeyCode.Space))
         {
             usingLadder = false;
+            playerAnimRef.SetBool("usingLadder", false);
             playerRef.GetComponent<Player>().usingLadder = false;
             playerRigidBody.useGravity = true;
         }
@@ -90,6 +103,7 @@ public class Ladder : MonoBehaviour
             onLadder = false;
             playerRef.GetComponent<Player>().onLadder = false;
             playerRef.GetComponent<Animator>().SetBool("onLadder", false);
+            playerRef.GetComponent<Animator>().SetBool("usingLadder", false);
             usingLadder = false;
             playerRef.GetComponent<Player>().usingLadder = false;
             playerRigidBody.useGravity = true;
