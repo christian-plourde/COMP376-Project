@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class Lever : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool ifUsed=false;
+    public GameObject endDoorsReference;
 
-    // Update is called once per frame
-    void Update()
+
+    private void OnTriggerStay(Collider other)
     {
-        
+        if (other.tag == "Player" && !ifUsed)
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                Debug.Log("You pulled the lever.");
+                GetComponent<Animator>().enabled = true;
+                GetComponent<Lever>().enabled = false;
+
+                //open doors
+            }
+        }
     }
 }
