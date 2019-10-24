@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
 
     //experimental
-    float jumpDelay;
+    public float jumpDelay;
     public bool onLadder;
     public bool usingLadder;
     public Animation camera_pan;
@@ -156,11 +156,14 @@ public class Player : MonoBehaviour
 
         //jump
         //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder) && !jumped)
+        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder))
         {
+            
             Vector3 jumpVector;
             isGrounded = false;
             jumped = true;
+            //if (jumpDelay < 0.2f)
+            //jumpDelay =100f;
             if (faceDirection == 1)
                 jumpVector = new Vector3(0.3f,1.0f,0);
             else
@@ -171,7 +174,9 @@ public class Player : MonoBehaviour
             else
                 GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             animator.SetBool("isGrounded",false);
+
             
+
         }
 
         
