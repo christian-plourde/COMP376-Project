@@ -115,6 +115,9 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
             respawnPlayer();
 
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            transform.position=new Vector3(106.37f,-12.5f,157.47f);
+
     }
 
     //helper methods
@@ -279,7 +282,7 @@ public class Player : MonoBehaviour
 
         Vector3 castPoint1 = new Vector3(transform.position.x+0.15f, transform.position.y + 0.2f, transform.position.z);
         Vector3 castPoint2 = new Vector3(transform.position.x-0.15f, transform.position.y + 0.2f, transform.position.z);
-        if (Physics.Raycast(castPoint1, Vector3.down, 0.8f) || Physics.Raycast(castPoint2, Vector3.down, 0.8f))
+        if (Physics.Raycast(castPoint1, Vector3.down, 0.3f) || Physics.Raycast(castPoint2, Vector3.down, 0.3f))
         {
             isGrounded = true;
             jumped = false;
