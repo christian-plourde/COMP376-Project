@@ -26,7 +26,7 @@ public class final_platform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(colliding_count);
+        
     }
 
     void OnTriggerEnter(Collider col)
