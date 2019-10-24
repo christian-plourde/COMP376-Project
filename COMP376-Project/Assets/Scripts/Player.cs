@@ -429,6 +429,7 @@ public class Player : MonoBehaviour
                 if (clickedOn != null)              // clicked on interactable, tag check in acceptMouseInput function.
                 {
                     Vector3 towardsPlayer = transform.position - clickedOn.GetComponent<Transform>().position;
+                    towardsPlayer.z = 0;
                     towardsPlayer.y += 2f;         // aim at the head instead of the chest
                     Debug.Log("Force added mouse: "+mouseHoldTime + " and force: "+ironPullPower);
                     clickedOn.GetComponent<Rigidbody>().AddForce((mouseHoldTime*2)*ironPullPower * towardsPlayer);   // pulls towards your direction
@@ -469,6 +470,7 @@ public class Player : MonoBehaviour
                 if (clickedOn != null)              // clicked on interactable, tag check in acceptMouseInput function.
                 {
                     Vector3 awayFromPlayer = clickedOn.GetComponent<Transform>().position-transform.position;
+                    awayFromPlayer.z = 0;
                     awayFromPlayer.y += 1f;         // little positive offset on y so that object can actually fly
                     Debug.Log("Force added mouse: " + mouseHoldTime + " and force: " + steelPushPower);
                     clickedOn.GetComponent<Rigidbody>().AddForce((mouseHoldTime * 2) * steelPushPower * awayFromPlayer);   // pulls towards your direction
