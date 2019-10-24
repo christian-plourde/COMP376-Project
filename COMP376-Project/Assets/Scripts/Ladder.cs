@@ -75,12 +75,13 @@ public class Ladder : MonoBehaviour
         }
 
         // space
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            usingLadder = false;
+            
             playerAnimRef.SetBool("usingLadder", false);
             playerRef.GetComponent<Player>().usingLadder = false;
             playerRigidBody.useGravity = true;
+            usingLadder = false;
         }
 
     }
