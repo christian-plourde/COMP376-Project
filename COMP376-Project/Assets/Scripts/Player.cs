@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
 
     //Player Variables
     private const float SPEED = 5f, JUMPFORCE = 6f;        // make sure to update constants when  you update the speed and jump below
-    private const int MAXHEALTH = 3;
+    private const int MAXHEALTH = 4;
 
     private float speed=5f;                     // Movement speed       
     private float jumpForce = 6f;
-    public int health = 3;                  // assuming we have 8 bars of health and lose one health every hit 
+    public int health = 4;                  // assuming we have 8 bars of health and lose one health every hit 
     [HideInInspector]public int faceDirection = 1;         // default facing negative z axis
 
     //bools for animation & states
@@ -49,9 +49,9 @@ public class Player : MonoBehaviour
 
 
     //potions
-    public int steelCount; bool usingSteel; float steelPotionTime=15f;
-    public int ironCount;   bool usingIron; float ironPotionTime = 30f;         // low for testing purpose, increase later
-    public int pewterCount; bool usingPewter; float pewterPotionTime = 20f;
+    public int steelCount;[HideInInspector] public bool usingSteel;[HideInInspector] public float steelPotionTime=15f;
+    public int ironCount;[HideInInspector] public bool usingIron;[HideInInspector] public float ironPotionTime = 30f;         // low for testing purpose, increase later
+    public int pewterCount;[HideInInspector] public bool usingPewter;[HideInInspector] public float pewterPotionTime = 20f;
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=20f;
@@ -314,6 +314,9 @@ public class Player : MonoBehaviour
         if (usePotionAnim)            // cancel effect
         {
             activePower = false;
+            usingPewter = false;
+            usingIron = false;
+            usingSteel = false;
             usePotionAnim = false;
             animator.SetBool("isUsingPotion",false);
             controlLock = false;
@@ -333,6 +336,9 @@ public class Player : MonoBehaviour
         if (usePotionAnim)            // cancel effect
         {
             activePower = false;
+            usingPewter = false;
+            usingIron = false;
+            usingSteel = false;
             usePotionAnim = false;
             animator.SetBool("isUsingPotion", false);
             controlLock = false;
@@ -370,6 +376,9 @@ public class Player : MonoBehaviour
         health = MAXHEALTH;
         transform.position = checkpoint;
         activePower = false;
+        usingPewter = false;
+        usingIron = false;
+        usingSteel = false;
         potiontime = 0f;
 
         //if pewter was active

@@ -1,0 +1,535 @@
+fileFormatVersion: 2
+guid: 0c94fc520b58ce54baa2aa4e79fc476a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4685933759136218736
+    second: Hp bar_0
+  - first:
+      213: -4312343777772266024
+    second: Hp bar_1
+  - first:
+      213: -4429330089100424910
+    second: Hp bar_2
+  - first:
+      213: 2348653008207185152
+    second: Hp bar_3
+  - first:
+      213: 4455282876898133087
+    second: Hp bar_4
+  - first:
+      213: -1761125935096913347
+    second: Hp bar_5
+  - first:
+      213: -5082253085854648091
+    second: Hp bar_6
+  - first:
+      213: 1927585298994810131
+    second: Hp bar_7
+  - first:
+      213: 6844005474954704757
+    second: Hp bar_8
+  - first:
+      213: -4852364495999394677
+    second: Hp bar_9
+  - first:
+      213: -8072741782556962309
+    second: Hp bar_10
+  - first:
+      213: 3891011217376046613
+    second: Hp bar_11
+  - first:
+      213: -8498748666201348284
+    second: Hp bar_12
+  - first:
+      213: -3786838086063863007
+    second: Hp bar_13
+  - first:
+      213: 2450947578438964615
+    second: Hp bar_14
+  - first:
+      213: 6850132321883640229
+    second: Hp bar_15
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Hp bar_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 395
+        width: 297
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40baa45fe56f8e04e955686d9fce88d2
+      internalID: 4685933759136218736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_1
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 420
+        width: 143
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 619ed568bd63f2f499e752f24a082fb1
+      internalID: -4312343777772266024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_2
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 330
+        width: 53
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7dab141de791b5f4283e29baf0f46e60
+      internalID: -4429330089100424910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_3
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 332
+        width: 62
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ad8f82a0d9859947a45ddfe55b5b2e9
+      internalID: 2348653008207185152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_4
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 331
+        width: 62
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 214b878270ec9714780865b3d8dd93fe
+      internalID: 4455282876898133087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_5
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 330
+        width: 61
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d64e815fa5a88f144b8bf6229b5f2abf
+      internalID: -1761125935096913347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_6
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 252
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbc2f3bff5b02f441a6ddd8353a41dc2
+      internalID: -5082253085854648091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_7
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 253
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7d30b03c2f391c4aa7673f39dc68ffa
+      internalID: 1927585298994810131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_8
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 252
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58620bef04e212544b24726ece4d9888
+      internalID: 6844005474954704757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_9
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 68
+        width: 249
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd06d97d922cca345bc564452454d7fe
+      internalID: -4852364495999394677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_10
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 170
+        width: 31
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 843540350e5016742b61686f82dc6cac
+      internalID: -8072741782556962309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_11
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 169
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77d02a2368aad8f43a37362dbf6a729a
+      internalID: 3891011217376046613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_12
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 167
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1254a6db906311d428f4c24afc7d05cd
+      internalID: -8498748666201348284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_13
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 36
+        width: 36
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfe756c3072a9284d8c5b635c8b8e1d0
+      internalID: -3786838086063863007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_14
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 36
+        width: 35
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b9bca9d8da02944ea8f58648806bb19
+      internalID: 2450947578438964615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hp bar_15
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 36
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7307944be27ec254d8aa4ce3763104d7
+      internalID: 6850132321883640229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: a4450d4e67b74554ba2c28d5fa8eaed2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
