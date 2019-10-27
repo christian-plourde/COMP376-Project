@@ -46,6 +46,7 @@ public class Ladder : MonoBehaviour
             usingLadder = true;
             playerAnimRef.SetBool("usingLadder", true);
             playerAnimRef.SetBool("climbingLadder", true);
+            playerAnimRef.SetBool("slidingDownLadder", false);
             playerRef.GetComponent<Player>().usingLadder = true;
             playerRigidBody.useGravity = false;
             playerRigidBody.velocity = Vector3.zero;
@@ -59,12 +60,13 @@ public class Ladder : MonoBehaviour
         {
             usingLadder = true;
             playerAnimRef.SetBool("usingLadder", true);
-            playerAnimRef.SetBool("climbingLadder", true);
+            playerAnimRef.SetBool("climbingLadder", false);
+            playerAnimRef.SetBool("slidingDownLadder", true);
             playerRef.GetComponent<Player>().usingLadder=true;
             playerRigidBody.useGravity = false;
             playerRigidBody.velocity = Vector3.zero;
             // controls
-            playerRef.GetComponent<Transform>().Translate(new Vector3(0, -climbSpeed * Time.deltaTime, 0));
+            playerRef.GetComponent<Transform>().Translate(new Vector3(0, -climbSpeed*2 * Time.deltaTime, 0));
         }
 
 
@@ -72,6 +74,7 @@ public class Ladder : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
         {
             playerAnimRef.SetBool("climbingLadder", false);
+            playerAnimRef.SetBool("slidingDownLadder", false);
         }
 
         // space
