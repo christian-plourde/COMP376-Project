@@ -10,7 +10,6 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] m_moveSpots;
 
     Transform m_playerRef;
-    HealthScript m_health;
 
     bool m_isIdle;
     bool m_isWalking;
