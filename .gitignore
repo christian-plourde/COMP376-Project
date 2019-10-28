@@ -12,3 +12,4 @@
 /Documentation/MeetingSummaries/*.aux
 /Documentation/MeetingSummaries/*.log
 /Documentation/MeetingSummaries/*.gz
+/Build

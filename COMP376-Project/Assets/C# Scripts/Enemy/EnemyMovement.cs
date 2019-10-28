@@ -10,7 +10,6 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] m_moveSpots;
 
     Transform m_playerRef;
-    HealthScript m_health;
 
     bool m_isIdle;
     bool m_isWalking;
@@ -19,17 +18,23 @@ public class EnemyMovement : MonoBehaviour
     public float m_startPatrolWaitTime;
     float m_patrolWaitTime;
 
+    //animator component
+    [HideInInspector] public Animator animator;
+
     void Awake()
     {
         m_playerRef = GameObject.FindGameObjectWithTag("Player").transform;
-
-        m_isIdle = true;
-        m_isWalking = false;
+        animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        m_isIdle = true;
+        animator.SetBool("Idle", m_isIdle);
+        m_isWalking = false;
+        animator.SetBool("Idle", m_isWalking);
+
         m_patrolWaitTime = m_startPatrolWaitTime;
         m_randomSpot = Random.Range(0, m_moveSpots.Length);
     }
@@ -54,25 +59,34 @@ public class EnemyMovement : MonoBehaviour
     void Patrol()
     {
         if(m_isWalking)
+        {
             transform.position = Vector3.MoveTowards(transform.position, m_moveSpots[m_randomSpot].position, m_walkSpeed * Time.deltaTime);
-            
+           // transform.rotation = Quaternion.LookRotation(movement);
+        }
+
         //When it reaches the move spot, wait before going to another location
-        if(Vector3.Distance(transform.position, m_moveSpots[m_randomSpot].position) < 0.2f)
+        if (Vector3.Distance(transform.position, m_moveSpots[m_randomSpot].position) < 0.2f)
         {
             if (m_patrolWaitTime <= 0)
             {
                 m_randomSpot = Random.Range(0, m_moveSpots.Length);
                 //set idle to false and walking to true when enemy patrols again
                 m_isWalking = true;
+                animator.SetBool("Patrolling", m_isWalking);
+
                 m_isIdle = false;
+                animator.SetBool("Idle", m_isIdle);
                 m_patrolWaitTime = m_startPatrolWaitTime;
             }
             else
             {
                 //set idle to true when the enemy reaches a spot and stops walking
                 m_isWalking = false;
+                animator.SetBool("Patrolling", m_isWalking);
+
                 m_isIdle = true;
-                m_patrolWaitTime -= Time.deltaTime;
+                animator.SetBool("Idle", m_isIdle);
+                m_patrolWaitTime -= Time.deltaTime;   
             }
         }
     }
@@ -83,7 +97,9 @@ public class EnemyMovement : MonoBehaviour
         //This is so the enemy doesnt walk and attack at the same time. 
         //Maybe we will have that functionality?
         if (m_isWalking)
+        {
             transform.position = Vector3.MoveTowards(transform.position, m_playerRef.position, m_walkSpeed * Time.deltaTime);
+        }
     }
 
     //returns true if player is in LOS 
@@ -107,11 +123,16 @@ public class EnemyMovement : MonoBehaviour
         if (distanceToPlayer < m_rangeToAttack)
         {
             m_isWalking = false;
+            animator.SetBool("Patrolling", m_isWalking);
             m_isIdle = false;
+            animator.SetBool("Idle", m_isIdle);
             return true;
         }
-
-        m_isWalking = true;
+        else
+        {
+           // m_isIdle = true;
+           // animator.SetBool("Idle", m_isIdle); Patrol();
+        }
 
         return false;
     }
