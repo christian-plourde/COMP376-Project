@@ -1,0 +1,140 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyMovement : MonoBehaviour
+{
+    public float m_rangeToEngage;
+    public float m_rangeToAttack;
+    public float m_walkSpeed;
+    public Transform[] m_moveSpots;
+
+    Transform m_playerRef;
+
+    bool m_isIdle;
+    bool m_isWalking;
+    int m_randomSpot;
+
+    public float m_startPatrolWaitTime;
+    float m_patrolWaitTime;
+
+    //animator component
+    [HideInInspector] public Animator animator;
+
+    void Awake()
+    {
+        m_playerRef = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        m_isIdle = true;
+        animator.SetBool("Idle", m_isIdle);
+        m_isWalking = false;
+        animator.SetBool("Idle", m_isWalking);
+
+        m_patrolWaitTime = m_startPatrolWaitTime;
+        m_randomSpot = Random.Range(0, m_moveSpots.Length);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //chase the player if the player is in field of vision and patrol otherwise
+        if (IsPlayerInVision())
+        {
+            ChasePlayer();
+        }
+        else
+        {
+            Patrol();
+        }
+
+        //check every frame if player is in attack range to start attacking
+        IsPlayerInRange();
+    }
+
+    void Patrol()
+    {
+        if(m_isWalking)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, m_moveSpots[m_randomSpot].position, m_walkSpeed * Time.deltaTime);
+           // transform.rotation = Quaternion.LookRotation(movement);
+        }
+
+        //When it reaches the move spot, wait before going to another location
+        if (Vector3.Distance(transform.position, m_moveSpots[m_randomSpot].position) < 0.2f)
+        {
+            if (m_patrolWaitTime <= 0)
+            {
+                m_randomSpot = Random.Range(0, m_moveSpots.Length);
+                //set idle to false and walking to true when enemy patrols again
+                m_isWalking = true;
+                animator.SetBool("Patrolling", m_isWalking);
+
+                m_isIdle = false;
+                animator.SetBool("Idle", m_isIdle);
+                m_patrolWaitTime = m_startPatrolWaitTime;
+            }
+            else
+            {
+                //set idle to true when the enemy reaches a spot and stops walking
+                m_isWalking = false;
+                animator.SetBool("Patrolling", m_isWalking);
+
+                m_isIdle = true;
+                animator.SetBool("Idle", m_isIdle);
+                m_patrolWaitTime -= Time.deltaTime;   
+            }
+        }
+    }
+
+    //Chase the player when not in attacking range but when in field of vision
+    void ChasePlayer()
+    {
+        //This is so the enemy doesnt walk and attack at the same time. 
+        //Maybe we will have that functionality?
+        if (m_isWalking)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, m_playerRef.position, m_walkSpeed * Time.deltaTime);
+        }
+    }
+
+    //returns true if player is in LOS 
+    public bool IsPlayerInVision()
+    {
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 toPlayer = m_playerRef.transform.position - transform.position;
+        float distanceToPlayer = Vector3.Distance(transform.position, m_playerRef.position);
+
+        if (Vector3.Dot(forward, toPlayer) > 0 && distanceToPlayer < m_rangeToEngage)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    //Returns true if player is in attacking range
+    public bool IsPlayerInRange()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, m_playerRef.position);
+        if (distanceToPlayer < m_rangeToAttack)
+        {
+            m_isWalking = false;
+            animator.SetBool("Patrolling", m_isWalking);
+            m_isIdle = false;
+            animator.SetBool("Idle", m_isIdle);
+            return true;
+        }
+        else
+        {
+           // m_isIdle = true;
+           // animator.SetBool("Idle", m_isIdle); Patrol();
+        }
+
+        return false;
+    }
+
+}
