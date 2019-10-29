@@ -547,7 +547,11 @@ public class Player : MonoBehaviour
             registerHit(100);
         }
 
-        //if collision from an enemy collider or use istrigger
+        //Collision from enemy mace
+        if(collision.collider.tag == "EnemyMace")
+        {
+            registerHit(100);
+        }
     }
 
 

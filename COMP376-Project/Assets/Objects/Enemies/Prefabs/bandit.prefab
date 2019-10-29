@@ -392,7 +392,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343620422508863197}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -4.033422, y: 3.26, z: 9.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -403,7 +403,7 @@ Transform:
   - {fileID: 319140671873664507}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &5364954556446507444
 Animator:
   serializedVersion: 3
@@ -2408,6 +2408,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mace_Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 5f2f65d6542c45849aae8154f7deb8b7,
+        type: 3}
+      propertyPath: m_TagString
+      value: EnemyMace
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5f2f65d6542c45849aae8154f7deb8b7,
         type: 3}
