@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
         {
             if((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
-                playerMovement();                                         // wasd, space
+              playerMovement();    // wasd, space
             powerControls();                                          // hotkeys for powers
             activePowerUps();                                         // active power up will function when this method is called every frame
         }

@@ -15,14 +15,16 @@ public class EnemyAttack : MonoBehaviour
 
     float m_attackTimer;
 
+    [HideInInspector] public Animator animator;
 
     void Awake()
     {
         //set references
         m_playerRef = GameObject.FindGameObjectWithTag("Player").transform;
         m_movement = GetComponent<EnemyMovement>();
-
+        animator = GetComponent<Animator>();
         m_isAttacking = false;
+        animator.SetBool("Attacking", m_isAttacking);
     }
 
     // Start is called before the first frame update
@@ -35,13 +37,16 @@ public class EnemyAttack : MonoBehaviour
     void Update()
     {
         //if player is in attack range and the enemy attack is off cooldown
-        if (m_movement.IsPlayerInRange() && (m_attackTimer >= m_timeBetweenAttacks))
+        if (m_movement.IsPlayerInAttackRange() && (m_attackTimer >= m_timeBetweenAttacks))
         {
             m_isAttacking = true;
+            animator.SetBool("Attacking", m_isAttacking);
+            m_attackTimer = 0.0f;
         }
         else
         {
             m_isAttacking = false;
+            animator.SetBool("Attacking", m_isAttacking);
         }
 
         m_attackTimer += Time.deltaTime;
@@ -50,18 +55,10 @@ public class EnemyAttack : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         //if enemy collides with the player and the enemy is attacking
-        if (other.gameObject == m_playerRef.gameObject && m_isAttacking)
+        if (other.gameObject == m_playerRef.gameObject)
         {
-            AttackPlayer(other.gameObject);
+            Debug.Log("Player hit!");
+            m_playerRef.GetComponent<Player>().registerHit(100);
         }
-    }
-
-    void AttackPlayer(GameObject player)
-    {
-        m_attackTimer = 0.0f;
-
-        Debug.Log("Player hit!");
-        //Decrease player hp
-        //add knockback to player
     }
 }

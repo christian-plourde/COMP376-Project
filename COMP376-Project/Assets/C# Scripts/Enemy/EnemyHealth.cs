@@ -7,10 +7,13 @@ public class EnemyHealth : MonoBehaviour
     public int m_startingHealth = 4;
     public int m_currentHealth;
 
+
+    bool m_isDead;
+
     // Start is called before the first frame update
     void Start()
     {
-    
+        m_isDead = false;
     }
 
     // Update is called once per frame
