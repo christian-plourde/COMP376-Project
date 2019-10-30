@@ -571,6 +571,12 @@ public class Player : MonoBehaviour
         {
             registerHit(100);
         }
+
+        if (collision.collider.tag == "TripwireArrow")
+        {
+            registerHit();
+            Destroy(collision.collider.gameObject);
+        }
     }
 
 

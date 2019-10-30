@@ -12,6 +12,7 @@ TagManager:
   - Drawbridge1
   - DLever1
   - DLever2
+  - TripwireArrow
   layers:
   - Default
   - TransparentFX
