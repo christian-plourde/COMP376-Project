@@ -46,17 +46,25 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //chase the player if the player is in field of vision and patrol otherwise
-        if (IsPlayerInVision())
+        if(m_playerRef.GetComponent<Player>().getIsDead())
         {
-            if(!IsPlayerInAttackRange())
-                ChasePlayer();
-
-            IsPlayerInAttackRange();
+            m_isIdle = true;
+            animator.SetBool("Idle", m_isIdle);
         }
         else
         {
-            Patrol();
+            //chase the player if the player is in field of vision and patrol otherwise
+            if (IsPlayerInVision())
+            {
+                if (!IsPlayerInAttackRange())
+                    ChasePlayer();
+
+                IsPlayerInAttackRange();
+            }
+            else
+            {
+                Patrol();
+            }
         }
     }
 

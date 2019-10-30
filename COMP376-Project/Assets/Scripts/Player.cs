@@ -350,6 +350,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool getIsDead()
+    {
+        return isDead;
+    }
+
     private void killPlayer()
     {
         if (health > 0)
