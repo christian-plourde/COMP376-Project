@@ -410,6 +410,15 @@ public class Player : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "Interactable")
             {
+                Debug.Log("Object at pos: " + hit.collider.GetComponent<Transform>().position);
+
+                if (hit.collider.GetComponent<Rigidbody>().isKinematic)
+                    hit.collider.GetComponent<Rigidbody>().isKinematic = false;
+
+                //if z plane was different
+                Vector3 newPos = new Vector3(hit.collider.GetComponent<Transform>().position.x, hit.collider.GetComponent<Transform>().position.y, transform.position.z);
+                hit.collider.GetComponent<Transform>().position = newPos;
+
                 return hit.collider.gameObject;
             }
             // if lever 1
@@ -553,6 +562,7 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.tag == "Interactable")
         {
+            
             Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
             Debug.Log("Object hit you at: " + collided.velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
             if (Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
