@@ -408,10 +408,24 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 250f))
         {
-              if (hit.collider.gameObject.tag == "Interactable")
-              {
-                    return hit.collider.gameObject;
-              }
+            if (hit.collider.gameObject.tag == "Interactable")
+            {
+                return hit.collider.gameObject;
+            }
+            // if lever 1
+            else if (hit.collider.gameObject.tag == "DLever1")
+            {
+                hit.collider.gameObject.GetComponent<Animator>().enabled = true;
+                GameObject db1=GameObject.FindGameObjectWithTag("Drawbridge1");
+                db1.GetComponent<Animator>().enabled = true;
+            }
+            // if lever 2
+            else if (hit.collider.gameObject.tag == "DLever2")
+            {
+                hit.collider.gameObject.GetComponent<Animator>().enabled = true;
+                GameObject db1 = GameObject.FindGameObjectWithTag("Drawbridge2");
+                db1.GetComponent<Animator>().enabled = true;
+            }
         }
         
         return null;
