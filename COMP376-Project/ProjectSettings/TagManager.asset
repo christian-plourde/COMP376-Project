@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Interactable
   - Spikes
+  - Enemy
+  - EnemyMace
+  - Drawbridge2
+  - Drawbridge1
+  - DLever1
+  - DLever2
+  - TripwireArrow
   layers:
   - Default
   - TransparentFX

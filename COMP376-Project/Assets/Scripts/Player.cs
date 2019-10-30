@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
         {
             if((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
-                playerMovement();                                         // wasd, space
+              playerMovement();    // wasd, space
             powerControls();                                          // hotkeys for powers
             activePowerUps();                                         // active power up will function when this method is called every frame
         }
@@ -350,6 +350,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool getIsDead()
+    {
+        return isDead;
+    }
+
     private void killPlayer()
     {
         if (health > 0)
@@ -403,10 +408,24 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 250f))
         {
-              if (hit.collider.gameObject.tag == "Interactable")
-              {
-                    return hit.collider.gameObject;
-              }
+            if (hit.collider.gameObject.tag == "Interactable")
+            {
+                return hit.collider.gameObject;
+            }
+            // if lever 1
+            else if (hit.collider.gameObject.tag == "DLever1")
+            {
+                hit.collider.gameObject.GetComponent<Animator>().enabled = true;
+                GameObject db1=GameObject.FindGameObjectWithTag("Drawbridge1");
+                db1.GetComponent<Animator>().enabled = true;
+            }
+            // if lever 2
+            else if (hit.collider.gameObject.tag == "DLever2")
+            {
+                hit.collider.gameObject.GetComponent<Animator>().enabled = true;
+                GameObject db1 = GameObject.FindGameObjectWithTag("Drawbridge2");
+                db1.GetComponent<Animator>().enabled = true;
+            }
         }
         
         return null;
@@ -547,7 +566,17 @@ public class Player : MonoBehaviour
             registerHit(100);
         }
 
-        //if collision from an enemy collider or use istrigger
+        //Collision from enemy mace
+        if(collision.collider.tag == "EnemyMace")
+        {
+            registerHit(100);
+        }
+
+        if (collision.collider.tag == "TripwireArrow")
+        {
+            registerHit();
+            Destroy(collision.collider.gameObject);
+        }
     }
 
 

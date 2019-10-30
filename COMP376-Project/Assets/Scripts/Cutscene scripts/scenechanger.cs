@@ -21,7 +21,7 @@ public class scenechanger : MonoBehaviour
         {
             videoStarted = true;
         }
-        if (!videoPlayer.isPlaying && videoStarted)
+        if ((!videoPlayer.isPlaying && videoStarted) || Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
