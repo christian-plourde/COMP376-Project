@@ -19,6 +19,11 @@ public class pressure_plate : MonoBehaviour
         }
     }
 
+    private void doorSound()
+    {
+        AudioManager.instance.Play("openDoor");
+    }
+
     void Start()
     {
         OnPlate = false;
@@ -33,6 +38,7 @@ public class pressure_plate : MonoBehaviour
     void OnTriggerEnter(Collider col)
     {
         OnPlate = true;
+        Invoke("doorSound", 1.3f);
     }
 
     void OnTriggerExit(Collider col)

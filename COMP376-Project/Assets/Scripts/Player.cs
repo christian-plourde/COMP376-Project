@@ -64,9 +64,18 @@ public class Player : MonoBehaviour
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
 
+    private void Step()
+    {
+        if (isGrounded)
+            AudioManager.instance.Play("step");
+    }
+
     void Start()
     {
         game_start = DateTime.Now;
+
+        AudioManager.instance.Play("background1");
+        AudioManager.instance.Play("background2");
 
         Cursor.visible = false;             // we dont want the cursor to show unless player is using the push or pull ability
         //init variables
@@ -164,6 +173,7 @@ public class Player : MonoBehaviour
             
             Vector3 jumpVector;
             isGrounded = false;
+            AudioManager.instance.Play("jump");
             jumped = true;
             //if (jumpDelay < 0.2f)
             //jumpDelay =100f;
@@ -199,6 +209,7 @@ public class Player : MonoBehaviour
             {
                 mouseHoldTime = 1f;
                 usePotionAnim = true;
+                AudioManager.instance.Play("drink");
                 potiontime = 0f;
                 ironCount--;
                 activePower = true;
@@ -219,6 +230,7 @@ public class Player : MonoBehaviour
             {
                 mouseHoldTime = 1f;
                 usePotionAnim = true;
+                AudioManager.instance.Play("drink");
                 potiontime = 0f;
                 steelCount--;
                 activePower = true;
@@ -239,6 +251,7 @@ public class Player : MonoBehaviour
             {
                 mouseHoldTime = 1f;
                 usePotionAnim = true;
+                AudioManager.instance.Play("drink");
                 potiontime = 0f;
                 pewterCount--;
                 activePower = true;
@@ -309,6 +322,7 @@ public class Player : MonoBehaviour
     {
         health--;
         tookDamageAnim = true;
+        AudioManager.instance.Play("hurt");
         animator.SetBool("tookDamage",true);
         //experimental
         if (usePotionAnim)            // cancel effect
@@ -332,6 +346,7 @@ public class Player : MonoBehaviour
     {
         health -= damage;
         tookDamageAnim = true;
+        AudioManager.instance.Play("hurt");
         animator.SetBool("tookDamage", true);
         if (usePotionAnim)            // cancel effect
         {
@@ -361,6 +376,7 @@ public class Player : MonoBehaviour
             Debug.Log("Wrong Call killplayer on Player.");
         else
         {
+            AudioManager.instance.Play("death");
             Cursor.visible = false;
             isDead = true;
             animator.SetBool("isDead",true);

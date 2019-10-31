@@ -29,7 +29,7 @@ public class Chest : MonoBehaviour
             if (Input.GetKey(KeyCode.E))
             {
                 Debug.Log("you has opened the chest");
-                
+                AudioManager.instance.Play("chest");
                 if(!opened)
                 {
                     opened = true;
