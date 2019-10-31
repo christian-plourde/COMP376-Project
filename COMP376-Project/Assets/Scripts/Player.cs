@@ -413,12 +413,13 @@ public class Player : MonoBehaviour
                 Debug.Log("Object at pos: " + hit.collider.GetComponent<Transform>().position);
 
                 if (hit.collider.GetComponent<Rigidbody>().isKinematic)
+                {
+                    //if z plane was different
+                    Vector3 newPos = new Vector3(hit.collider.GetComponent<Transform>().position.x, hit.collider.GetComponent<Transform>().position.y, transform.position.z);
+                    hit.collider.GetComponent<Transform>().position = newPos;
                     hit.collider.GetComponent<Rigidbody>().isKinematic = false;
-
-                //if z plane was different
-                Vector3 newPos = new Vector3(hit.collider.GetComponent<Transform>().position.x, hit.collider.GetComponent<Transform>().position.y, transform.position.z);
-                hit.collider.GetComponent<Transform>().position = newPos;
-
+                }
+                   
                 return hit.collider.gameObject;
             }
             // if lever 1

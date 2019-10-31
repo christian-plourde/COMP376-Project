@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] m_moveSpots;
 
     Transform m_playerRef;
+    public GameObject m_ragDollPrefab;
 
     bool m_isIdle;
     bool m_isWalking;
@@ -19,6 +20,8 @@ public class EnemyMovement : MonoBehaviour
     public float m_startPatrolWaitTime;
     float m_patrolWaitTime;
     float m_rotateSpeed = 10;
+
+    bool m_isDead;
 
     //animator component
     [HideInInspector] public Animator animator;
@@ -39,6 +42,9 @@ public class EnemyMovement : MonoBehaviour
         m_chasingPlayer = false;
         animator.SetBool("ChasingPlayer", m_chasingPlayer);
 
+        m_isDead = false;
+        animator.SetBool("isDead", m_isDead);
+
         m_patrolWaitTime = m_startPatrolWaitTime;
         m_randomSpot = Random.Range(0, m_moveSpots.Length);
     }
@@ -46,28 +52,44 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_playerRef.GetComponent<Player>().getIsDead())
+        if (m_isDead)
         {
-            m_isIdle = true;
-            animator.SetBool("Idle", m_isIdle);
+            animator.SetBool("isDead", m_isDead);
+            Instantiate(m_ragDollPrefab, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
         else
         {
-            //chase the player if the player is in field of vision and patrol otherwise
-            if (IsPlayerInVision())
+            if (m_playerRef.GetComponent<Player>().getIsDead())
             {
-                if (!IsPlayerInAttackRange())
-                    ChasePlayer();
-
-                IsPlayerInAttackRange();
+                m_isIdle = true;
+                animator.SetBool("Idle", m_isIdle);
             }
             else
             {
-                Patrol();
+                //chase the player if the player is in field of vision and patrol otherwise
+                if (IsPlayerInVision())
+                {
+                    if (!IsPlayerInAttackRange())
+                        ChasePlayer();
+
+                    IsPlayerInAttackRange();
+                }
+                else
+                {
+                    Patrol();
+                }
             }
         }
     }
 
+    public bool IsDead {
+        get { return m_isDead; }
+        set { m_isDead = value;
+            animator.SetBool("isDead", m_isDead);
+        }
+    }
+    
     void Patrol()
     {
         if(m_isWalking)
@@ -174,4 +196,16 @@ public class EnemyMovement : MonoBehaviour
         return false;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Interactable")
+        {
+            Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
+            Debug.Log("Enemy HIT");
+            if (Mathf.Abs((collided.velocity.x)) > 2.5f || Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
+            {
+                m_isDead = true;
+            }
+        }
+    }
 }
