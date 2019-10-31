@@ -202,7 +202,7 @@ public class EnemyMovement : MonoBehaviour
         {
             Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
             Debug.Log("Enemy HIT");
-            if (Mathf.Abs((collided.velocity.x)) > 2.5f || Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
+            if (Mathf.Abs((collided.velocity.x)) > 1f || Mathf.Abs((collided.velocity.y)) > 1f || Mathf.Abs((collided.velocity.z)) > 1f)
             {
                 m_isDead = true;
             }
