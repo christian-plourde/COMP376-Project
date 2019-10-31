@@ -35,9 +35,9 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_isIdle = true;
+        m_isIdle = false;
         animator.SetBool("Idle", m_isIdle);
-        m_isWalking = false;
+        m_isWalking = true;
         animator.SetBool("Idle", m_isWalking);
         m_chasingPlayer = false;
         animator.SetBool("ChasingPlayer", m_chasingPlayer);
@@ -130,7 +130,6 @@ public class EnemyMovement : MonoBehaviour
     void ChasePlayer()
     {
         //This is so the enemy doesnt walk and attack at the same time. 
-        //Maybe we will have that functionality?
         if (m_chasingPlayer)
         {
             transform.position = Vector3.MoveTowards(transform.position, m_playerRef.position, m_walkSpeed * Time.deltaTime);
@@ -158,12 +157,20 @@ public class EnemyMovement : MonoBehaviour
             m_chasingPlayer = true;
             animator.SetBool("ChasingPlayer", m_chasingPlayer);
 
+            //if the player is not in attacking range and too far for chasing, go back to patrolling
+            m_isWalking = false;
+            animator.SetBool("Patrolling", m_isWalking);
+
             return true;
         }
         else
         {
             m_chasingPlayer = false;
             animator.SetBool("ChasingPlayer", m_chasingPlayer);
+
+            //if the player is not in attacking range and too far for chasing, go back to patrolling
+            m_isWalking = true;
+            animator.SetBool("Patrolling", m_isWalking);
         }
 
 
@@ -189,9 +196,7 @@ public class EnemyMovement : MonoBehaviour
         }
         else if(distanceToPlayer > m_rangeToEngage) 
         {
-            //if the player is not in attacking range and too far for chasing, go back to patrolling
-            m_isWalking = true;
-            animator.SetBool("Patrolling", m_isWalking);
+         
         }
 
         return false;
@@ -212,7 +217,6 @@ public class EnemyMovement : MonoBehaviour
         if(collision.collider.tag =="Spikes")
         {
             m_isDead = true;
-
         }
     }
 }

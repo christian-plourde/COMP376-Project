@@ -54,11 +54,6 @@ public class EnemyAttack : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        //if enemy collides with the player and the enemy is attacking
-        if (other.gameObject == m_playerRef.gameObject)
-        {
-           // Debug.Log("Player hit!");
-           // m_playerRef.GetComponent<Player>().registerHit(100);
-        }
+    
     }
 }
