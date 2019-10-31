@@ -55,7 +55,8 @@ public class EnemyMovement : MonoBehaviour
         if (m_isDead)
         {
             animator.SetBool("isDead", m_isDead);
-            Instantiate(m_ragDollPrefab, transform.position, Quaternion.identity);
+            GameObject tempRef=Instantiate(m_ragDollPrefab, transform.position, Quaternion.identity);
+            
             Destroy(gameObject);
         }
         else
@@ -206,6 +207,12 @@ public class EnemyMovement : MonoBehaviour
             {
                 m_isDead = true;
             }
+        }
+
+        if(collision.collider.tag =="Spikes")
+        {
+            m_isDead = true;
+
         }
     }
 }

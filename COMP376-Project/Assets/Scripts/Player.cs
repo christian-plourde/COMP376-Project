@@ -412,12 +412,16 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Object at pos: " + hit.collider.GetComponent<Transform>().position);
 
-                if (hit.collider.GetComponent<Rigidbody>().isKinematic)
+                if (hit.collider.GetComponent<Rigidbody>().isKinematic)  // basically anything thats in background, need to bring in foreground
                 {
                     //if z plane was different
                     Vector3 newPos = new Vector3(hit.collider.GetComponent<Transform>().position.x, hit.collider.GetComponent<Transform>().position.y, transform.position.z);
                     hit.collider.GetComponent<Transform>().position = newPos;
                     hit.collider.GetComponent<Rigidbody>().isKinematic = false;
+
+                    //scale down so looks consitent
+                    Vector3 oldScale = hit.collider.transform.localScale;
+                    hit.collider.transform.localScale = new Vector3(0.8f*oldScale.x,0.8f*oldScale.y,0.8f*oldScale.z);
                 }
                    
                 return hit.collider.gameObject;
@@ -566,7 +570,7 @@ public class Player : MonoBehaviour
             
             Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
             Debug.Log("Object hit you at: " + collided.velocity);    // works pretty well, if absolute of velocity on z too hard?, damage player based on the rigid body's mass
-            if (Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
+            if (Mathf.Abs((collided.velocity.x)) > 2.5f || Mathf.Abs((collided.velocity.y)) > 2.5f || Mathf.Abs((collided.velocity.z)) > 2.5f)
             {
                 registerHit();
             }
@@ -580,7 +584,7 @@ public class Player : MonoBehaviour
         //Collision from enemy mace
         if(collision.collider.tag == "EnemyMace")
         {
-            registerHit(100);
+            registerHit(2);
         }
 
         if (collision.collider.tag == "TripwireArrow")
