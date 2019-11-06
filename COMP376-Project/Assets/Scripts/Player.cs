@@ -53,6 +53,12 @@ public class Player : MonoBehaviour
     public int ironCount;[HideInInspector] public bool usingIron;[HideInInspector] public float ironPotionTime = 30f;         // low for testing purpose, increase later
     public int pewterCount;[HideInInspector] public bool usingPewter;[HideInInspector] public float pewterPotionTime = 20f;
 
+    // count limit:
+    const int IRONLIMIT=6;
+    const int STEELLIMIT=6;
+    const int PEWTERLIMIT=3;
+
+
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=20f;
     float pewterSpeedBoost=7.5f; float pewterJumpBoost = 7.5f;
@@ -63,6 +69,9 @@ public class Player : MonoBehaviour
     [HideInInspector] public int steelCountCheckpoint;
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
+
+    float respawnTimer;
+    float respawnTime=5f;
 
     void Start()
     {
@@ -94,6 +103,10 @@ public class Player : MonoBehaviour
             powerControls();                                          // hotkeys for powers
             activePowerUps();                                         // active power up will function when this method is called every frame
         }
+        if (isDead)
+        {
+            AutoRespawn();
+        }
 
         // delay animation --> works
         if (usePotionAnim)
@@ -103,8 +116,8 @@ public class Player : MonoBehaviour
         if (tookDamageAnim)
             takeDamageAnimDelay();
 
-      
 
+        LimitPotionCount();
 
         //____________________________________________________
 
@@ -117,6 +130,8 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
             transform.position=new Vector3(106.37f,-12.5f,157.47f);
+
+
 
     }
 
@@ -364,6 +379,7 @@ public class Player : MonoBehaviour
             Cursor.visible = false;
             isDead = true;
             animator.SetBool("isDead",true);
+            animator.SetBool("isRunning",false);
             activePower = false;
             potiontime = 0f;
             Debug.Log("You are dead.");
@@ -633,4 +649,33 @@ public class Player : MonoBehaviour
             tookDamageTimer += Time.deltaTime;
         }
     }
+
+    private void LimitPotionCount()
+    {
+        if (ironCount > IRONLIMIT)
+            ironCount = IRONLIMIT;
+
+        if (steelCount > STEELLIMIT)
+            steelCount = STEELLIMIT;
+
+        if (pewterCount > PEWTERLIMIT)
+            pewterCount = PEWTERLIMIT;
+                
+    }
+
+
+    private void AutoRespawn()
+    {
+        if (respawnTimer < respawnTime)
+        {
+            respawnTimer += Time.deltaTime;
+        }
+        else
+        {
+            respawnPlayer();
+            respawnTimer = 0;
+        }
+    }
+
+
 }
