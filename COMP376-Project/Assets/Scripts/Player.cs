@@ -551,6 +551,13 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    bool punching;
+    float punch1Time=1.5f;
+    float punch2Time;
+    float punchTimer;
+
+
     //pewter potion
     private void usePewter()
     {
@@ -562,6 +569,32 @@ public class Player : MonoBehaviour
             speed = pewterSpeedBoost;
             jumpForce = pewterJumpBoost;
             animator.SetBool("usingPewter",true);
+
+            //actual controls:
+            if (Input.GetMouseButtonDown(0) && isGrounded)
+            {
+                animator.SetBool("Punch1", true);
+                punching = true;
+            }
+            if (punching)
+            {
+                // first 
+                if (punchTimer < punch1Time)
+                {
+                    punchTimer += Time.deltaTime;
+                    // if you clicked again, its a combo
+                    
+                }
+                else
+                {
+                    //disable collider
+                    punchTimer = 0f;
+                    animator.SetBool("Punch1", false);
+                }
+            }
+
+            // bool combo, if you click again within the time limit you chain your punch
+             
         }
         else
         {
