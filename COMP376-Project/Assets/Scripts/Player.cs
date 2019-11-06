@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=20f;
-    float pewterSpeedBoost=5.5f; float pewterJumpBoost = 6.5f;
+    float pewterSpeedBoost=5f; float pewterJumpBoost = 6.5f;
     float mouseHoldTime = 1f;                        // for how much force
 
     //respawn point
@@ -318,6 +318,10 @@ public class Player : MonoBehaviour
             faceDirection = 1;
         GetComponent<Rigidbody>().velocity = new Vector3(0f, GetComponent<Rigidbody>().velocity.y, GetComponent<Rigidbody>().velocity.z);
         transform.Rotate(new Vector3(0,180,0)); // flip player (rotate 180) when they press opposite button on horizontal movement
+
+        // punching related, if you try to go away from punching, you gain your original speed right away.
+        if (punching)
+            punchTimer = 10f;         // this should force exit punch animation
     }                    
 
     public void registerHit()                 // public method, enemy call this method to damage player
@@ -603,13 +607,12 @@ public class Player : MonoBehaviour
             RightFistObject.SetActive(true);
             punching = true;
         }
-        // if you started running while punching. --> cancel
+        // if you started running while punching. --> slow down move speed, and allow punching
         if (isRunning && punching)
         {
-            punching = false;
-            RightFistObject.SetActive(false);
-            punchTimer =0;
-            animator.SetBool("Punch1",false);
+            speed = 1f;
+            animator.SetBool("Punch1", true);
+            RightFistObject.SetActive(true);
         }
 
         //if you fell or jumped while punching --> cancel
@@ -637,6 +640,12 @@ public class Player : MonoBehaviour
                 punching = false;
                 RightFistObject.SetActive(false);
                 animator.SetBool("Punch1", false);
+                if (speed != pewterSpeedBoost && usingPewter)
+                    speed = pewterSpeedBoost;
+                else if (speed != SPEED && !usingPewter)
+                {
+                    speed = SPEED;
+                }
             }
 
 
@@ -673,8 +682,8 @@ public class Player : MonoBehaviour
         //Collision from enemy mace
         if(collision.collider.tag == "EnemyMace")
         {
-            //registerHit(2);
-            Debug.Log("Ouchie");
+            registerHit(2);
+            //Debug.Log("Ouchie");
         }
 
         if (collision.collider.tag == "TripwireArrow")

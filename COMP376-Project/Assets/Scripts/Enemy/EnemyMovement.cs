@@ -219,11 +219,22 @@ public class EnemyMovement : MonoBehaviour
             m_isDead = true;
         }
 
+        
+    }
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
         // testing punch
-        if (collision.collider.tag == "JoraFist")
+        if (other.tag == "JoraFist")
         {
             Debug.Log("HURTS OOWWW");
-            //m_isDead = true;
+            //GetComponent<Rigidbody>().AddForce(-1*transform.forward*200f,ForceMode.Impulse);
+            m_isDead = true;
         }
     }
+
 }
+
+
