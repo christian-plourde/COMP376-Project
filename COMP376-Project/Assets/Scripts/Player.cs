@@ -317,12 +317,16 @@ public class Player : MonoBehaviour
         else
             faceDirection = 1;
         GetComponent<Rigidbody>().velocity = new Vector3(0f, GetComponent<Rigidbody>().velocity.y, GetComponent<Rigidbody>().velocity.z);
-        transform.Rotate(new Vector3(0,180,0)); // flip player (rotate 180) when they press opposite button on horizontal movement
+        transform.Rotate(new Vector3(0, 180, 0)); // flip player (rotate 180) when they press opposite button on horizontal movement
 
         // punching related, if you try to go away from punching, you gain your original speed right away.
         if (punching)
+        {
             punchTimer = 10f;         // this should force exit punch animation
-    }                    
+            punchTimer2 = 10f;         // this should force exit punch animation
+
+        }
+    }                
 
     public void registerHit()                 // public method, enemy call this method to damage player
     {
@@ -556,12 +560,14 @@ public class Player : MonoBehaviour
     }
 
 
-    bool punching;
+    public bool punching;
+    public bool comboPunch;
     float punch1Time=1.2f;
-    float punch2Time;
+    float punch2Time=1.8f;
     float punchTimer;
+    float punchTimer2;
 
-    //public GameObject LeftFistObject;
+    public GameObject LeftFistObject;
     public GameObject RightFistObject;
 
 
@@ -587,6 +593,7 @@ public class Player : MonoBehaviour
             jumpForce = JUMPFORCE;
 
             animator.SetBool("Punch1",false);
+            animator.SetBool("Punch2",false);
 
             //potion expired
             Debug.Log("Pewter Potion expired");
@@ -622,6 +629,7 @@ public class Player : MonoBehaviour
             punching = false;
             punchTimer = 0;
             animator.SetBool("Punch1",false);
+            animator.SetBool("Punch2",false);
         }
         
 
@@ -650,10 +658,64 @@ public class Player : MonoBehaviour
 
 
 
+            //combo punch
+            if (punching)
+            {
+                if (Input.GetMouseButtonDown(1))
+                {
+                    comboPunch = true;
+                    Debug.Log("Combo Punch!!");
+                }
+            }
+
+            
+
             
         }
 
-        // bool combo, if you click again within the time limit you chain your punch
+
+        if (comboPunch)
+        {
+            if (!isGrounded)
+            {
+                animator.SetBool("Punch2", false);
+                LeftFistObject.SetActive(false);
+            }
+            else
+            {
+                if (punchTimer2 < punch2Time)
+                {
+                    punchTimer2 += Time.deltaTime;
+                    if (punchTimer2 > 0.5f)
+                    {
+                        animator.SetBool("Punch2", true);
+                        LeftFistObject.SetActive(true);
+                        if (isRunning && animator.GetBool("Punch2"))
+                        {
+                            speed = 1f;
+                        }
+
+                    }
+                }
+                else
+                {
+                    punchTimer2 = 0;
+                    animator.SetBool("Punch2", false);
+                    LeftFistObject.SetActive(false);
+                    comboPunch = false;
+
+
+                    //reset speeds
+                    if (speed != pewterSpeedBoost && usingPewter)
+                        speed = pewterSpeedBoost;
+                    else if (speed != SPEED && !usingPewter)
+                    {
+                        speed = SPEED;
+                    }
+                }
+            }
+
+        }
 
     }
 
