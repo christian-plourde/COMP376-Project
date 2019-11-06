@@ -17,10 +17,10 @@ public class Player : MonoBehaviour
 
 
     //Player Variables
-    private const float SPEED = 5f, JUMPFORCE = 6f;        // make sure to update constants when  you update the speed and jump below
+    private const float SPEED = 4f, JUMPFORCE = 6f;        // make sure to update constants when  you update the speed and jump below
     private const int MAXHEALTH = 4;
 
-    private float speed=5f;                     // Movement speed       
+    private float speed=4f;                     // Movement speed       
     private float jumpForce = 6f;
     public int health = 4;                  // assuming we have 8 bars of health and lose one health every hit 
     [HideInInspector]public int faceDirection = 1;         // default facing negative z axis
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
 
     //abilities parameters
     float ironPullPower=25f; float steelPushPower=20f;
-    float pewterSpeedBoost=7.5f; float pewterJumpBoost = 7.5f;
+    float pewterSpeedBoost=5.5f; float pewterJumpBoost = 6.5f;
     float mouseHoldTime = 1f;                        // for how much force
 
     //respawn point
@@ -561,6 +561,7 @@ public class Player : MonoBehaviour
             potiontime += Time.deltaTime;
             speed = pewterSpeedBoost;
             jumpForce = pewterJumpBoost;
+            animator.SetBool("usingPewter",true);
         }
         else
         {
@@ -572,6 +573,7 @@ public class Player : MonoBehaviour
             Debug.Log("Pewter Potion expired");
             usingPewter = false;
             activePower = false;
+            animator.SetBool("usingPewter", false);
             potiontime = 0.0f;
             
         }
