@@ -553,9 +553,12 @@ public class Player : MonoBehaviour
 
 
     bool punching;
-    float punch1Time=1.5f;
+    float punch1Time=1.2f;
     float punch2Time;
     float punchTimer;
+
+    //public GameObject LeftFistObject;
+    public GameObject RightFistObject;
 
 
     //pewter potion
@@ -571,36 +574,15 @@ public class Player : MonoBehaviour
             animator.SetBool("usingPewter",true);
 
             //actual controls:
-            if (Input.GetMouseButtonDown(0) && isGrounded)
-            {
-                animator.SetBool("Punch1", true);
-                punching = true;
-            }
-            if (punching)
-            {
-                // first 
-                if (punchTimer < punch1Time)
-                {
-                    punchTimer += Time.deltaTime;
-                    // if you clicked again, its a combo
-                    
-                }
-                else
-                {
-                    //disable collider
-                    punchTimer = 0f;
-                    animator.SetBool("Punch1", false);
-                }
-            }
-
-            // bool combo, if you click again within the time limit you chain your punch
-             
+            PewterCombat();
         }
         else
         {
             //reset speed and jump values
             speed = SPEED;
             jumpForce = JUMPFORCE;
+
+            animator.SetBool("Punch1",false);
 
             //potion expired
             Debug.Log("Pewter Potion expired");
@@ -611,6 +593,62 @@ public class Player : MonoBehaviour
             
         }
     }
+
+
+    private void PewterCombat()
+    {
+        if (Input.GetMouseButtonDown(0) && isGrounded)
+        {
+            animator.SetBool("Punch1", true);
+            RightFistObject.SetActive(true);
+            punching = true;
+        }
+        // if you started running while punching. --> cancel
+        if (isRunning && punching)
+        {
+            punching = false;
+            RightFistObject.SetActive(false);
+            punchTimer =0;
+            animator.SetBool("Punch1",false);
+        }
+
+        //if you fell or jumped while punching --> cancel
+        if (!isGrounded && punching)
+        {
+            RightFistObject.SetActive(false);
+            punching = false;
+            punchTimer = 0;
+            animator.SetBool("Punch1",false);
+        }
+        
+
+
+
+        if (punching)
+        {
+            if (punchTimer < punch1Time)
+            {
+                punchTimer += Time.deltaTime;
+
+            }
+            else
+            {
+                punchTimer = 0f;
+                punching = false;
+                RightFistObject.SetActive(false);
+                animator.SetBool("Punch1", false);
+            }
+
+
+
+            
+        }
+
+        // bool combo, if you click again within the time limit you chain your punch
+
+    }
+
+
 
 
     //experimental if objects hit you too fast
@@ -635,7 +673,8 @@ public class Player : MonoBehaviour
         //Collision from enemy mace
         if(collision.collider.tag == "EnemyMace")
         {
-            registerHit(2);
+            //registerHit(2);
+            Debug.Log("Ouchie");
         }
 
         if (collision.collider.tag == "TripwireArrow")

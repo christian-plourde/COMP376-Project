@@ -218,5 +218,12 @@ public class EnemyMovement : MonoBehaviour
         {
             m_isDead = true;
         }
+
+        // testing punch
+        if (collision.collider.tag == "JoraFist")
+        {
+            Debug.Log("HURTS OOWWW");
+            //m_isDead = true;
+        }
     }
 }
