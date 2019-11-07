@@ -208,7 +208,7 @@ public class Player : MonoBehaviour
         /// _____________________________________________________________________
         /// //power inputs:
         /// change hot keys if you want
-        if (Input.GetKeyDown(KeyCode.Alpha1) && isGrounded)       // iron
+        if (Input.GetKeyDown(KeyCode.Alpha1) && isGrounded && (!punching && !comboPunch))       // iron
         {
             if (ironCount > 0)
             {
@@ -219,6 +219,7 @@ public class Player : MonoBehaviour
                 activePower = true;
                 usingIron = true;
                 usingSteel = false; usingPewter = false;
+                animator.SetBool("usingPewter",false);
                 speed = SPEED;
                 jumpForce = JUMPFORCE;
                 Debug.Log("iron consumed.");
@@ -228,7 +229,7 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && isGrounded)       // steel
+        if (Input.GetKeyDown(KeyCode.Alpha2) && isGrounded && (!punching && !comboPunch))       // steel
         {
             if (steelCount > 0)
             {
@@ -239,6 +240,7 @@ public class Player : MonoBehaviour
                 activePower = true;
                 usingSteel = true;
                 usingIron = false; usingPewter = false;
+                animator.SetBool("usingPewter", false);
                 speed = SPEED;
                 jumpForce = JUMPFORCE;
                 Debug.Log("steel consumed.");
@@ -248,7 +250,7 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && isGrounded)       // pewter
+        if (Input.GetKeyDown(KeyCode.Alpha3) && isGrounded && (!punching && !comboPunch))       // pewter
         {
             if (pewterCount > 0)
             {
@@ -259,6 +261,7 @@ public class Player : MonoBehaviour
                 activePower = true;
                 usingPewter = true;
                 usingIron = false; usingSteel = false;
+                animator.SetBool("usingPewter", false);
                 Debug.Log("pewter consumed.");
             }
             else
@@ -402,6 +405,12 @@ public class Player : MonoBehaviour
         //reset states
         isDead = false;
         animator.SetBool("isDead",false);
+        animator.SetBool("Punch1",false);
+        animator.SetBool("Punch2",false);
+        animator.SetBool("usingPewter",false);
+        punching = false;
+        comboPunch = false;
+
         health = MAXHEALTH;
         transform.position = checkpoint;
         activePower = false;
@@ -645,7 +654,7 @@ public class Player : MonoBehaviour
             else
             {
                 punchTimer = 0f;
-                punching = false;
+                punching = false; 
                 RightFistObject.SetActive(false);
                 animator.SetBool("Punch1", false);
                 if (speed != pewterSpeedBoost && usingPewter)
@@ -702,8 +711,8 @@ public class Player : MonoBehaviour
                     punchTimer2 = 0;
                     animator.SetBool("Punch2", false);
                     LeftFistObject.SetActive(false);
-                    comboPunch = false;
 
+                    comboPunch = false;
 
                     //reset speeds
                     if (speed != pewterSpeedBoost && usingPewter)
