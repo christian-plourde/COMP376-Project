@@ -70,16 +70,16 @@ public class Player : MonoBehaviour
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
 
-<<<<<<< HEAD
+
     private void Step()
     {
         if (isGrounded)
             AudioManager.instance.Play("step");
     }
-=======
+
     float respawnTimer;
     float respawnTime=5f;
->>>>>>> master
+
 
     void Start()
     {
