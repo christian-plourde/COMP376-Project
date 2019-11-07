@@ -12,4 +12,7 @@
 /Documentation/MeetingSummaries/*.aux
 /Documentation/MeetingSummaries/*.log
 /Documentation/MeetingSummaries/*.gz
+/Documentation/GameDesignDocument/*.aux
+/Documentation/GameDesignDocument/*.log
+/Documentation/GameDesignDocument/*.gz
 /Build
