@@ -603,6 +603,8 @@ public class Player : MonoBehaviour
 
             animator.SetBool("Punch1",false);
             animator.SetBool("Punch2",false);
+            punching = false;
+            comboPunch = false;
 
             //potion expired
             Debug.Log("Pewter Potion expired");
