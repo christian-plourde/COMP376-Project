@@ -50,12 +50,15 @@ public class Chest : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E) && !onCooldown)
             {
-                //Debug.Log("you has opened the chest");
+                Debug.Log("you has opened the chest");
+                
+               
 
                 if (!opened)
                 {
                     opened = true;
                     animator.SetBool("opened", opened);
+                    AudioManager.instance.Play("chest");
                 }
 
                 onCooldown = true;
