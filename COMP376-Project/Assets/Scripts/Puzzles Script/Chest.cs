@@ -39,6 +39,12 @@ public class Chest : MonoBehaviour
                 onCooldown = false;
             }
 
+            if (playerScriptRef.getIsDead())
+            {
+                cooldownTimer = 0;
+                onCooldown = false;
+            }
+
         }
 
         
