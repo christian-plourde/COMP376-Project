@@ -70,12 +70,23 @@ public class Player : MonoBehaviour
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
 
+
+    private void Step()
+    {
+        if (isGrounded)
+            AudioManager.instance.Play("step");
+    }
+
     float respawnTimer;
     float respawnTime=5f;
+
 
     void Start()
     {
         game_start = DateTime.Now;
+
+        AudioManager.instance.Play("background1");
+        AudioManager.instance.Play("background2");
 
         Cursor.visible = false;             // we dont want the cursor to show unless player is using the push or pull ability
         //init variables
@@ -179,6 +190,7 @@ public class Player : MonoBehaviour
             
             Vector3 jumpVector;
             isGrounded = false;
+            AudioManager.instance.Play("jump");
             jumped = true;
             //if (jumpDelay < 0.2f)
             //jumpDelay =100f;
@@ -208,17 +220,19 @@ public class Player : MonoBehaviour
         /// _____________________________________________________________________
         /// //power inputs:
         /// change hot keys if you want
-        if (Input.GetKeyDown(KeyCode.Alpha1) && isGrounded)       // iron
+        if (Input.GetKeyDown(KeyCode.Alpha1) && isGrounded && (!punching && !comboPunch))       // iron
         {
             if (ironCount > 0)
             {
                 mouseHoldTime = 1f;
                 usePotionAnim = true;
+                AudioManager.instance.Play("drink");
                 potiontime = 0f;
                 ironCount--;
                 activePower = true;
                 usingIron = true;
                 usingSteel = false; usingPewter = false;
+                animator.SetBool("usingPewter",false);
                 speed = SPEED;
                 jumpForce = JUMPFORCE;
                 Debug.Log("iron consumed.");
@@ -228,17 +242,19 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && isGrounded)       // steel
+        if (Input.GetKeyDown(KeyCode.Alpha2) && isGrounded && (!punching && !comboPunch))       // steel
         {
             if (steelCount > 0)
             {
                 mouseHoldTime = 1f;
                 usePotionAnim = true;
+                AudioManager.instance.Play("drink");
                 potiontime = 0f;
                 steelCount--;
                 activePower = true;
                 usingSteel = true;
                 usingIron = false; usingPewter = false;
+                animator.SetBool("usingPewter", false);
                 speed = SPEED;
                 jumpForce = JUMPFORCE;
                 Debug.Log("steel consumed.");
@@ -248,17 +264,19 @@ public class Player : MonoBehaviour
                 //instantiate UI prefab that says not enough iron (dissappears after 2 seconds) 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && isGrounded)       // pewter
+        if (Input.GetKeyDown(KeyCode.Alpha3) && isGrounded && (!punching && !comboPunch))       // pewter
         {
             if (pewterCount > 0)
             {
                 mouseHoldTime = 1f;
                 usePotionAnim = true;
+                AudioManager.instance.Play("drink");
                 potiontime = 0f;
                 pewterCount--;
                 activePower = true;
                 usingPewter = true;
                 usingIron = false; usingSteel = false;
+                animator.SetBool("usingPewter", false);
                 Debug.Log("pewter consumed.");
             }
             else
@@ -317,17 +335,22 @@ public class Player : MonoBehaviour
         else
             faceDirection = 1;
         GetComponent<Rigidbody>().velocity = new Vector3(0f, GetComponent<Rigidbody>().velocity.y, GetComponent<Rigidbody>().velocity.z);
-        transform.Rotate(new Vector3(0,180,0)); // flip player (rotate 180) when they press opposite button on horizontal movement
+        transform.Rotate(new Vector3(0, 180, 0)); // flip player (rotate 180) when they press opposite button on horizontal movement
 
         // punching related, if you try to go away from punching, you gain your original speed right away.
         if (punching)
+        {
             punchTimer = 10f;         // this should force exit punch animation
-    }                    
+            punchTimer2 = 10f;         // this should force exit punch animation
+
+        }
+    }                
 
     public void registerHit()                 // public method, enemy call this method to damage player
     {
         health--;
         tookDamageAnim = true;
+        AudioManager.instance.Play("hurt");
         animator.SetBool("tookDamage",true);
         //experimental
         if (usePotionAnim)            // cancel effect
@@ -351,6 +374,7 @@ public class Player : MonoBehaviour
     {
         health -= damage;
         tookDamageAnim = true;
+        AudioManager.instance.Play("hurt");
         animator.SetBool("tookDamage", true);
         if (usePotionAnim)            // cancel effect
         {
@@ -380,6 +404,7 @@ public class Player : MonoBehaviour
             Debug.Log("Wrong Call killplayer on Player.");
         else
         {
+            AudioManager.instance.Play("death");
             Cursor.visible = false;
             isDead = true;
             animator.SetBool("isDead",true);
@@ -398,6 +423,12 @@ public class Player : MonoBehaviour
         //reset states
         isDead = false;
         animator.SetBool("isDead",false);
+        animator.SetBool("Punch1",false);
+        animator.SetBool("Punch2",false);
+        animator.SetBool("usingPewter",false);
+        punching = false;
+        comboPunch = false;
+
         health = MAXHEALTH;
         transform.position = checkpoint;
         activePower = false;
@@ -556,12 +587,14 @@ public class Player : MonoBehaviour
     }
 
 
-    bool punching;
+    public bool punching;
+    public bool comboPunch;
     float punch1Time=1.2f;
-    float punch2Time;
+    float punch2Time=1.8f;
     float punchTimer;
+    float punchTimer2;
 
-    //public GameObject LeftFistObject;
+    public GameObject LeftFistObject;
     public GameObject RightFistObject;
 
 
@@ -587,6 +620,9 @@ public class Player : MonoBehaviour
             jumpForce = JUMPFORCE;
 
             animator.SetBool("Punch1",false);
+            animator.SetBool("Punch2",false);
+            punching = false;
+            comboPunch = false;
 
             //potion expired
             Debug.Log("Pewter Potion expired");
@@ -622,6 +658,7 @@ public class Player : MonoBehaviour
             punching = false;
             punchTimer = 0;
             animator.SetBool("Punch1",false);
+            animator.SetBool("Punch2",false);
         }
         
 
@@ -637,7 +674,7 @@ public class Player : MonoBehaviour
             else
             {
                 punchTimer = 0f;
-                punching = false;
+                punching = false; 
                 RightFistObject.SetActive(false);
                 animator.SetBool("Punch1", false);
                 if (speed != pewterSpeedBoost && usingPewter)
@@ -650,10 +687,64 @@ public class Player : MonoBehaviour
 
 
 
+            //combo punch
+            if (punching)
+            {
+                if (Input.GetMouseButtonDown(1))
+                {
+                    comboPunch = true;
+                    Debug.Log("Combo Punch!!");
+                }
+            }
+
+            
+
             
         }
 
-        // bool combo, if you click again within the time limit you chain your punch
+
+        if (comboPunch)
+        {
+            if (!isGrounded)
+            {
+                animator.SetBool("Punch2", false);
+                LeftFistObject.SetActive(false);
+            }
+            else
+            {
+                if (punchTimer2 < punch2Time)
+                {
+                    punchTimer2 += Time.deltaTime;
+                    if (punchTimer2 > 0.5f)
+                    {
+                        animator.SetBool("Punch2", true);
+                        LeftFistObject.SetActive(true);
+                        if (isRunning && animator.GetBool("Punch2"))
+                        {
+                            speed = 1f;
+                        }
+
+                    }
+                }
+                else
+                {
+                    punchTimer2 = 0;
+                    animator.SetBool("Punch2", false);
+                    LeftFistObject.SetActive(false);
+
+                    comboPunch = false;
+
+                    //reset speeds
+                    if (speed != pewterSpeedBoost && usingPewter)
+                        speed = pewterSpeedBoost;
+                    else if (speed != SPEED && !usingPewter)
+                    {
+                        speed = SPEED;
+                    }
+                }
+            }
+
+        }
 
     }
 

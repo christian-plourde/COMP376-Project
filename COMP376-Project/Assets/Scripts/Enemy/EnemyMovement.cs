@@ -232,6 +232,14 @@ public class EnemyMovement : MonoBehaviour
             Debug.Log("HURTS OOWWW");
             //GetComponent<Rigidbody>().AddForce(-1*transform.forward*200f,ForceMode.Impulse);
             m_isDead = true;
+            // take 1 damage
+        }
+
+        if(other.tag =="JoraFistCombo")
+        {
+            Debug.Log("Very Hurty");
+            m_isDead = true;
+            // take 2 damage
         }
     }
 
