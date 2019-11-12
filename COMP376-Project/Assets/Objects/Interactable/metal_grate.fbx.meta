@@ -3,7 +3,12 @@ guid: b83ccf6b704df7945aca32cf0070ab14
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DirtySteel
+    second: {fileID: 2100000, guid: 99c28925e48b75649aea98c3b1d1cecf, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

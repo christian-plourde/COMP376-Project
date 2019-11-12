@@ -49,8 +49,8 @@ public class Player : MonoBehaviour
 
 
     //potions
-    public int steelCount;[HideInInspector] public bool usingSteel;[HideInInspector] public float steelPotionTime=15f;
-    public int ironCount;[HideInInspector] public bool usingIron;[HideInInspector] public float ironPotionTime = 30f;         // low for testing purpose, increase later
+    public int steelCount; public bool usingSteel;[HideInInspector] public float steelPotionTime=15f;
+    public int ironCount; public bool usingIron;[HideInInspector] public float ironPotionTime = 30f;         // low for testing purpose, increase later
     public int pewterCount;[HideInInspector] public bool usingPewter;[HideInInspector] public float pewterPotionTime = 20f;
 
     // count limit:
