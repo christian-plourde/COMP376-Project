@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8e5b6fc93c405954498126df0cca57c2
+guid: 9bcf368524aafa74cb54314fc61175d3
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: mygrave
-    second: {fileID: 2800000, guid: 53cfe49b0a6ff884a94c441c00d661be, type: 3}
+      name: cobblestone
+    second: {fileID: 2800000, guid: 22cd02d36ec298e45929a94414a20af3, type: 3}
   materials:
     importMaterials: 1
     materialName: 0
@@ -39,7 +39,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 4
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -86,7 +86,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.04
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
