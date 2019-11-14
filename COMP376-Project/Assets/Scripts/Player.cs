@@ -115,18 +115,15 @@ public class Player : MonoBehaviour
 
             if (m_scene.name == "BossTestScene")
             {
-                //Camera.main.GetComponent<Animator>().enabled = false;
-               // Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 2.0f, Camera.main.transform.position.z);
+                Camera.main.GetComponent<Animation>().enabled = false;
+                Camera.main.GetComponent<Animator>().enabled = false;
+                Camera.main.GetComponent<CameraFollow_Script>().enabled = false; 
+                Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
+                playerMovement();
             }
-
-            if ((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
+            else if ((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
             {
                 playerMovement();  // wasd, space      
-                if(m_scene.name == "BossTestScene")
-                {
-                    Camera.main.GetComponent<Animator>().enabled = false;
-                    Camera.main.GetComponent<CameraFollow_Script>().enabled = false;
-                }
             }
 
             powerControls();                                          // hotkeys for powers
