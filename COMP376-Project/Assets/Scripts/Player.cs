@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public int ironCountCheckpoint;
     [HideInInspector] public int pewterCountCheckpoint;
 
+    Scene m_scene;
 
     private void Step()
     {
@@ -83,6 +84,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        m_scene = SceneManager.GetActiveScene(); 
+
         game_start = DateTime.Now;
 
         AudioManager.instance.Play("background1");
@@ -109,8 +112,23 @@ public class Player : MonoBehaviour
         rayCastCheckGrounded();
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
         {
-            if((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
-              playerMovement();    // wasd, space
+
+            if (m_scene.name == "BossTestScene")
+            {
+                //Camera.main.GetComponent<Animator>().enabled = false;
+               // Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 2.0f, Camera.main.transform.position.z);
+            }
+
+            if ((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
+            {
+                playerMovement();  // wasd, space      
+                if(m_scene.name == "BossTestScene")
+                {
+                    Camera.main.GetComponent<Animator>().enabled = false;
+                    Camera.main.GetComponent<CameraFollow_Script>().enabled = false;
+                }
+            }
+
             powerControls();                                          // hotkeys for powers
             activePowerUps();                                         // active power up will function when this method is called every frame
         }
