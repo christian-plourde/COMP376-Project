@@ -15,6 +15,7 @@ TagManager:
   - TripwireArrow
   - JoraFist
   - JoraFistCombo
+  - ArchwayBarsLever
   layers:
   - Default
   - TransparentFX
