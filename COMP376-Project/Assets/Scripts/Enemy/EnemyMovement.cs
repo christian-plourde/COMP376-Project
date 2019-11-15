@@ -84,13 +84,49 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public bool IsDead {
+    public bool IsIdle
+    {
+        get { return m_isIdle; }
+        set
+        {
+            m_isIdle = value;
+            animator.SetBool("Idle", m_isIdle);
+        }
+    }
+
+
+    public bool IsWalking
+    {
+        get { return m_isWalking; }
+        set
+        {
+            m_isWalking = value;
+            animator.SetBool("Patrolling", m_isWalking);
+        }
+    }
+
+    public bool ChasingPlayer
+    {
+        get { return m_chasingPlayer; }
+        set
+        {
+            m_chasingPlayer = value;
+            animator.SetBool("ChasingPlayer", m_chasingPlayer);
+        }
+    }
+
+
+    public bool IsDead
+    {
         get { return m_isDead; }
-        set { m_isDead = value;
+        set
+        {
+            m_isDead = value;
             animator.SetBool("isDead", m_isDead);
         }
     }
-    
+
+
     void Patrol()
     {
         if(m_isWalking)

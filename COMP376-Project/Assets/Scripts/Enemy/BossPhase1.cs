@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class BossPhase1 : MonoBehaviour
 {
-    public float m_dashSpeed = 5.0f;
+    public Transform m_camera;
     public Transform[] m_dashSpots;
     public Transform m_damagingFloor;
+
+    public float m_dashSpeed = 5.0f;
 
     bool m_start = false;
 
     int m_dashCounter;
     int m_dashSpotIndex;
+
     bool m_isRunning;
     bool m_isIdle;
     bool m_slamAttack;
+
     float m_startTimer;
     float m_rotateSpeed = 10;
     float m_dashTimer;
     float m_dashCooldown;
+
+    float m_slamAttackTimer;
+    float m_slamAttackLength;
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +39,13 @@ public class BossPhase1 : MonoBehaviour
         m_dashCounter = 0;
         m_dashSpotIndex = 0;
 
-        m_dashCooldown = 3;
+        m_dashCooldown = 2;
 
+        m_damagingFloor.GetComponent<DamagingFloor>().enabled = false;
         m_damagingFloor.gameObject.SetActive(false);
+
+        m_slamAttackTimer = 0;
+        m_slamAttackLength = 3;
     }
 
     // Update is called once per frame
@@ -51,15 +62,20 @@ public class BossPhase1 : MonoBehaviour
                 m_start = true;
             }
         }
-
-        if (m_isRunning)
-        {
-            //start dashing
-            DashToSpot();
-        }
         else
         {
-            WaitForNextDash();
+            if (m_isRunning)
+            {
+                DashToSpot();
+            }
+            else if (m_slamAttack)
+            {
+                StartCoroutine(SlamAttack());
+            }
+            else 
+            {
+                WaitForNextDash();
+            }
         }
     }
 
@@ -76,13 +92,10 @@ public class BossPhase1 : MonoBehaviour
             FlipEnemy();
             if (m_dashCounter == 3)
             {
+                m_dashCounter = 0;
                 m_isRunning = false;
                 m_slamAttack = true;
                 m_damagingFloor.gameObject.SetActive(true);
-
-                //call attack function
-
-
                 return;
             }
 
@@ -104,11 +117,30 @@ public class BossPhase1 : MonoBehaviour
         }
     }
 
-    void SlamAttack()
+    IEnumerator SlamAttack()
     {
+        m_slamAttackTimer += Time.deltaTime;
+        //the enemies hammer will slam down on the ground and add a camera shake
+        if (m_slamAttackTimer > m_slamAttackLength)
+        {
+            //enable the collider of the damaging floor
+            m_damagingFloor.GetComponent<DamagingFloor>().enabled = true;
+            m_slamAttackTimer = 0;
+
+            m_camera.GetComponent<CameraShake>().ShakeCamera(0.2f, 0.02f);
+
+            //after the slam happens, wait a quick second before going to the next state
+            yield return new WaitForSeconds(1f);
+            m_isRunning = true;
+            m_slamAttack = false;
+            m_damagingFloor.gameObject.SetActive(false);
+            m_damagingFloor.GetComponent<DamagingFloor>().enabled = false;
+            m_dashSpotIndex = 0;
+        }
 
     }
 
+ 
     void setEnemyDirection(Vector3 targetPos)
     {
         Vector3 lookPosition = targetPos - transform.position;

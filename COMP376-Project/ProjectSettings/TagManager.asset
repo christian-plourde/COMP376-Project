@@ -15,6 +15,7 @@ TagManager:
   - TripwireArrow
   - JoraFist
   - JoraFistCombo
+  - DamageFloor
   layers:
   - Default
   - TransparentFX
