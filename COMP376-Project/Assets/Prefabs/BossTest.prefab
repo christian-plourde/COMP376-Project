@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df49304409c95349938a8c91066dab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_startingHealth: 100
+  m_startingHealth: 10
   m_currentHealth: 0
 --- !u!1 &1480025064848331760
 GameObject:

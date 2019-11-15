@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
+    public Transform m_startPoint;
+
     int m_phase;
+
     EnemyHealth m_health;
     BossPhase1 m_phase1;
 
@@ -24,13 +27,31 @@ public class Boss : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update()   
     {
         if(m_isPlayerHit)
         {
             m_playerHitTimer -= Time.deltaTime;
             if (m_playerHitTimer <= 0)
                 m_isPlayerHit = false;
+        }
+
+        if(m_health.GetCurrentHealth() <= 7)
+        {
+            m_phase = 2; 
+        }
+
+        if(m_phase == 1)
+        {
+
+        }
+        else if(m_phase == 2)
+        {
+            m_phase1.enabled = false;
+        }
+        else
+        {
+
         }
     }
 
@@ -40,8 +61,8 @@ public class Boss : MonoBehaviour
         {
             if(!m_isPlayerHit)
             {
-                collision.gameObject.GetComponent<Player>().registerHit(1);
                 m_isPlayerHit = true;
+                collision.gameObject.GetComponent<Player>().registerHit(1);  
                 m_playerHitTimer = m_playerHitCooldown;
             }
         }
