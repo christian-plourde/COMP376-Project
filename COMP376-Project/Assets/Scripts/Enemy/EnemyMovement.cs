@@ -35,15 +35,10 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_isIdle = false;
-        animator.SetBool("Idle", m_isIdle);
-        m_isWalking = true;
-        animator.SetBool("Idle", m_isWalking);
-        m_chasingPlayer = false;
-        animator.SetBool("ChasingPlayer", m_chasingPlayer);
-
-        m_isDead = false;
-        animator.SetBool("isDead", m_isDead);
+        IsIdle = true;
+        IsWalking = false;
+        ChasingPlayer = false;
+        IsDead = false;
 
         m_patrolWaitTime = m_startPatrolWaitTime;
         m_randomSpot = Random.Range(0, m_moveSpots.Length);
@@ -63,8 +58,7 @@ public class EnemyMovement : MonoBehaviour
         {
             if (m_playerRef.GetComponent<Player>().getIsDead())
             {
-                m_isIdle = true;
-                animator.SetBool("Idle", m_isIdle);
+                IsIdle = true;
             }
             else
             {
@@ -142,21 +136,17 @@ public class EnemyMovement : MonoBehaviour
             {
                 m_randomSpot = Random.Range(0, m_moveSpots.Length);
                 //set idle to false and walking to true when enemy patrols again
-                m_isWalking = true;
-                animator.SetBool("Patrolling", m_isWalking);
+                IsWalking = true;
+                IsIdle = false;
 
-                m_isIdle = false;
-                animator.SetBool("Idle", m_isIdle);
                 m_patrolWaitTime = m_startPatrolWaitTime;
             }
             else
             {
                 //set idle to true when the enemy reaches a spot and stops walking
-                m_isWalking = false;
-                animator.SetBool("Patrolling", m_isWalking);
+                IsWalking = false;
+                IsIdle = true;
 
-                m_isIdle = true;
-                animator.SetBool("Idle", m_isIdle);
                 m_patrolWaitTime -= Time.deltaTime;   
             }
         }
@@ -190,23 +180,18 @@ public class EnemyMovement : MonoBehaviour
 
         if (distanceToPlayer < m_rangeToEngage)
         {
-            m_chasingPlayer = true;
-            animator.SetBool("ChasingPlayer", m_chasingPlayer);
+            ChasingPlayer = true;
 
-            //if the player is not in attacking range and too far for chasing, go back to patrolling
-            m_isWalking = false;
-            animator.SetBool("Patrolling", m_isWalking);
+            IsWalking = false;
 
             return true;
         }
         else
         {
-            m_chasingPlayer = false;
-            animator.SetBool("ChasingPlayer", m_chasingPlayer);
+            ChasingPlayer = false;
 
             //if the player is not in attacking range and too far for chasing, go back to patrolling
-            m_isWalking = true;
-            animator.SetBool("Patrolling", m_isWalking);
+            IsWalking = true;
         }
 
 
@@ -219,14 +204,11 @@ public class EnemyMovement : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, m_playerRef.position);
         if (distanceToPlayer < m_rangeToAttack)
         {
-            m_isWalking = false;
-            animator.SetBool("Patrolling", m_isWalking);
+            IsWalking = false;
 
-            m_isIdle = false;
-            animator.SetBool("Idle", m_isIdle);
+            IsIdle = false;
 
-            m_chasingPlayer = false;
-            animator.SetBool("ChasingPlayer", m_chasingPlayer);
+            ChasingPlayer = false;
 
             return true;
         }
