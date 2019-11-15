@@ -5,15 +5,23 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
     public Transform m_startPoint;
-
-    int m_phase;
+    public Transform m_playerRef;
 
     EnemyHealth m_health;
     BossPhase1 m_phase1;
 
+    int m_phase;
+    int m_currentPhase;
     bool m_isPlayerHit;
     float m_playerHitTimer;
     float m_playerHitCooldown;
+
+    bool m_isBossHit;
+    float m_bossHitTimer;
+    float m_bossHitCooldown;
+
+    bool m_isRunning;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +32,12 @@ public class Boss : MonoBehaviour
         m_isPlayerHit = false;
         m_playerHitCooldown = 2;
         m_playerHitTimer = m_playerHitCooldown;
+
+        m_isBossHit = false;
+        m_bossHitCooldown = 2;
+        m_bossHitTimer = m_bossHitCooldown;
+
+        m_isRunning = false;
     }
 
     // Update is called once per frame
@@ -36,28 +50,45 @@ public class Boss : MonoBehaviour
                 m_isPlayerHit = false;
         }
 
+        if(m_isBossHit)
+        {
+            m_bossHitTimer -= Time.deltaTime;
+            if (m_bossHitTimer <= 0)
+                m_isBossHit = false;
+        }
+
         if(m_health.GetCurrentHealth() <= 7)
         {
-            m_phase = 2; 
+            m_phase = -100; 
         }
 
-        if(m_phase == 1)
+        if (m_phase == 1)
         {
 
         }
-        else if(m_phase == 2)
+        else if (m_phase == 2)
         {
-            m_phase1.enabled = false;
+           
+        }
+        else if (m_phase == 3)
+        {
+
         }
         else
         {
-
+            m_phase1.enabled = false;
+            m_isRunning = true;
+            transform.position = Vector3.MoveTowards(transform.position, m_startPoint.position, 5 * Time.deltaTime);
+            if (Vector3.Distance(transform.position, m_startPoint.position) < 0.2f)
+            {
+                m_phase = 2;
+            }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             if(!m_isPlayerHit)
             {
@@ -66,5 +97,17 @@ public class Boss : MonoBehaviour
                 m_playerHitTimer = m_playerHitCooldown;
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.tag == "JoraFist")
+        {
+            m_isBossHit = true;
+            m_health.TakeDamage(1);
+            m_bossHitTimer = m_bossHitCooldown;
+            Debug.Log("enemy punched");
+        }
+
     }
 }

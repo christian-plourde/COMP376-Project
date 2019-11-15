@@ -45,7 +45,7 @@ public class BossPhase1 : MonoBehaviour
         m_damagingFloor.gameObject.SetActive(false);
 
         m_slamAttackTimer = 0;
-        m_slamAttackLength = 3;
+        m_slamAttackLength = 4;
     }
 
     // Update is called once per frame
