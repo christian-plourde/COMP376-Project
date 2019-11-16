@@ -21710,36 +21710,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4430186353857853480, guid: cca938c490e846f4497dca2ec1c827b3,
-        type: 3}
-      propertyPath: sounds.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4430186353857853480, guid: cca938c490e846f4497dca2ec1c827b3,
-        type: 3}
-      propertyPath: sounds.Array.data[9].name
-      value: Boss_Footstep
-      objectReference: {fileID: 0}
-    - target: {fileID: 4430186353857853480, guid: cca938c490e846f4497dca2ec1c827b3,
-        type: 3}
-      propertyPath: sounds.Array.data[10].name
-      value: Boss_Hammer_Hit
-      objectReference: {fileID: 0}
-    - target: {fileID: 4430186353857853480, guid: cca938c490e846f4497dca2ec1c827b3,
-        type: 3}
-      propertyPath: sounds.Array.data[10].volume
-      value: 0.637
-      objectReference: {fileID: 0}
-    - target: {fileID: 4430186353857853480, guid: cca938c490e846f4497dca2ec1c827b3,
-        type: 3}
-      propertyPath: sounds.Array.data[11].name
-      value: Boss_Ground_Shake
-      objectReference: {fileID: 0}
-    - target: {fileID: 4430186353857853480, guid: cca938c490e846f4497dca2ec1c827b3,
-        type: 3}
-      propertyPath: sounds.Array.data[11].volume
-      value: 0.399
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cca938c490e846f4497dca2ec1c827b3, type: 3}
 --- !u!1001 &1136482692
@@ -23909,24 +23879,6 @@ MonoBehaviour:
   - name: openDoor
     clip: {fileID: 8300000, guid: d2725fbde17b9ea4bb903f1c3fae2c08, type: 3}
     volume: 0.2
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Boss_Footstep
-    clip: {fileID: 8300000, guid: 6b65be46f1ec8e940ba3e15c754a2979, type: 3}
-    volume: 0.2
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Boss_Hammer_Hit
-    clip: {fileID: 8300000, guid: e67d3b0ff06d5f6479c27992fc1d6023, type: 3}
-    volume: 0.637
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Boss_Ground_Shake
-    clip: {fileID: 8300000, guid: 2757bfbfea04acf4f917dad02a6eeac2, type: 3}
-    volume: 0.399
     pitch: 1
     loop: 0
     source: {fileID: 0}
@@ -28898,12 +28850,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb29640aa9d30db4aa2340ae0586ee79, type: 3}
---- !u!1 &1609386630 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6313570661887232305, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
-    type: 3}
-  m_PrefabInstance: {fileID: 7633063351617963169}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1614438063 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: fb29640aa9d30db4aa2340ae0586ee79,
@@ -30757,12 +30703,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: fb29640aa9d30db4aa2340ae0586ee79,
     type: 3}
   m_PrefabInstance: {fileID: 194110648}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1740410114 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5194466835756433216, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
-    type: 3}
-  m_PrefabInstance: {fileID: 7633063351617963169}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1744054101 stripped
 Transform:
@@ -35880,14 +35820,9 @@ PrefabInstance:
       objectReference: {fileID: 1884800337}
     - target: {fileID: 1452217645563236402, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
         type: 3}
-      propertyPath: backHammer
+      propertyPath: m_damagingFloor
       value: 
-      objectReference: {fileID: 1740410114}
-    - target: {fileID: 1452217645563236402, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
-        type: 3}
-      propertyPath: heldHammer
-      value: 
-      objectReference: {fileID: 1609386630}
+      objectReference: {fileID: 304270622}
     - target: {fileID: 4527309198764909365, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
         type: 3}
       propertyPath: m_dashSpots.Array.size

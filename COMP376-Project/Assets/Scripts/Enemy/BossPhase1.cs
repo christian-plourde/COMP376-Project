@@ -8,6 +8,8 @@ public class BossPhase1 : MonoBehaviour
     public Transform[] m_dashSpots;
     public Transform m_damagingFloor;
 
+    Boss m_boss;
+
     public float m_dashSpeed = 5.0f;
 
     bool m_start = false;

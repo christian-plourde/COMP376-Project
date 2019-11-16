@@ -6,6 +6,7 @@ public class Boss : MonoBehaviour
 {
     public Transform m_startPoint;
     public Transform m_playerRef;
+    public Transform m_damagingFloor;
 
     EnemyHealth m_health;
     BossPhase1 m_phase1;
@@ -22,7 +23,9 @@ public class Boss : MonoBehaviour
     float m_bossHitTimer;
     float m_bossHitCooldown;
 
-    bool m_isRunning;
+    bool m_isDashing;
+    bool m_isIdle;
+    bool m_slamAttack;
 
     [HideInInspector]
     public bool m_isImmune;
@@ -40,6 +43,10 @@ public class Boss : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        IsIdle = true;
+        Dashing = false;
+        IsSlamAttack = false;
+
         m_phase = 1;
         m_health = GetComponent<EnemyHealth>();
         m_phase1 = GetComponent<BossPhase1>();
@@ -58,9 +65,7 @@ public class Boss : MonoBehaviour
         m_bossHitCooldown = 2;
         m_bossHitTimer = m_bossHitCooldown;
 
-        m_isRunning = false;
         m_isImmune = false;
-
 
         //animation events
         backHammer.SetActive(true);
@@ -71,25 +76,25 @@ public class Boss : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()   
+    void Update()
     {
-        if(m_isPlayerHit)
+        if (m_isPlayerHit)
         {
             m_playerHitTimer -= Time.deltaTime;
             if (m_playerHitTimer <= 0)
                 m_isPlayerHit = false;
         }
 
-        if(m_isBossHit)
+        if (m_isBossHit)
         {
             m_bossHitTimer -= Time.deltaTime;
             if (m_bossHitTimer <= 0)
                 m_isBossHit = false;
         }
 
-        if(m_health.GetCurrentHealth() <= 7)
+        if (m_health.GetCurrentHealth() <= 7)
         {
-            m_phase = -100; 
+            m_phase = -100;
         }
 
         if (m_phase == 1)
@@ -106,19 +111,18 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            StartCoroutine(GoToStartPosition(m_phase1));
+            StartCoroutine(ResetBoss());
         }
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            if(!m_isPlayerHit)
+            if (!m_isPlayerHit)
             {
                 m_isPlayerHit = true;
-                collision.gameObject.GetComponent<Player>().registerHit(1);  
+                collision.gameObject.GetComponent<Player>().registerHit(1);
                 m_playerHitTimer = m_playerHitCooldown;
             }
         }
@@ -136,27 +140,12 @@ public class Boss : MonoBehaviour
 
     }
 
-    public bool IsRunning
-    {
-        get { return m_isRunning; }
-        set
-        {
-            m_isRunning = value;
-            this.GetComponent<Animator>().SetBool("Dashing", m_isRunning);
-        }
-    }
-
     void setEnemyDirection(Vector3 targetPos)
     {
         Vector3 lookPosition = targetPos - transform.position;
         lookPosition.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPosition);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10);
-    }
-
-    void SetNextPhase()
-    {
-
     }
 
     void StartNextPhase()
@@ -167,29 +156,7 @@ public class Boss : MonoBehaviour
             m_phase = 3;
     }
 
-    IEnumerator GoToStartPosition(Object currPhase)
-    {
-        m_isImmune = true;
-
-        m_phase1.enabled = false;
-        m_phase2.enabled = false;
-        m_phase3.enabled = false;
-
-        yield return new WaitForSeconds(1f);
-        IsRunning = true;
-        transform.position = Vector3.MoveTowards(transform.position, m_startPoint.position, 5 * Time.deltaTime);
-        setEnemyDirection(m_startPoint.position);
-        if (Vector3.Distance(transform.position, m_startPoint.position) < 0.2f)
-        {
-            m_isImmune = false;
-            IsRunning = false;
-            this.transform.rotation = Quaternion.Euler(0, -90, 0);
-            StartNextPhase();
-        }
-    }
-
-
-    // events
+   // events
     public void EquipWeapon()
     {
         backHammer.SetActive(false);
@@ -209,5 +176,58 @@ public class Boss : MonoBehaviour
         AudioManager.instance.Play("Boss_Ground_Shake");
     }
 
-    
+    //teleports boss back to the starting position when starting a new phase
+    IEnumerator ResetBoss()
+    {
+        m_isImmune = true;
+
+        m_damagingFloor.gameObject.SetActive(false);
+
+        //reset animation states
+        IsIdle = true;
+        Dashing = false;
+        IsSlamAttack = false;
+
+        m_phase1.enabled = false;
+        m_phase2.enabled = false;
+        m_phase3.enabled = false;
+
+        transform.position = m_startPoint.position;
+        this.transform.rotation = Quaternion.Euler(0, -90, 0);
+
+        yield return new WaitForSeconds(3f);
+        m_isImmune = false;
+
+        StartNextPhase();
+    }
+
+    public bool IsIdle
+    {
+        get { return m_isIdle; }
+        set
+        {
+            m_isIdle = value;
+            this.GetComponent<Animator>().SetBool("Idle", m_isIdle);
+        }
+    }
+
+    public bool Dashing
+    {
+        get { return m_isDashing; }
+        set
+        {
+            m_isDashing = value;
+            this.GetComponent<Animator>().SetBool("Dashing", m_isDashing);
+        }
+    }
+
+    public bool IsSlamAttack
+    {
+        get { return m_slamAttack; }
+        set
+        {
+            m_slamAttack = value;
+            this.GetComponent<Animator>().SetBool("usingHammer", m_slamAttack);
+        }
+    }
 }
