@@ -673,6 +673,8 @@ GameObject:
   - component: {fileID: 4581463173041865817}
   - component: {fileID: 1452217645563236402}
   - component: {fileID: 4527309198764909365}
+  - component: {fileID: 8916805465418398979}
+  - component: {fileID: 5115937737591509058}
   m_Layer: 0
   m_Name: Knight_Boss
   m_TagString: Untagged
@@ -775,6 +777,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_startPoint: {fileID: 0}
+  m_playerRef: {fileID: 0}
+  m_animator: {fileID: 0}
 --- !u!114 &4527309198764909365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,9 +791,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d53a5c55d7819428819e763fc3715e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_dashSpeed: 7
+  m_camera: {fileID: 0}
   m_dashSpots: []
   m_damagingFloor: {fileID: 0}
+  m_dashSpeed: 7
+--- !u!114 &8916805465418398979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932039546980281822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f49758aec632f4d9bc99f49bd86c9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5115937737591509058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932039546980281822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6751dbfea5522ae4db1ce3fff0311bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2196798674806094901
 GameObject:
   m_ObjectHideFlags: 0

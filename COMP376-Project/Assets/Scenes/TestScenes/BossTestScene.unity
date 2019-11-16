@@ -35812,7 +35812,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_startPoint
       value: 
-      objectReference: {fileID: 1267103911}
+      objectReference: {fileID: 363557186}
     - target: {fileID: 1452217645563236402, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
         type: 3}
       propertyPath: m_playerRef

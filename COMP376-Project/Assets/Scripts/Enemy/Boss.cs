@@ -9,6 +9,8 @@ public class Boss : MonoBehaviour
 
     EnemyHealth m_health;
     BossPhase1 m_phase1;
+    BossPhase2 m_phase2;
+    BossPhase3 m_phase3;
 
     int m_phase;
     int m_currentPhase;
@@ -22,12 +24,24 @@ public class Boss : MonoBehaviour
 
     bool m_isRunning;
 
+    [HideInInspector]
+    public bool m_isImmune;
+
+    [HideInInspector]
+    public Animator m_animator;
+
     // Start is called before the first frame update
     void Start()
     {
         m_phase = 1;
         m_health = GetComponent<EnemyHealth>();
         m_phase1 = GetComponent<BossPhase1>();
+        m_phase2 = GetComponent<BossPhase2>();
+        m_phase3 = GetComponent<BossPhase3>();
+
+        m_phase1.enabled = false;
+        m_phase2.enabled = false;
+        m_phase3.enabled = false;
 
         m_isPlayerHit = false;
         m_playerHitCooldown = 2;
@@ -38,6 +52,7 @@ public class Boss : MonoBehaviour
         m_bossHitTimer = m_bossHitCooldown;
 
         m_isRunning = false;
+        m_isImmune = false;
     }
 
     // Update is called once per frame
@@ -64,27 +79,22 @@ public class Boss : MonoBehaviour
 
         if (m_phase == 1)
         {
-
+            m_phase1.enabled = true;
         }
         else if (m_phase == 2)
         {
-           
+            m_phase1.enabled = true;
         }
         else if (m_phase == 3)
         {
-
+            m_phase1.enabled = true;
         }
         else
         {
-            m_phase1.enabled = false;
-            m_isRunning = true;
-            transform.position = Vector3.MoveTowards(transform.position, m_startPoint.position, 5 * Time.deltaTime);
-            if (Vector3.Distance(transform.position, m_startPoint.position) < 0.2f)
-            {
-                m_phase = 2;
-            }
+            StartCoroutine(GoToStartPosition(m_phase1));
         }
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -101,7 +111,7 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.tag == "JoraFist")
+        if (collision.tag == "JoraFist" && !m_isImmune)
         {
             m_isBossHit = true;
             m_health.TakeDamage(1);
@@ -109,5 +119,57 @@ public class Boss : MonoBehaviour
             Debug.Log("enemy punched");
         }
 
+    }
+
+    public bool IsRunning
+    {
+        get { return m_isRunning; }
+        set
+        {
+            m_isRunning = value;
+            this.GetComponent<Animator>().SetBool("Dashing", m_isRunning);
+        }
+    }
+
+    void setEnemyDirection(Vector3 targetPos)
+    {
+        Vector3 lookPosition = targetPos - transform.position;
+        lookPosition.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookPosition);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10);
+    }
+
+    void SetNextPhase()
+    {
+
+    }
+
+    void StartNextPhase()
+    {
+        if (m_phase == 1)
+            m_phase = 2;
+        else if (m_phase == 2)
+            m_phase = 3;
+    }
+
+    IEnumerator GoToStartPosition(Object currPhase)
+    {
+        m_isImmune = true;
+
+        m_phase1.enabled = false;
+        m_phase2.enabled = false;
+        m_phase3.enabled = false;
+
+        yield return new WaitForSeconds(1f);
+        IsRunning = true;
+        transform.position = Vector3.MoveTowards(transform.position, m_startPoint.position, 5 * Time.deltaTime);
+        setEnemyDirection(m_startPoint.position);
+        if (Vector3.Distance(transform.position, m_startPoint.position) < 0.2f)
+        {
+            m_isImmune = false;
+            IsRunning = false;
+            this.transform.rotation = Quaternion.Euler(0, -90, 0);
+            StartNextPhase();
+        }
     }
 }
