@@ -72,7 +72,7 @@ public class Boss : MonoBehaviour
         heldHammer.SetActive(false);
 
         //audio
-        AudioManager.instance.Play("BossMusic_Phase1");
+        AudioManager.instance.Play("Boss_Phase1_Music");
     }
 
     // Update is called once per frame
