@@ -78,7 +78,10 @@ public class Chest : MonoBehaviour
                 // if note not null, instantiate it
                 if (giveNote != null)
                 {
-                    //instantiate note ui object, when we press Esc lets say, it gets destroyed.
+                    var temp = Instantiate(giveNote, giveNote.transform.position, Quaternion.identity);
+                    temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
+                    playerScriptRef.controlLock = true;
+
                 }
 
                 //this.GetComponent<Chest>().enabled = false;
