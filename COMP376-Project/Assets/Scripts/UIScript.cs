@@ -117,5 +117,11 @@ public class UIScript : MonoBehaviour
         silverV.text = "" + playerRef.steelCount;
         purpleV.text = "" + playerRef.pewterCount;
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Destroy(GameObject.FindGameObjectWithTag("Note"));
+            playerRef.controlLock = false;
+        }
+
     }
 }
