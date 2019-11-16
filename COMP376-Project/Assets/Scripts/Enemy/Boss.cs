@@ -30,6 +30,13 @@ public class Boss : MonoBehaviour
     [HideInInspector]
     public Animator m_animator;
 
+
+    // hammer object references to toggle on/off
+    public GameObject backHammer;
+    public GameObject heldHammer;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +60,14 @@ public class Boss : MonoBehaviour
 
         m_isRunning = false;
         m_isImmune = false;
+
+
+        //animation events
+        backHammer.SetActive(true);
+        heldHammer.SetActive(false);
+
+        //audio
+        AudioManager.instance.Play("BossMusic_Phase1");
     }
 
     // Update is called once per frame
@@ -172,4 +187,27 @@ public class Boss : MonoBehaviour
             StartNextPhase();
         }
     }
+
+
+    // events
+    public void EquipWeapon()
+    {
+        backHammer.SetActive(false);
+        heldHammer.SetActive(true);
+    }
+
+
+    // audio events
+    public void Footstep()
+    {
+        AudioManager.instance.Play("Boss_Footstep");
+    }
+
+    public void HammerHit()
+    {
+        AudioManager.instance.Play("Boss_Hammer_Hit");
+        AudioManager.instance.Play("Boss_Ground_Shake");
+    }
+
+    
 }
