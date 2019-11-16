@@ -16,6 +16,8 @@ TagManager:
   - JoraFist
   - JoraFistCombo
   - Note
+  - ArchwayBarsLever
+
   layers:
   - Default
   - TransparentFX
