@@ -18,7 +18,7 @@ public class PlanksObstacle : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.CompareTag("Player"))
+        if(col.CompareTag("Interactable"))
         {
             Debug.Log(col.gameObject.GetComponent<Rigidbody>().velocity.magnitude);
             for (int i = 1; i < transform.childCount; i++)
