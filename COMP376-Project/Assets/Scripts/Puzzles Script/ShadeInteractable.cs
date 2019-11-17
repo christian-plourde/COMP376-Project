@@ -15,7 +15,7 @@ public class ShadeInteractable : MonoBehaviour
         player = FindObjectOfType<Player>();
         renderer = GetComponent<Renderer>();
         normal_shader = Shader.Find("Standard");
-        outline_shader = Shader.Find("Outlined/Silhouetted Diffuse");
+        outline_shader = Shader.Find("Outlined/Custom");
     }
 
     // Update is called once per frame
