@@ -13,7 +13,7 @@ public class Ladder : MonoBehaviour
     public bool usingLadder;
 
     float climbSpeed = 1.2f;
-    int facingSide = 1;                    // if players facing side is different, flip player, so that player's front is towars the ladder
+    public int facingSide = 1;                    // if players facing side is different, flip player, so that player's front is towars the ladder
 
 
     void Start()
