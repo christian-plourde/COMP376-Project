@@ -30,7 +30,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-
+        m_currentHealth -= amount;
     }
 
     public void Death()

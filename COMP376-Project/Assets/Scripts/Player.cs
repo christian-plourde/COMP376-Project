@@ -115,7 +115,6 @@ public class Player : MonoBehaviour
 
             if (m_scene.name == "BossTestScene")
             {
-                Camera.main.GetComponent<Animation>().enabled = false;
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.GetComponent<CameraFollow_Script>().enabled = false; 
                 Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -201,8 +200,7 @@ public class Player : MonoBehaviour
         //jump
         //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder))
-        {
-            
+        {           
             Vector3 jumpVector;
             isGrounded = false;
             AudioManager.instance.Play("jump");
