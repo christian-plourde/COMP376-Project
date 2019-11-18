@@ -11,12 +11,12 @@ public class PlanksObstacle : MonoBehaviour
     DateTime destroyed_time;
     public float fade_step;
     public float destroy_velocity;
+    public bool horizontal;
 
     // Start is called before the first frame update
     void Start()
     {
         destroyed = false;
-
     }
 
     // Update is called once per frame
@@ -58,7 +58,11 @@ public class PlanksObstacle : MonoBehaviour
                 for (int i = 1; i < transform.childCount; i++)
                 {
                     transform.GetChild(i).GetComponent<Rigidbody>().isKinematic = false;
-                    transform.GetChild(i).GetComponent<Rigidbody>().AddForce(new Vector3(col.gameObject.GetComponent<Rigidbody>().velocity.magnitude * force_factor, 0, 0));
+                    if(!horizontal)
+                        transform.GetChild(i).GetComponent<Rigidbody>().AddForce(new Vector3((Mathf.Sign(col.gameObject.GetComponent<Rigidbody>().velocity.x))*col.gameObject.GetComponent<Rigidbody>().velocity.magnitude * force_factor, 0, 0));
+                
+                    else
+                        transform.GetChild(i).GetComponent<Rigidbody>().AddForce(new Vector3(0, (Mathf.Sign(col.gameObject.GetComponent<Rigidbody>().velocity.y))*col.gameObject.GetComponent<Rigidbody>().velocity.magnitude * force_factor, 0));
                 }
 
                 destroyed = true;
