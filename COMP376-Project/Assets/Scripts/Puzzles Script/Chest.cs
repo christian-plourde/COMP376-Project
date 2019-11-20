@@ -5,7 +5,8 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     bool opened = false;
-    bool onCooldown = false;
+    [HideInInspector]
+    public bool onCooldown = false;
     public int giveIronCount;
     public int giveSteelCount;
     public int givePewterCount;
@@ -65,6 +66,15 @@ public class Chest : MonoBehaviour
                     opened = true;
                     animator.SetBool("opened", opened);
                     AudioManager.instance.Play("chest");
+
+                    // if note not null, instantiate it
+                    if (giveNote != null)
+                    {
+                        var temp = Instantiate(giveNote, giveNote.transform.position, Quaternion.identity);
+                        temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
+                        playerScriptRef.controlLock = true;
+
+                    }
                 }
 
                 onCooldown = true;
@@ -73,16 +83,6 @@ public class Chest : MonoBehaviour
                 playerScriptRef.pewterCount += givePewterCount;
                 playerScriptRef.ironCount += giveIronCount;
                 playerScriptRef.steelCount += giveSteelCount;
-
-
-                // if note not null, instantiate it
-                if (giveNote != null)
-                {
-                    var temp = Instantiate(giveNote, giveNote.transform.position, Quaternion.identity);
-                    temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
-                    playerScriptRef.controlLock = true;
-
-                }
 
                 //this.GetComponent<Chest>().enabled = false;
             }

@@ -6,7 +6,8 @@ using System;
 public class cannonball : MonoBehaviour
 {
     public GameObject player_hand;
-    bool in_hand;
+    [HideInInspector]
+    public bool in_hand;
     public float carry_x_offset;
     public float carry_y_offset;
     Player player;
