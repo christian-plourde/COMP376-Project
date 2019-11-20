@@ -5,7 +5,8 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     bool opened = false;
-    bool onCooldown = false;
+    [HideInInspector]
+    public bool onCooldown = false;
     public int giveIronCount;
     public int giveSteelCount;
     public int givePewterCount;
