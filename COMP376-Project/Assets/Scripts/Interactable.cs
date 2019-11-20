@@ -38,7 +38,7 @@ public class Interactable : MonoBehaviour
             if (istriggered)
             {
                 Destroy(temp);
-                if (isChest)
+                if (isChest && GameObject.FindGameObjectsWithTag("Note") == null)
                 {
                     Chest();
                 }
