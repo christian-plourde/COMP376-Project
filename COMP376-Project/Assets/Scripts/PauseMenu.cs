@@ -11,14 +11,24 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (GameIsPaused)
+            foreach(GameObject n in GameObject.FindGameObjectsWithTag("Note"))
             {
-                Resume();
+                if(n.transform.parent == GameObject.Find("UI-Canvas").transform)
+                {
+                    return;
+                }
+
+                if (GameIsPaused)
+                {
+                    Resume();
+                }
+                else
+                {
+                    Pause();
+                }
+
             }
-            else
-            {
-                Pause();
-            }
+            
         }
     }
 

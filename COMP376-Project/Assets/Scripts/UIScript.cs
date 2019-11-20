@@ -119,7 +119,14 @@ public class UIScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Destroy(GameObject.FindGameObjectWithTag("Note"));
+            foreach(GameObject n in GameObject.FindGameObjectsWithTag("Note"))
+            {
+                if(n.transform.parent == GameObject.Find("UI-Canvas").transform)
+                {
+                    Destroy(n);
+                }
+            }
+            //Destroy(GameObject.FindGameObjectWithTag("Note"));
             playerRef.controlLock = false;
         }
 
