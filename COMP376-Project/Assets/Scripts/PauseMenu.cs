@@ -10,14 +10,8 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            foreach(GameObject n in GameObject.FindGameObjectsWithTag("Note"))
-            {
-                if(n.transform.parent == GameObject.Find("UI-Canvas").transform)
-                {
-                    return;
-                }
 
                 if (GameIsPaused)
                 {
@@ -27,8 +21,6 @@ public class PauseMenu : MonoBehaviour
                 {
                     Pause();
                 }
-
-            }
             
         }
     }
