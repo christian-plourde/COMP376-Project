@@ -8,6 +8,9 @@ public class Boss : MonoBehaviour
     public Transform m_playerRef;
     public Transform m_damagingFloor;
 
+    public ParticleSystem m_implosionTeleport;
+    public ParticleSystem m_explosionteleport;
+
     EnemyHealth m_health;
     BossPhase1 m_phase1;
     BossPhase2 m_phase2;
@@ -38,6 +41,8 @@ public class Boss : MonoBehaviour
     public GameObject backHammer;
     public GameObject heldHammer;
 
+    bool m_implosionCreated = false;
+    bool m_explosionCreated = false;
 
 
     // Start is called before the first frame update
@@ -78,6 +83,7 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (m_isPlayerHit)
         {
             m_playerHitTimer -= Time.deltaTime;
@@ -183,6 +189,22 @@ public class Boss : MonoBehaviour
 
         m_damagingFloor.gameObject.SetActive(false);
 
+        if(!m_implosionCreated)
+        {
+            Instantiate(m_implosionTeleport, transform.position, transform.rotation);
+            m_implosionTeleport.Emit(1);
+            m_implosionCreated = true;
+        }
+
+
+        if (!m_explosionCreated)
+        {
+            Instantiate(m_explosionteleport, m_startPoint.position, transform.rotation);
+            m_explosionteleport.Emit(1);
+            m_explosionCreated = true;
+        }
+
+
         //reset animation states
         IsIdle = true;
         Dashing = false;
@@ -192,10 +214,11 @@ public class Boss : MonoBehaviour
         m_phase2.enabled = false;
         m_phase3.enabled = false;
 
-        transform.position = m_startPoint.position;
-        this.transform.rotation = Quaternion.Euler(0, -90, 0);
+        yield return new WaitForSeconds(3.5f);
 
-        yield return new WaitForSeconds(3f);
+        this.transform.rotation = Quaternion.Euler(0, -90, 0);
+        this.transform.position = m_startPoint.position;
+
         m_isImmune = false;
 
         StartNextPhase();

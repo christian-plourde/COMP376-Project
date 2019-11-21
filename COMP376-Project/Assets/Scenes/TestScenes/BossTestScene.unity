@@ -35754,6 +35754,12 @@ PrefabInstance:
       propertyPath: heldHammer
       value: 
       objectReference: {fileID: 232435671}
+    - target: {fileID: 1452217645563236402, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_implosionTeleport
+      value: 
+      objectReference: {fileID: 2574825341401267409, guid: 21e255b8305f4c344b2e1aa74f03383d,
+        type: 3}
     - target: {fileID: 4527309198764909365, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
         type: 3}
       propertyPath: m_dashSpots.Array.size
