@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossPhase2 : MonoBehaviour
 {
+    public Transform[] m_teleportPoints;
     // Start is called before the first frame update
     void Start()
     {

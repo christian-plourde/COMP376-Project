@@ -778,7 +778,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_startPoint: {fileID: 0}
   m_playerRef: {fileID: 0}
+  m_damagingFloor: {fileID: 0}
+  m_implosionTeleport: {fileID: 2574825341401267409, guid: 21e255b8305f4c344b2e1aa74f03383d,
+    type: 3}
+  m_explosionteleport: {fileID: 7362106938670568818, guid: a31b79efcc192d748b7879dc4008ac46,
+    type: 3}
+  m_isImmune: 0
   m_animator: {fileID: 0}
+  backHammer: {fileID: 0}
+  heldHammer: {fileID: 0}
 --- !u!114 &4527309198764909365
 MonoBehaviour:
   m_ObjectHideFlags: 0
