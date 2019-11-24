@@ -118,7 +118,7 @@ public class Coinshot : MonoBehaviour
         if (collision.collider.tag == "Interactable")
         {
             Rigidbody collided = collision.collider.GetComponent<Rigidbody>();
-            if (Mathf.Abs((collided.velocity.x)) > 1f || Mathf.Abs((collided.velocity.y)) > 1f || Mathf.Abs((collided.velocity.z)) > 1f)
+            if (Mathf.Abs((collided.velocity.x)) > 3f || Mathf.Abs((collided.velocity.y)) > 3f || Mathf.Abs((collided.velocity.z)) > 3f)
             {
                 health--;
                 if (health <= 0)
