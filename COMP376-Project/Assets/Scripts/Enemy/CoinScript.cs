@@ -28,6 +28,6 @@ public class CoinScript : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().registerHit();
             Destroy(this.gameObject);
         }
-      
+
     }
 }
