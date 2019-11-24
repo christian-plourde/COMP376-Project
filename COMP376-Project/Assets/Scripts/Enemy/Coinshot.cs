@@ -69,15 +69,18 @@ public class Coinshot : MonoBehaviour
 
     private void ThrowCoin()
     {
-        GameObject coin = Instantiate(coinprefab, launchPoint.position, Quaternion.identity);
+        if (Target != null)
+        {
+            GameObject coin = Instantiate(coinprefab, launchPoint.position, Quaternion.identity);
 
-        //direction:
-        Vector3 adjustedTargetPos = new Vector3(Target.transform.position.x, Target.transform.position.y + 5.5f, Target.transform.position.z);
+            //direction:
+            Vector3 adjustedTargetPos = new Vector3(Target.transform.position.x, Target.transform.position.y + 5.5f, Target.transform.position.z);
 
-        Vector3 shotDirection = (Target.transform.position - launchPoint.position).normalized;
-        coin.GetComponent<Rigidbody>().AddForce(shotDirection * shotForce, ForceMode.Impulse);
-        onCooldown = true;
-        animator.SetBool("throwing",false);
+            Vector3 shotDirection = (Target.transform.position - launchPoint.position).normalized;
+            coin.GetComponent<Rigidbody>().AddForce(shotDirection * shotForce, ForceMode.Impulse);
+            onCooldown = true;
+            animator.SetBool("throwing", false);
+        }
     }
 
 
@@ -85,6 +88,7 @@ public class Coinshot : MonoBehaviour
     {
         if (other.tag == "JoraFist")
         {
+            other.gameObject.SetActive(false);
             health -= 1;
             if (health <= 0)
                 KillCoinshot();
@@ -93,6 +97,7 @@ public class Coinshot : MonoBehaviour
 
         if (other.tag == "JoraFistCombo")
         {
+            other.gameObject.SetActive(false);
             health -= 2;
             if (health <= 0)
                 KillCoinshot();

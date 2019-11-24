@@ -12,10 +12,6 @@ public class CoinshotEyesight : MonoBehaviour
         CoinshotScriptRef = gameObject.GetComponentInParent<Coinshot>();
     }
 
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
