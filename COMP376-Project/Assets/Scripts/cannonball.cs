@@ -13,6 +13,7 @@ public class cannonball : MonoBehaviour
     Player player;
     DateTime pick_up_time;
     bool reinstantiated = false;
+    public bool reinstantiable;
 
     public bool InHand
     {
@@ -65,7 +66,7 @@ public class cannonball : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 250f))
         {
-            if (hit.collider.gameObject == this.gameObject && Input.GetMouseButtonUp(0) && !reinstantiated)
+            if (hit.collider.gameObject == this.gameObject && Input.GetMouseButtonUp(0) && !reinstantiated && reinstantiable)
             {
                 GameObject new_ball = Instantiate(this.gameObject, this.transform.position, this.transform.localRotation, this.transform.parent);
                 new_ball.transform.localScale = this.transform.localScale;
