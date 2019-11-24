@@ -9,11 +9,13 @@ public class Interactable : MonoBehaviour
     public bool isChest = false;
     public bool isInteractableOnce = false;
     public bool isCannon = false;
+    public bool isSatchel = false;
     bool istriggered = false;
     bool isInteracted = false;
     GameObject temp;
     Chest refChest;
     cannonball refCannon;
+    Satchel refSatchel;
 
     
 
@@ -27,6 +29,11 @@ public class Interactable : MonoBehaviour
         if (isCannon)
         {
             refCannon = this.GetComponentInParent<cannonball>();
+        }
+
+        if(isSatchel)
+        {
+            refSatchel = this.GetComponentInParent<Satchel>();
         }
     }
 
@@ -50,6 +57,10 @@ public class Interactable : MonoBehaviour
                 {
                     Cannon();
                 }
+                if (isSatchel && GameObject.FindGameObjectsWithTag("Note") == null)
+                {
+                    Satchel();
+                }
             }
         }
     }
@@ -71,6 +82,10 @@ public class Interactable : MonoBehaviour
             {
                 Cannon();
             }
+            if (isSatchel)
+            {
+                Satchel();
+            }
         }
     }
 
@@ -81,6 +96,22 @@ public class Interactable : MonoBehaviour
         {
             istriggered = false;
             Destroy(temp);
+        }
+    }
+
+    private void Satchel()
+    {
+        if (refSatchel.onCooldown)
+        {
+            temp = Instantiate(eButton, eButton.transform.position, Quaternion.identity);
+            temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
+            temp.GetComponentInChildren<Text>().text = "Satchel On Cooldown";
+        }
+        else
+        {
+            temp = Instantiate(eButton, eButton.transform.position, Quaternion.identity);
+            temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
+            temp.GetComponentInChildren<Text>().text = "Press [E] To Open Satchel";
         }
     }
 
