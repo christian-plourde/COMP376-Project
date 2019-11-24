@@ -19203,6 +19203,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
         type: 3}
+      propertyPath: m_platforms.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_planks.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
       propertyPath: m_teleportPoints.Array.data[0]
       value: 
       objectReference: {fileID: 2110378040}
@@ -19241,6 +19251,26 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 250973158}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_planks.Array.data[0]
+      value: 
+      objectReference: {fileID: 711040640}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_planks.Array.data[1]
+      value: 
+      objectReference: {fileID: 1447529268}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_platforms.Array.data[0]
+      value: 
+      objectReference: {fileID: 3970806}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_platforms.Array.data[1]
+      value: 
+      objectReference: {fileID: 837263642}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9136d9fb19fde4f4f94e52cd9f9b232d, type: 3}
 --- !u!1 &2091378817
@@ -19259,7 +19289,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &2091378818
 BoxCollider:
   m_ObjectHideFlags: 0

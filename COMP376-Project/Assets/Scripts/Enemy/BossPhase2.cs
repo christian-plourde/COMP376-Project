@@ -7,7 +7,10 @@ public class BossPhase2 : MonoBehaviour
     public Transform m_camera;
     public Transform[] m_teleportPoints;
     public Transform[] m_damagingFloors;
-    public Transform[] m_breakingPlatforms;
+
+    public Transform[] m_platforms;
+    public Transform[] m_planks;
+    public Transform m_ground;
 
     Boss m_bossScript;
     ParticleSystem m_implosionTeleport;
@@ -76,8 +79,14 @@ public class BossPhase2 : MonoBehaviour
             m_startTimer -= Time.deltaTime;
             if (m_startTimer <= 0)
             {
+              
                 m_isTeleporting = true;
                 m_start = true;
+
+                m_ground.gameObject.SetActive(false);
+                AudioManager.instance.Play("Boss_Ground_Shake");
+                DestroyPlatforms();
+                m_camera.GetComponent<CameraShake>().ShakeCamera(1f, 1f);
 
                 ParticleSystem.MainModule implode = m_implosionTeleport.main;
                 implode.startSize = 4f;
@@ -141,6 +150,20 @@ public class BossPhase2 : MonoBehaviour
             StartCoroutine(DestroyParticles(explosion));
         }
     }
+    
+    void DestroyPlatforms()
+    {
+        for(int i = 0; i < m_planks.Length; i++)
+        {
+            m_planks[i].GetComponent<PlanksObstacleBossFight>().destroyed = true;
+        }
+
+        for(int i = 0; i < m_platforms.Length; i++)
+        {
+            m_platforms[i].GetComponent<CavePlatform>().destroyed = true;
+        }
+    }
+
     IEnumerator DestroyParticles(ParticleSystem particles)
     {
         yield return new WaitForSeconds(1.0f);
