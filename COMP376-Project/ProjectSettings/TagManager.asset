@@ -17,6 +17,7 @@ TagManager:
   - Drawbridge1
   - DLever1
   - Key
+  - LevelChange
   layers:
   - Default
   - TransparentFX
