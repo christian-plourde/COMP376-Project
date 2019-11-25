@@ -25,7 +25,11 @@ public class CoinScript : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().registerHit();
+            Vector3 velocity = GetComponent<Rigidbody>().velocity;
+            //Debug.Log("Hit at velocity: "+velocity);
+
+            if(Mathf.Abs(velocity.x) > 5 || Mathf.Abs(velocity.y) > 5 || Mathf.Abs(velocity.z) > 5)
+               GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().registerHit();
             Destroy(this.gameObject);
         }
 
