@@ -76,6 +76,7 @@ public class BossPhase2 : MonoBehaviour
         m_bossPosition = transform.position;
         if (!m_start)
         {
+            this.transform.GetComponent<Rigidbody>().isKinematic = true;
             m_startTimer -= Time.deltaTime;
             if (m_startTimer <= 0)
             {
@@ -83,10 +84,11 @@ public class BossPhase2 : MonoBehaviour
                 m_isTeleporting = true;
                 m_start = true;
 
-                m_ground.gameObject.SetActive(false);
+                Destroy(m_ground.gameObject);
                 AudioManager.instance.Play("Boss_Ground_Shake");
                 DestroyPlatforms();
                 m_camera.GetComponent<CameraShake>().ShakeCamera(1f, 1f);
+                this.transform.GetComponent<Rigidbody>().isKinematic = false;
 
                 ParticleSystem.MainModule implode = m_implosionTeleport.main;
                 implode.startSize = 4f;
