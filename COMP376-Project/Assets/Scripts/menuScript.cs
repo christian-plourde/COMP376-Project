@@ -22,7 +22,6 @@ public class menuScript : MonoBehaviour
     public void Play()
     {
         LevelChanger.instance.FadeToNextLevel();
-        
 
     }
 

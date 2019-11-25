@@ -795,6 +795,12 @@ public class Player : MonoBehaviour
             registerHit();
             Destroy(collision.collider.gameObject);
         }
+
+        if (collision.collider.tag == "LevelChange")
+        {
+            Debug.Log("NEXT LEVEL");
+            LevelChanger.instance.FadeToNextLevel();
+        }
     }
 
 
