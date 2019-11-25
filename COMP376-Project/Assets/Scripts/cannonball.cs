@@ -12,7 +12,8 @@ public class cannonball : MonoBehaviour
     public float carry_y_offset;
     Player player;
     DateTime pick_up_time;
-
+    bool reinstantiated = false;
+    public bool reinstantiable;
 
     public bool InHand
     {
@@ -52,7 +53,7 @@ public class cannonball : MonoBehaviour
     void Update()
     {
 
-        if((DateTime.Now - pick_up_time).TotalSeconds > 1.0f && Input.GetKeyDown(KeyCode.E) && InHand)
+        if ((DateTime.Now - pick_up_time).TotalSeconds > 1.0f && Input.GetKeyDown(KeyCode.E) && InHand)
         {
             InHand = false;
         }
@@ -60,6 +61,19 @@ public class cannonball : MonoBehaviour
         if (!player.usingPewter && InHand)
             InHand = false;
 
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 250f))
+        {
+            if (hit.collider.gameObject == this.gameObject && Input.GetMouseButtonUp(0) && !reinstantiated && reinstantiable)
+            {
+                GameObject new_ball = Instantiate(this.gameObject, this.transform.position, this.transform.localRotation, this.transform.parent);
+                new_ball.transform.localScale = this.transform.localScale;
+                reinstantiated = true;
+            }
+
+        }
     }
 
     void OnTriggerStay(Collider col)
