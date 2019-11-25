@@ -13,6 +13,7 @@ public class Coinshot : MonoBehaviour
     bool onCooldown;
 
     public float shotForce=2f;
+    public float aimOffsetY = 1.8f;
 
     bool isDead;
     public GameObject coinprefab;
@@ -74,9 +75,8 @@ public class Coinshot : MonoBehaviour
             GameObject coin = Instantiate(coinprefab, launchPoint.position, Quaternion.identity);
 
             //direction:
-            Vector3 adjustedTargetPos = new Vector3(Target.transform.position.x, Target.transform.position.y + 5.5f, Target.transform.position.z);
-
-            Vector3 shotDirection = (Target.transform.position - launchPoint.position).normalized;
+            Vector3 adjustedTargetPos = new Vector3(Target.transform.position.x, Target.transform.position.y + aimOffsetY, Target.transform.position.z);
+            Vector3 shotDirection = (adjustedTargetPos - launchPoint.position).normalized;
             coin.GetComponent<Rigidbody>().AddForce(shotDirection * shotForce, ForceMode.Impulse);
             onCooldown = true;
             animator.SetBool("throwing", false);
