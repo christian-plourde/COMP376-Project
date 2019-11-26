@@ -46,4 +46,9 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         LevelChanger.instance.FadeToLevel(0);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
