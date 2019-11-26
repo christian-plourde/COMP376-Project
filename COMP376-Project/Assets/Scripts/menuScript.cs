@@ -27,7 +27,7 @@ public class menuScript : MonoBehaviour
 
     public void Quit()
     {
-
+        Application.Quit();
     }
 
     public void Credit()
