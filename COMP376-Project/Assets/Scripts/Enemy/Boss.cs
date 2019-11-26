@@ -111,6 +111,11 @@ public class Boss : MonoBehaviour
             StartCoroutine(ReloadCutscene());
         }
 
+        if(transform.position.y <= -30)
+        {
+            StartCoroutine(LoadEndScene());
+        }
+
      /*   if (m_isBossHit)
         {
             m_bossHitTimer -= Time.deltaTime;
@@ -277,6 +282,13 @@ public class Boss : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("Cutscene 2");
+        AudioManager.instance.Stop("Boss_Phase1_Music");
+    }
+
+    IEnumerator LoadEndScene()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Cutscene 3");
         AudioManager.instance.Stop("Boss_Phase1_Music");
     }
 

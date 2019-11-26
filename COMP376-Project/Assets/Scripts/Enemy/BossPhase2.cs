@@ -30,6 +30,8 @@ public class BossPhase2 : MonoBehaviour
 
     bool m_start;
 
+    bool m_isIdle;
+
     float m_startTimer;
 
     float m_teleportCooldown;
@@ -49,13 +51,13 @@ public class BossPhase2 : MonoBehaviour
     {
         m_implodeTimer = 0;
         m_implodeCooldown = 2.0f;
-        m_teleportCooldown = 3.5f;
+        m_teleportCooldown = 3f;
         m_teleportTimer = 0;
 
         m_bossScript = this.transform.GetComponent<Boss>();
         m_implosionTeleport = m_bossScript.m_implosionTeleport;
         m_explosionTeleport = m_bossScript.m_explosionteleport;
- 
+
         m_teleportCounter = 0;
         m_teleportSpotIndex = 0;
         m_lastTeleportSpot = m_teleportSpotIndex;
@@ -83,6 +85,7 @@ public class BossPhase2 : MonoBehaviour
         m_bossPosition = transform.position;
         if (!m_start)
         {
+            IsIdle = true;
             this.transform.GetComponent<Rigidbody>().isKinematic = true;
             m_startTimer -= Time.deltaTime;
             if (m_startTimer <= 0)
@@ -116,6 +119,11 @@ public class BossPhase2 : MonoBehaviour
         {
             this.GetComponent<Boss>().m_isImmune = false;
         }
+
+        if(m_teleportCounter == 6)
+        {
+            SetIsVulnerable();
+        }
     }
 
     void Teleport()
@@ -131,7 +139,7 @@ public class BossPhase2 : MonoBehaviour
         else
         {
             m_implodeTimer += Time.deltaTime;
-            if(m_implodeTimer >= m_implodeCooldown)
+            if (m_implodeTimer >= m_implodeCooldown)
             {
                 this.transform.position = new Vector3(50, 50, 50);
             }
@@ -147,8 +155,9 @@ public class BossPhase2 : MonoBehaviour
 
         if (m_teleportTimer >= m_teleportCooldown)
         {
-            //this.transform.rotation = Quaternion.Euler(0, -90, 0);
+            SetRotation();
             this.transform.position = m_teleportPoints[m_teleportSpotIndex].position;
+            m_teleportCounter++;
             m_teleportTimer = 0;
             m_implodeTimer = 0;
             m_implosionCreated = false;
@@ -157,15 +166,15 @@ public class BossPhase2 : MonoBehaviour
             StartCoroutine(DestroyParticles(explosion));
         }
     }
-    
+
     void DestroyPlatforms()
     {
-        for(int i = 0; i < m_planks.Length; i++)
+        for (int i = 0; i < m_planks.Length; i++)
         {
             m_planks[i].GetComponent<PlanksObstacleBossFight>().destroyed = true;
         }
 
-        for(int i = 0; i < m_platforms.Length; i++)
+        for (int i = 0; i < m_platforms.Length; i++)
         {
             m_platforms[i].GetComponent<CavePlatform>().destroyed = true;
         }
@@ -177,6 +186,51 @@ public class BossPhase2 : MonoBehaviour
         while (m_teleportSpotIndex == m_lastTeleportSpot)
             m_teleportSpotIndex = Random.Range(0, m_teleportPoints.Length);
         m_lastTeleportSpot = m_teleportSpotIndex;
+    }
+
+    void SetIsVulnerable()
+    {
+        m_isTeleporting = false;
+        IsTired = true;
+        m_sphereCollider.enabled = false;
+        this.transform.tag = "Interactable";
+        this.transform.GetComponent<Rigidbody>().mass = 1.8f;
+    }
+
+    void SetTeleporting()
+    {
+        m_isTeleporting = true;
+        IsTired = false;
+        m_sphereCollider.enabled = true;
+        this.transform.GetComponent<Rigidbody>().mass = 10.0f;
+    }
+
+    void SetRotation()
+    {
+        if(m_teleportSpotIndex == 1)
+            this.transform.rotation = Quaternion.Euler(0, 90, 0);
+        else
+            this.transform.rotation = Quaternion.Euler(0, -90, 0);
+    }
+
+    public bool IsIdle
+    {
+        get { return m_isIdle; }
+        set
+        {
+            m_isIdle = value;
+            this.GetComponent<Animator>().SetBool("Idle", m_isIdle);
+        }
+    }
+
+    public bool IsTired
+    {
+        get { return m_isVulnerable; }
+        set
+        {
+            m_isVulnerable = value;
+            this.GetComponent<Animator>().SetBool("Tired", m_isIdle);
+        }
     }
 
     IEnumerator DestroyParticles(ParticleSystem particles)
