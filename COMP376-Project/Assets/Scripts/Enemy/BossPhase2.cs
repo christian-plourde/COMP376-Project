@@ -16,6 +16,8 @@ public class BossPhase2 : MonoBehaviour
     ParticleSystem m_implosionTeleport;
     ParticleSystem m_explosionTeleport;
 
+    SphereCollider m_sphereCollider;
+
     int m_teleportCounter;
     int m_TeleportSpotIndex;
 
@@ -46,7 +48,7 @@ public class BossPhase2 : MonoBehaviour
     {
         m_implodeTimer = 0;
         m_implodeCooldown = 2.0f;
-        m_teleportCooldown = 3f;
+        m_teleportCooldown = 3.5f;
         m_teleportTimer = 0;
 
         m_bossScript = this.transform.GetComponent<Boss>();
@@ -68,6 +70,9 @@ public class BossPhase2 : MonoBehaviour
         Debug.Log("Phase 2 begins.");
 
         m_teleportOffset = new Vector3(0, 1, 0);
+
+        m_sphereCollider = GetComponent<SphereCollider>();
+        m_sphereCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -80,7 +85,6 @@ public class BossPhase2 : MonoBehaviour
             m_startTimer -= Time.deltaTime;
             if (m_startTimer <= 0)
             {
-              
                 m_isTeleporting = true;
                 m_start = true;
 
@@ -89,6 +93,7 @@ public class BossPhase2 : MonoBehaviour
                 DestroyPlatforms();
                 m_camera.GetComponent<CameraShake>().ShakeCamera(1f, 1f);
                 this.transform.GetComponent<Rigidbody>().isKinematic = false;
+                m_sphereCollider.enabled = true;
 
                 ParticleSystem.MainModule implode = m_implosionTeleport.main;
                 implode.startSize = 4f;
