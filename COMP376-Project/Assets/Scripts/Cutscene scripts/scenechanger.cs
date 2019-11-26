@@ -7,6 +7,7 @@ using UnityEngine.Video;
 public class scenechanger : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
+    public bool backToMenu;
     bool videoStarted = false;
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,16 @@ public class scenechanger : MonoBehaviour
         }
         if ((!videoPlayer.isPlaying && videoStarted) || Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            if (backToMenu)
+            {
+                SceneManager.LoadScene("MainMenu");
+
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+            }
         }
     }
 }
