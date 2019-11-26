@@ -130,7 +130,7 @@ public class BossPhase1 : MonoBehaviour
         {
             //enable the collider of the damaging floor
             m_damagingFloor.GetComponent<DamagingFloor>().enabled = true;
-            m_camera.GetComponent<CameraShake>().ShakeCamera(0.002f, 0.001f);
+            m_camera.GetComponent<CameraShake>().ShakeCamera(0.007f, 0.001f);
 
             //after the slam happens, wait a quick second before going to the next state
             yield return new WaitForSeconds(1f);

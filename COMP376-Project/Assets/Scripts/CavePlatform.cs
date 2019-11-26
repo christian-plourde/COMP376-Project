@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CavePlatform : MonoBehaviour
 {
-    public bool destroyed;
+    public bool destroyed = false;
     public float fade_step;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        destroyed = false;
+        
     }
 
     // Update is called once per frame
