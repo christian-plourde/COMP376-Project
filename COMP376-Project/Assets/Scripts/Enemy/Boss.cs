@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour
 {
@@ -102,6 +103,12 @@ public class Boss : MonoBehaviour
             m_playerHitTimer -= Time.deltaTime;
             if (m_playerHitTimer <= 0)
                 m_isPlayerHit = false;
+        }
+
+        //if player is dead, reload the level 3 cutscene
+        if(m_playerRef.GetComponent<Player>().health <= 0 || m_playerRef.position.y <= -30)
+        {
+            StartCoroutine(ReloadCutscene());
         }
 
      /*   if (m_isBossHit)
@@ -264,6 +271,13 @@ public class Boss : MonoBehaviour
             m_slamAttack = value;
             this.GetComponent<Animator>().SetBool("usingHammer", m_slamAttack);
         }
+    }
+
+    IEnumerator ReloadCutscene()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("Cutscene 2");
+        AudioManager.instance.Stop("Boss_Phase1_Music");
     }
 
     IEnumerator FadeTo(float aValue, float aTime)
