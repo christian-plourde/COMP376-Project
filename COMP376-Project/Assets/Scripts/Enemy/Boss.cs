@@ -104,14 +104,14 @@ public class Boss : MonoBehaviour
                 m_isPlayerHit = false;
         }
 
-        if (m_isBossHit)
+     /*   if (m_isBossHit)
         {
             m_bossHitTimer -= Time.deltaTime;
             if (m_bossHitTimer <= 0)
                 m_isBossHit = false;
-        }
+        }*/
 
-        if (GetComponent<EnemyHealth>().GetCurrentHealth() <= 7 && !m_isPhase2)
+        if (GetComponent<EnemyHealth>().GetCurrentHealth() <= 0 && !m_isPhase2)
         {
             m_previousPhase = m_phase;
             m_phase = -1;
@@ -120,7 +120,7 @@ public class Boss : MonoBehaviour
 
         if (m_phase == 1)
         {
-            m_phase2.enabled = true;
+            m_phase1.enabled = true;
         }
         else if (m_phase == 2)
         {
@@ -149,9 +149,9 @@ public class Boss : MonoBehaviour
     {
         if (collision.tag == "JoraFist" && !m_isImmune)
         {
-            m_isBossHit = true;
             collision.gameObject.SetActive(false);
             m_health.TakeDamage(1);
+            m_isBossHit = true;
             m_numOfTimesHit++;
             m_bossHitTimer = m_bossHitCooldown;
             Debug.Log("enemy punched");
