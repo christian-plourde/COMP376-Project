@@ -29,4 +29,10 @@ public class menuScript : MonoBehaviour
     {
 
     }
+
+    public void Credit()
+    {
+        SceneManager.LoadScene("Credit");
+
+    }
 }
