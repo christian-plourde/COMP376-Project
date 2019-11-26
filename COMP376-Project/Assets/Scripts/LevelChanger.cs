@@ -23,10 +23,7 @@ public class LevelChanger : MonoBehaviour
         // Update is called once per frame
         void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            FadeToNextLevel();
-        }
+       
     }
 
     public void FadeToLevel(int levelIndex)
