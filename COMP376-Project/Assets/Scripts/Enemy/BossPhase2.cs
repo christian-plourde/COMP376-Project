@@ -19,7 +19,8 @@ public class BossPhase2 : MonoBehaviour
     SphereCollider m_sphereCollider;
 
     int m_teleportCounter;
-    int m_TeleportSpotIndex;
+    int m_teleportSpotIndex;
+    int m_lastTeleportSpot;
 
     bool m_isTeleporting;
     bool m_isVulnerable;
@@ -56,7 +57,8 @@ public class BossPhase2 : MonoBehaviour
         m_explosionTeleport = m_bossScript.m_explosionteleport;
  
         m_teleportCounter = 0;
-        m_TeleportSpotIndex = 0;
+        m_teleportSpotIndex = 0;
+        m_lastTeleportSpot = m_teleportSpotIndex;
 
         m_isTeleporting = false;
         m_isVulnerable = false;
@@ -137,7 +139,8 @@ public class BossPhase2 : MonoBehaviour
 
         if (!m_explosionCreated)
         {
-            explosion = Instantiate(m_explosionTeleport, m_teleportPoints[m_TeleportSpotIndex].position + m_teleportOffset, transform.rotation);
+            SetRandomTeleportSpot();
+            explosion = Instantiate(m_explosionTeleport, m_teleportPoints[m_teleportSpotIndex].position + m_teleportOffset, transform.rotation);
             m_explosionTeleport.Emit(1);
             m_explosionCreated = true;
         }
@@ -145,11 +148,8 @@ public class BossPhase2 : MonoBehaviour
         if (m_teleportTimer >= m_teleportCooldown)
         {
             //this.transform.rotation = Quaternion.Euler(0, -90, 0);
-            this.transform.position = m_teleportPoints[m_TeleportSpotIndex].position;
+            this.transform.position = m_teleportPoints[m_teleportSpotIndex].position;
             m_teleportTimer = 0;
-            m_TeleportSpotIndex++;
-            if (m_TeleportSpotIndex > 2)
-                m_TeleportSpotIndex = 0;
             m_implodeTimer = 0;
             m_implosionCreated = false;
             m_explosionCreated = false;
@@ -169,6 +169,14 @@ public class BossPhase2 : MonoBehaviour
         {
             m_platforms[i].GetComponent<CavePlatform>().destroyed = true;
         }
+    }
+
+    void SetRandomTeleportSpot()
+    {
+        m_teleportSpotIndex = Random.Range(0, m_teleportPoints.Length);
+        while (m_teleportSpotIndex == m_lastTeleportSpot)
+            m_teleportSpotIndex = Random.Range(0, m_teleportPoints.Length);
+        m_lastTeleportSpot = m_teleportSpotIndex;
     }
 
     IEnumerator DestroyParticles(ParticleSystem particles)
