@@ -127,7 +127,7 @@ public class Boss : MonoBehaviour
 
         if (m_phase == 1)
         {
-            m_phase2.enabled = true;
+            m_phase1.enabled = true;
         }
         else if (m_phase == 2)
         {
