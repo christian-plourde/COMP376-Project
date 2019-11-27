@@ -763,6 +763,23 @@ public class Player : MonoBehaviour
 
 
 
+    private void TurnOnRightFist()
+    {
+        RightFistObject.SetActive(true);
+    }
+    private void TurnOffRightFist()
+    {
+        RightFistObject.SetActive(false);
+    }
+    private void TurnOnLeftFist()
+    {
+        LeftFistObject.SetActive(true);
+    }
+    private void TurnOffLeftFist()
+    {
+        LeftFistObject.SetActive(false);
+    }
+
 
     //experimental if objects hit you too fast
     private void OnCollisionEnter(Collision collision)
