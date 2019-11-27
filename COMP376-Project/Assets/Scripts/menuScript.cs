@@ -21,11 +21,18 @@ public class menuScript : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        LevelChanger.instance.FadeToNextLevel();
+
     }
 
     public void Quit()
     {
+        Application.Quit();
+    }
+
+    public void Credit()
+    {
+        SceneManager.LoadScene("Credit");
 
     }
 }

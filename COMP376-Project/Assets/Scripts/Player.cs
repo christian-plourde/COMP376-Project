@@ -113,11 +113,11 @@ public class Player : MonoBehaviour
         if (!isDead && !controlLock)                                  // dont allow movement if dead or controllock is on
         {
 
-            if (m_scene.name == "BossTestScene")
+            if (m_scene.name == "Level3")
             {
                 Camera.main.GetComponent<Animator>().enabled = false;
                 Camera.main.GetComponent<CameraFollow_Script>().enabled = false; 
-                Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
+               // Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
                 playerMovement();
             }
             else if ((DateTime.Now - game_start).TotalSeconds > camera_pan.clip.length + 1)
@@ -794,6 +794,12 @@ public class Player : MonoBehaviour
         {
             registerHit();
             Destroy(collision.collider.gameObject);
+        }
+
+        if (collision.collider.tag == "LevelChange")
+        {
+            Debug.Log("NEXT LEVEL");
+            LevelChanger.instance.FadeToNextLevel();
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour
 {
@@ -8,13 +9,22 @@ public class Boss : MonoBehaviour
     public Transform m_playerRef;
     public Transform m_damagingFloor;
 
+    public ParticleSystem m_implosionTeleport;
+    public ParticleSystem m_explosionteleport;
+    float m_fadeTime = 3;
+    float _alpha = 0.0f;
+    float _startAlpha = 0f;
+    float _endAlpha = 1.0f;
+    MeshRenderer m_bossRenderer;
+
     EnemyHealth m_health;
     BossPhase1 m_phase1;
     BossPhase2 m_phase2;
-    BossPhase3 m_phase3;
+    int m_numOfTimesHit;
 
     int m_phase;
-    int m_currentPhase;
+    int m_previousPhase;
+    bool m_isPhase2;
     bool m_isPlayerHit;
     float m_playerHitTimer;
     float m_playerHitCooldown;
@@ -38,29 +48,34 @@ public class Boss : MonoBehaviour
     public GameObject backHammer;
     public GameObject heldHammer;
 
+    bool m_implosionCreated = false;
+    bool m_explosionCreated = false;
 
+    Vector3 m_bossPosition;
+    Vector3 m_teleportOffset;
 
     // Start is called before the first frame update
     void Start()
     {
+        m_numOfTimesHit = 0;
         IsIdle = true;
         Dashing = false;
         IsSlamAttack = false;
 
         m_phase = 1;
+        m_previousPhase = 0;
         m_health = GetComponent<EnemyHealth>();
         m_phase1 = GetComponent<BossPhase1>();
         m_phase2 = GetComponent<BossPhase2>();
-        m_phase3 = GetComponent<BossPhase3>();
 
         m_phase1.enabled = false;
         m_phase2.enabled = false;
-        m_phase3.enabled = false;
 
         m_isPlayerHit = false;
         m_playerHitCooldown = 2;
         m_playerHitTimer = m_playerHitCooldown;
 
+        m_isPhase2 = false;
         m_isBossHit = false;
         m_bossHitCooldown = 2;
         m_bossHitTimer = m_bossHitCooldown;
@@ -73,11 +88,16 @@ public class Boss : MonoBehaviour
 
         //audio
         AudioManager.instance.Play("Boss_Phase1_Music");
+
+        m_teleportOffset = new Vector3(0, 1, 0);
+
+        m_bossRenderer = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        m_bossPosition = transform.position;
         if (m_isPlayerHit)
         {
             m_playerHitTimer -= Time.deltaTime;
@@ -85,16 +105,29 @@ public class Boss : MonoBehaviour
                 m_isPlayerHit = false;
         }
 
-        if (m_isBossHit)
+        //if player is dead, reload the level 3 cutscene
+        if(m_playerRef.GetComponent<Player>().health <= 0 || m_playerRef.position.y <= -30)
+        {
+            StartCoroutine(ReloadCutscene());
+        }
+
+        if(transform.position.y <= -30)
+        {
+            StartCoroutine(LoadEndScene());
+        }
+
+     /*   if (m_isBossHit)
         {
             m_bossHitTimer -= Time.deltaTime;
             if (m_bossHitTimer <= 0)
                 m_isBossHit = false;
-        }
+        }*/
 
-        if (m_health.GetCurrentHealth() <= 7)
+        if (GetComponent<EnemyHealth>().GetCurrentHealth() <= 0 && !m_isPhase2)
         {
-            m_phase = -100;
+            m_previousPhase = m_phase;
+            m_phase = -1;
+            m_isPhase2 = true;
         }
 
         if (m_phase == 1)
@@ -103,11 +136,7 @@ public class Boss : MonoBehaviour
         }
         else if (m_phase == 2)
         {
-            m_phase1.enabled = true;
-        }
-        else if (m_phase == 3)
-        {
-            m_phase1.enabled = true;
+            m_phase2.enabled = true;
         }
         else
         {
@@ -132,8 +161,10 @@ public class Boss : MonoBehaviour
     {
         if (collision.tag == "JoraFist" && !m_isImmune)
         {
-            m_isBossHit = true;
+            collision.gameObject.SetActive(false);
             m_health.TakeDamage(1);
+            m_isBossHit = true;
+            m_numOfTimesHit++;
             m_bossHitTimer = m_bossHitCooldown;
             Debug.Log("enemy punched");
         }
@@ -150,10 +181,8 @@ public class Boss : MonoBehaviour
 
     void StartNextPhase()
     {
-        if (m_phase == 1)
+        if (m_previousPhase == 1)
             m_phase = 2;
-        else if (m_phase == 2)
-            m_phase = 3;
     }
 
    // events
@@ -183,6 +212,24 @@ public class Boss : MonoBehaviour
 
         m_damagingFloor.gameObject.SetActive(false);
 
+        StartCoroutine(FadeTo(0.0f, 2.0f));
+        if (!m_implosionCreated)
+        {
+            Instantiate(m_implosionTeleport, m_bossPosition + m_teleportOffset, transform.rotation);
+            m_implosionTeleport.Emit(1);    
+            m_implosionCreated = true;
+        }
+
+
+        if (!m_explosionCreated)
+        {
+            Instantiate(m_explosionteleport, m_startPoint.position + m_teleportOffset, transform.rotation);
+            m_explosionteleport.Emit(1);
+            StartCoroutine(FadeTo(1.0f, 2.0f));
+            m_explosionCreated = true;
+        }
+
+
         //reset animation states
         IsIdle = true;
         Dashing = false;
@@ -190,12 +237,12 @@ public class Boss : MonoBehaviour
 
         m_phase1.enabled = false;
         m_phase2.enabled = false;
-        m_phase3.enabled = false;
 
-        transform.position = m_startPoint.position;
+        yield return new WaitForSeconds(3.5f);
+
         this.transform.rotation = Quaternion.Euler(0, -90, 0);
+        this.transform.position = m_startPoint.position;
 
-        yield return new WaitForSeconds(3f);
         m_isImmune = false;
 
         StartNextPhase();
@@ -230,4 +277,30 @@ public class Boss : MonoBehaviour
             this.GetComponent<Animator>().SetBool("usingHammer", m_slamAttack);
         }
     }
+
+    IEnumerator ReloadCutscene()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("Cutscene 2");
+        AudioManager.instance.Stop("Boss_Phase1_Music");
+    }
+
+    IEnumerator LoadEndScene()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Cutscene 3");
+        AudioManager.instance.Stop("Boss_Phase1_Music");
+    }
+
+    IEnumerator FadeTo(float aValue, float aTime)
+    {
+        float alpha = transform.GetComponent<MeshRenderer>().material.color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
+            transform.GetComponent<MeshRenderer>().material.color = newColor;
+            yield return null;
+        }
+    }
+
 }

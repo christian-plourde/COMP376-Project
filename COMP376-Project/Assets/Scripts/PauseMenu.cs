@@ -43,7 +43,12 @@ public class PauseMenu : MonoBehaviour
 
     public void loadMenu()
     {
+        Time.timeScale = 1f;
+        LevelChanger.instance.FadeToLevel(0);
+    }
 
-        SceneManager.LoadScene(0);
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

@@ -19,6 +19,7 @@ public class Lever : MonoBehaviour
                 GetComponent<Lever>().enabled = false;
 
                 //open doors
+                endDoorsReference.GetComponent<Animator>().SetBool("on_plate", true);
             }
         }
     }
