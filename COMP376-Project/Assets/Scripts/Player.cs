@@ -355,6 +355,8 @@ public class Player : MonoBehaviour
         {
             punchTimer = 10f;         // this should force exit punch animation
             punchTimer2 = 10f;         // this should force exit punch animation
+            TurnOffRightFist();
+            TurnOffLeftFist();
 
         }
     }                
@@ -509,14 +511,7 @@ public class Player : MonoBehaviour
         return null;
     }
 
-    private void highlightInteractables(float time)
-    {
-        if (time == 0f)          // if nothing was given to this
-            time = 30f;
-
-        // foreach (GameObject in array) { some how hight light them}
-        // on time expiry dont high light them anymore.
-    }
+  
 
     //potion functions
     private void useIron()                                   // is only called after validating iron stats.
@@ -602,8 +597,8 @@ public class Player : MonoBehaviour
 
     public bool punching;
     public bool comboPunch;
-    float punch1Time=1.2f;
-    float punch2Time=1.8f;
+    float punch1Time=1.0f;
+    float punch2Time=1.1f;
     float punchTimer;
     float punchTimer2;
 
@@ -653,7 +648,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isGrounded)
         {
             animator.SetBool("Punch1", true);
-            RightFistObject.SetActive(true);
+            //RightFistObject.SetActive(true);
             punching = true;
         }
         // if you started running while punching. --> slow down move speed, and allow punching
@@ -661,7 +656,7 @@ public class Player : MonoBehaviour
         {
             speed = 1f;
             animator.SetBool("Punch1", true);
-            RightFistObject.SetActive(true);
+            //RightFistObject.SetActive(true);
         }
 
         //if you fell or jumped while punching --> cancel
@@ -688,7 +683,7 @@ public class Player : MonoBehaviour
             {
                 punchTimer = 0f;
                 punching = false; 
-                RightFistObject.SetActive(false);
+                //RightFistObject.SetActive(false);
                 animator.SetBool("Punch1", false);
                 if (speed != pewterSpeedBoost && usingPewter)
                     speed = pewterSpeedBoost;
@@ -731,7 +726,7 @@ public class Player : MonoBehaviour
                     if (punchTimer2 > 0.5f)
                     {
                         animator.SetBool("Punch2", true);
-                        LeftFistObject.SetActive(true);
+                        //LeftFistObject.SetActive(true);
                         if (isRunning && animator.GetBool("Punch2"))
                         {
                             speed = 1f;
