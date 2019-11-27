@@ -359,7 +359,7 @@ BoxCollider:
   m_GameObject: {fileID: 1343620421354550148}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.17, y: 0.14, z: 0.53544444}
   m_Center: {x: 0.000000031941454, y: 0.00000028633076, z: 0.26794437}
@@ -394,7 +394,7 @@ Transform:
   m_GameObject: {fileID: 1343620422508863197}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -4.033422, y: 3.26, z: 9.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 1751949566886750016}
   - {fileID: 2017322899488587244}
@@ -465,8 +465,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rangeToEngage: 4
-  m_rangeToAttack: 1.5
-  m_walkSpeed: 3
+  m_rangeToAttack: 0.8
+  m_walkSpeed: 2.2
   m_moveSpots:
   - {fileID: 0}
   - {fileID: 0}
@@ -487,7 +487,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_startingHealth: 4
-  m_currentHealth: 0
 --- !u!114 &1343620422508863196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +502,7 @@ MonoBehaviour:
   m_timeBetweenAttacks: 1
   m_attackDamage: 4
   animator: {fileID: 0}
+  batCollider: {fileID: 1343620421354550148}
 --- !u!1 &1480025064848331760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2473,12 +2473,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5f2f65d6542c45849aae8154f7deb8b7,
         type: 3}
-      propertyPath: m_LocalScale.y
+      propertyPath: m_LocalScale.x
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5f2f65d6542c45849aae8154f7deb8b7,
         type: 3}
-      propertyPath: m_LocalScale.x
+      propertyPath: m_LocalScale.y
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5f2f65d6542c45849aae8154f7deb8b7,
