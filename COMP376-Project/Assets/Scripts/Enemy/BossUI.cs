@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class BossUI : MonoBehaviour
 {
-    public Image health; 
+    public Image health;
+    public GameObject bossBar;
     EnemyHealth bossRef;
+    bool barON = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,9 +18,16 @@ public class BossUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float HP = (float) bossRef.GetCurrentHealth() / (float) bossRef.m_startingHealth;
+        float HP = (float)bossRef.GetCurrentHealth() / (float)bossRef.m_startingHealth;
 
+        if (barON)
+        {
+            health.fillAmount = HP;
+        }
 
-        health.fillAmount = HP;
+        if(HP == 0)
+        {
+            Destroy(bossBar);
+        }
     }
 }

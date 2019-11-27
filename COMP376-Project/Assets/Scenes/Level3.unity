@@ -5356,6 +5356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 1192329472}
+  bossBar: {fileID: 1412672199}
 --- !u!1 &250973156
 GameObject:
   m_ObjectHideFlags: 0
