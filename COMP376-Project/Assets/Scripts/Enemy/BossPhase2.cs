@@ -6,11 +6,13 @@ public class BossPhase2 : MonoBehaviour
 {
     public Transform m_camera;
     public Transform[] m_teleportPoints;
-    public Transform[] m_damagingFloors;
 
     public Transform[] m_platforms;
     public Transform[] m_planks;
     public Transform m_ground;
+
+    public float m_timeOfVulnerability;
+    public float m_numOfTeleports;
 
     Boss m_bossScript;
     ParticleSystem m_implosionTeleport;
@@ -39,6 +41,7 @@ public class BossPhase2 : MonoBehaviour
 
     float m_implodeTimer;
     float m_implodeCooldown;
+
 
     Vector3 m_bossPosition;
     Vector3 m_teleportOffset;
@@ -90,7 +93,7 @@ public class BossPhase2 : MonoBehaviour
             m_startTimer -= Time.deltaTime;
             if (m_startTimer <= 0)
             {
-                m_isTeleporting = true;
+                IsTeleporting = true;
                 m_start = true;
 
                 Destroy(m_ground.gameObject);
@@ -120,7 +123,7 @@ public class BossPhase2 : MonoBehaviour
             this.GetComponent<Boss>().m_isImmune = false;
         }
 
-        if(m_teleportCounter == 6)
+        if(m_teleportCounter == m_numOfTeleports)
         {
             SetIsVulnerable();
         }
@@ -190,19 +193,22 @@ public class BossPhase2 : MonoBehaviour
 
     void SetIsVulnerable()
     {
-        m_isTeleporting = false;
+        IsTeleporting = false;
         IsTired = true;
         m_sphereCollider.enabled = false;
         this.transform.tag = "Interactable";
         this.transform.GetComponent<Rigidbody>().mass = 1.8f;
+        m_teleportCounter = 0;
+        StartCoroutine(SetTeleporting());
     }
 
-    void SetTeleporting()
+    IEnumerator SetTeleporting()
     {
-        m_isTeleporting = true;
+        yield return new WaitForSeconds(m_timeOfVulnerability);
+        IsTeleporting = true;
         IsTired = false;
         m_sphereCollider.enabled = true;
-        this.transform.GetComponent<Rigidbody>().mass = 10.0f;
+        this.transform.GetComponent<Rigidbody>().mass = 100.0f;
     }
 
     void SetRotation()
@@ -229,7 +235,17 @@ public class BossPhase2 : MonoBehaviour
         set
         {
             m_isVulnerable = value;
-            this.GetComponent<Animator>().SetBool("Tired", m_isIdle);
+            this.GetComponent<Animator>().SetBool("Tired", m_isVulnerable);
+        }
+    }
+
+    public bool IsTeleporting
+    {
+        get { return m_isTeleporting; }
+        set
+        {
+            m_isTeleporting = value;
+            this.GetComponent<Animator>().SetBool("Teleporting", m_isTeleporting);
         }
     }
 
