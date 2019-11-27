@@ -818,7 +818,7 @@ public class Player : MonoBehaviour
         if(collision.collider.tag == "EnemyMace")
         {
             registerHit(2);
-            //Debug.Log("Ouchie");
+            collision.collider.GetComponent<BoxCollider>().enabled = false;
         }
 
         if (collision.collider.tag == "TripwireArrow")
