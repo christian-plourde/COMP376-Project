@@ -9,9 +9,13 @@ public class Player : MonoBehaviour
 {
 
     //experimental
+    public float fallDamageLimit = 2.6f;
+
+
+
     public float jumpDelay;
-    public bool onLadder;
-    public bool usingLadder;
+    [HideInInspector]public bool onLadder;
+    [HideInInspector]public bool usingLadder;
     public Animation camera_pan;
     DateTime game_start;
 
@@ -79,7 +83,7 @@ public class Player : MonoBehaviour
     }
 
     float respawnTimer;
-    float respawnTime=5f;
+    float respawnTime=3.8f;
 
 
     void Start()
@@ -146,18 +150,10 @@ public class Player : MonoBehaviour
 
         //____________________________________________________
 
-        if (Input.GetKeyDown(KeyCode.K))
-            registerHit();
-
             // respawn key for testing
         if (Input.GetKeyDown(KeyCode.R))
             respawnPlayer();
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            transform.position=new Vector3(106.37f,-12.5f,157.47f);
-
-
-
+        
     }
 
     //helper methods
@@ -221,10 +217,7 @@ public class Player : MonoBehaviour
             
 
         }
-
         
-        // other things to do
-        // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
     }
 
     private void powerControls()
@@ -324,8 +317,11 @@ public class Player : MonoBehaviour
         if (!isGrounded)
             jumpDelay += Time.deltaTime;
         else if (isGrounded)
+        {
+            if (jumpDelay > fallDamageLimit)
+                registerHit(100);
             jumpDelay = 0;
-
+        }
         Vector3 castPoint1 = new Vector3(transform.position.x+0.15f, transform.position.y + 0.2f, transform.position.z);
         Vector3 castPoint2 = new Vector3(transform.position.x-0.15f, transform.position.y + 0.2f, transform.position.z);
         if (Physics.Raycast(castPoint1, Vector3.down, 0.3f) || Physics.Raycast(castPoint2, Vector3.down, 0.3f))
@@ -338,6 +334,14 @@ public class Player : MonoBehaviour
         {
             isGrounded = false;
             animator.SetBool("isGrounded", false);
+        }
+
+
+
+        // check if you fell off the map.
+        if(jumpDelay > 5.5f)
+        {
+            registerHit(100);
         }
     }
 
@@ -882,5 +886,6 @@ public class Player : MonoBehaviour
         }
     }
 
+    
 
 }
