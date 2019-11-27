@@ -19593,6 +19593,11 @@ PrefabInstance:
       propertyPath: m_timeOfVulnerability
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 8916805465418398979, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
+        type: 3}
+      propertyPath: m_numOfTeleports
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4581463173041865817, guid: 9136d9fb19fde4f4f94e52cd9f9b232d,
         type: 3}
       propertyPath: m_startingHealth
