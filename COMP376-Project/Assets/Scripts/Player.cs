@@ -812,7 +812,7 @@ public class Player : MonoBehaviour
 
     private void potionAnimationDelay()
     {
-        if (potionAnimTimer > 3f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
+        if (potionAnimTimer > 1.75f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
         {
             animator.SetBool("isUsingPotion", false);
             usePotionAnim = false;
