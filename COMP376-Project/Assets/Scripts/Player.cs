@@ -150,11 +150,16 @@ public class Player : MonoBehaviour
 
         //____________________________________________________
 
-            // respawn key for testing
+        // respawn key for testing
+        /*
         if (Input.GetKeyDown(KeyCode.R))
             respawnPlayer();
-        
+        */
     }
+
+
+    // to fix double jump
+    public bool alreadyJumped;
 
     //helper methods
     private void playerMovement()
@@ -195,8 +200,10 @@ public class Player : MonoBehaviour
 
         //jump
         //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder))
-        {           
+        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder) && !alreadyJumped)
+        {
+            if(!onLadder)
+                alreadyJumped = true;
             Vector3 jumpVector;
             isGrounded = false;
             AudioManager.instance.Play("jump");
@@ -316,11 +323,19 @@ public class Player : MonoBehaviour
         // allows  to jump off edge properly
         if (!isGrounded)
             jumpDelay += Time.deltaTime;
+
+        // reset falltimeer on ladder
+        if (usingLadder)
+        {
+            jumpDelay = 0f;
+            alreadyJumped = false;
+        }
         else if (isGrounded)
         {
             if (jumpDelay > fallDamageLimit)
                 registerHit(100);
             jumpDelay = 0;
+            alreadyJumped = false;
         }
         Vector3 castPoint1 = new Vector3(transform.position.x+0.15f, transform.position.y + 0.2f, transform.position.z);
         Vector3 castPoint2 = new Vector3(transform.position.x-0.15f, transform.position.y + 0.2f, transform.position.z);
