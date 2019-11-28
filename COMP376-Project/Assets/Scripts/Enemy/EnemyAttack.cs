@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+
+
     public float m_timeBetweenAttacks = 1f;
     public int m_attackDamage = 4;
 
@@ -16,6 +18,8 @@ public class EnemyAttack : MonoBehaviour
     float m_attackTimer;
 
     [HideInInspector] public Animator animator;
+
+    public GameObject batCollider;
 
     void Awake()
     {
@@ -55,5 +59,15 @@ public class EnemyAttack : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
     
+    }
+
+    public void TurnOnBat()
+    {
+        batCollider.GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void TurnOffBat()
+    {
+        batCollider.GetComponent<BoxCollider>().enabled = false;
     }
 }

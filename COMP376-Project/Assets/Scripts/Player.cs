@@ -9,9 +9,13 @@ public class Player : MonoBehaviour
 {
 
     //experimental
+    public float fallDamageLimit = 2.6f;
+
+
+
     public float jumpDelay;
-    public bool onLadder;
-    public bool usingLadder;
+    [HideInInspector]public bool onLadder;
+    [HideInInspector]public bool usingLadder;
     public Animation camera_pan;
     DateTime game_start;
 
@@ -79,7 +83,7 @@ public class Player : MonoBehaviour
     }
 
     float respawnTimer;
-    float respawnTime=5f;
+    float respawnTime=3.8f;
 
 
     void Start()
@@ -146,19 +150,16 @@ public class Player : MonoBehaviour
 
         //____________________________________________________
 
-        if (Input.GetKeyDown(KeyCode.K))
-            registerHit();
-
-            // respawn key for testing
+        // respawn key for testing
+        /*
         if (Input.GetKeyDown(KeyCode.R))
             respawnPlayer();
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            transform.position=new Vector3(106.37f,-12.5f,157.47f);
-
-
-
+        */
     }
+
+
+    // to fix double jump
+    public bool alreadyJumped;
 
     //helper methods
     private void playerMovement()
@@ -199,8 +200,10 @@ public class Player : MonoBehaviour
 
         //jump
         //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder))
-        {           
+        if (Input.GetKeyDown(KeyCode.Space) && (jumpDelay<0.2f || onLadder) && !alreadyJumped)
+        {
+            if(!onLadder)
+                alreadyJumped = true;
             Vector3 jumpVector;
             isGrounded = false;
             AudioManager.instance.Play("jump");
@@ -221,10 +224,7 @@ public class Player : MonoBehaviour
             
 
         }
-
         
-        // other things to do
-        // if input Esc --> pause, have an exit button (create a prefab UI with an exit button that just loads main menu
     }
 
     private void powerControls()
@@ -323,9 +323,20 @@ public class Player : MonoBehaviour
         // allows  to jump off edge properly
         if (!isGrounded)
             jumpDelay += Time.deltaTime;
-        else if (isGrounded)
-            jumpDelay = 0;
 
+        // reset falltimeer on ladder
+        if (usingLadder)
+        {
+            jumpDelay = 0f;
+            alreadyJumped = false;
+        }
+        else if (isGrounded)
+        {
+            if (jumpDelay > fallDamageLimit)
+                registerHit(100);
+            jumpDelay = 0;
+            alreadyJumped = false;
+        }
         Vector3 castPoint1 = new Vector3(transform.position.x+0.15f, transform.position.y + 0.2f, transform.position.z);
         Vector3 castPoint2 = new Vector3(transform.position.x-0.15f, transform.position.y + 0.2f, transform.position.z);
         if (Physics.Raycast(castPoint1, Vector3.down, 0.3f) || Physics.Raycast(castPoint2, Vector3.down, 0.3f))
@@ -338,6 +349,14 @@ public class Player : MonoBehaviour
         {
             isGrounded = false;
             animator.SetBool("isGrounded", false);
+        }
+
+
+
+        // check if you fell off the map.
+        if(jumpDelay > 5.5f)
+        {
+            registerHit(100);
         }
     }
 
@@ -355,6 +374,8 @@ public class Player : MonoBehaviour
         {
             punchTimer = 10f;         // this should force exit punch animation
             punchTimer2 = 10f;         // this should force exit punch animation
+            TurnOffRightFist();
+            TurnOffLeftFist();
 
         }
     }                
@@ -509,14 +530,7 @@ public class Player : MonoBehaviour
         return null;
     }
 
-    private void highlightInteractables(float time)
-    {
-        if (time == 0f)          // if nothing was given to this
-            time = 30f;
-
-        // foreach (GameObject in array) { some how hight light them}
-        // on time expiry dont high light them anymore.
-    }
+  
 
     //potion functions
     private void useIron()                                   // is only called after validating iron stats.
@@ -602,8 +616,8 @@ public class Player : MonoBehaviour
 
     public bool punching;
     public bool comboPunch;
-    float punch1Time=1.2f;
-    float punch2Time=1.8f;
+    float punch1Time=1.0f;
+    float punch2Time=1.1f;
     float punchTimer;
     float punchTimer2;
 
@@ -653,7 +667,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isGrounded)
         {
             animator.SetBool("Punch1", true);
-            RightFistObject.SetActive(true);
+            //RightFistObject.SetActive(true);
             punching = true;
         }
         // if you started running while punching. --> slow down move speed, and allow punching
@@ -661,7 +675,7 @@ public class Player : MonoBehaviour
         {
             speed = 1f;
             animator.SetBool("Punch1", true);
-            RightFistObject.SetActive(true);
+            //RightFistObject.SetActive(true);
         }
 
         //if you fell or jumped while punching --> cancel
@@ -688,7 +702,7 @@ public class Player : MonoBehaviour
             {
                 punchTimer = 0f;
                 punching = false; 
-                RightFistObject.SetActive(false);
+                //RightFistObject.SetActive(false);
                 animator.SetBool("Punch1", false);
                 if (speed != pewterSpeedBoost && usingPewter)
                     speed = pewterSpeedBoost;
@@ -731,7 +745,7 @@ public class Player : MonoBehaviour
                     if (punchTimer2 > 0.5f)
                     {
                         animator.SetBool("Punch2", true);
-                        LeftFistObject.SetActive(true);
+                        //LeftFistObject.SetActive(true);
                         if (isRunning && animator.GetBool("Punch2"))
                         {
                             speed = 1f;
@@ -763,6 +777,23 @@ public class Player : MonoBehaviour
 
 
 
+    private void TurnOnRightFist()
+    {
+        RightFistObject.SetActive(true);
+    }
+    private void TurnOffRightFist()
+    {
+        RightFistObject.SetActive(false);
+    }
+    private void TurnOnLeftFist()
+    {
+        LeftFistObject.SetActive(true);
+    }
+    private void TurnOffLeftFist()
+    {
+        LeftFistObject.SetActive(false);
+    }
+
 
     //experimental if objects hit you too fast
     private void OnCollisionEnter(Collision collision)
@@ -787,7 +818,7 @@ public class Player : MonoBehaviour
         if(collision.collider.tag == "EnemyMace")
         {
             registerHit(2);
-            //Debug.Log("Ouchie");
+            collision.collider.GetComponent<BoxCollider>().enabled = false;
         }
 
         if (collision.collider.tag == "TripwireArrow")
@@ -812,7 +843,7 @@ public class Player : MonoBehaviour
 
     private void potionAnimationDelay()
     {
-        if (potionAnimTimer > 3f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
+        if (potionAnimTimer > 1.75f)            // drink animation length is 3.7ish, if we want to increase / decrease delay, we can always change animation speed and this value
         {
             animator.SetBool("isUsingPotion", false);
             usePotionAnim = false;
@@ -870,5 +901,6 @@ public class Player : MonoBehaviour
         }
     }
 
+    
 
 }
