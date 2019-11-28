@@ -11,11 +11,6 @@ public class Boss : MonoBehaviour
 
     public ParticleSystem m_implosionTeleport;
     public ParticleSystem m_explosionteleport;
-    float m_fadeTime = 3;
-    float _alpha = 0.0f;
-    float _startAlpha = 0f;
-    float _endAlpha = 1.0f;
-    MeshRenderer m_bossRenderer;
 
     EnemyHealth m_health;
     BossPhase1 m_phase1;
@@ -91,7 +86,6 @@ public class Boss : MonoBehaviour
 
         m_teleportOffset = new Vector3(0, 1, 0);
 
-        m_bossRenderer = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -116,12 +110,12 @@ public class Boss : MonoBehaviour
             StartCoroutine(LoadEndScene());
         }
 
-     /*   if (m_isBossHit)
+        if (m_isBossHit)
         {
             m_bossHitTimer -= Time.deltaTime;
             if (m_bossHitTimer <= 0)
                 m_isBossHit = false;
-        }*/
+        }
 
         if (GetComponent<EnemyHealth>().GetCurrentHealth() <= 0 && !m_isPhase2)
         {
@@ -212,7 +206,6 @@ public class Boss : MonoBehaviour
 
         m_damagingFloor.gameObject.SetActive(false);
 
-        StartCoroutine(FadeTo(0.0f, 2.0f));
         if (!m_implosionCreated)
         {
             Instantiate(m_implosionTeleport, m_bossPosition + m_teleportOffset, transform.rotation);
@@ -225,7 +218,6 @@ public class Boss : MonoBehaviour
         {
             Instantiate(m_explosionteleport, m_startPoint.position + m_teleportOffset, transform.rotation);
             m_explosionteleport.Emit(1);
-            StartCoroutine(FadeTo(1.0f, 2.0f));
             m_explosionCreated = true;
         }
 
@@ -291,16 +283,4 @@ public class Boss : MonoBehaviour
         SceneManager.LoadScene("Cutscene 3");
         AudioManager.instance.Stop("Boss_Phase1_Music");
     }
-
-    IEnumerator FadeTo(float aValue, float aTime)
-    {
-        float alpha = transform.GetComponent<MeshRenderer>().material.color.a;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
-        {
-            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
-            transform.GetComponent<MeshRenderer>().material.color = newColor;
-            yield return null;
-        }
-    }
-
 }
