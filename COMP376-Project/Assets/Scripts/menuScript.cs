@@ -16,7 +16,10 @@ public class menuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            LevelChanger.instance.FadeToLevel(5);
+        }
     }
 
     public void Play()
