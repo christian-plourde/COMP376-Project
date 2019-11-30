@@ -411,23 +411,13 @@ Breakable windows/walls with pushed objects. Or pull an object towards you that 
 \subsection{Other}
 Demo of push pull mechanics from Ayush.
 
-
-
-
-
-
-
-
-
-
 \section{Meeting of October 23rd, 2019}
 
+\subsection{Meeting Duration}
+90 Minutes
 
-
-
-
-
-
+\subsection{Notes}
+We discussed making the jumping more responsive by adding a small delay to the time that a player can still jump off a platform to allow him to run all the way to the very edge of the platform. The rest of the session was spent working on fixing bugs regarding various aspects of level 1 including the final puzzle, issues with lever animations, and completing the layout of level 1 in preparation for the presentation the following week.
 
 \section{Meeting of October 30th, 2019}
 
@@ -484,6 +474,78 @@ An important task for us to do is: (make this one slide so they don't critique u
 Highlighting interactable objects when either steel or iron powers are active. This will make it easier for the player to find objects which they can interact with.\\*\\*
 
 We will experiment with Unity’s shader graphs to implement this, or something simple. Plan for end product: 3 levels (one of which is boss fight). At least 1 more enemy (ranged), we might drop the idea of Koloss due to time constraints or if such an enemy doesnt fit into the game. Collectible Lore notes if it fits in time constraint. (Not a priority).
+
+Rest of session spent practicing for the presentation.
+
+\section{Meeting of November 6th, 2019}
+
+\subsection{Meeting Duration}
+90 Minutes
+
+\subsection{Notes}
+
+Discussion of points raised in the question period of the presentation (such as issues with movement of the player being clunky and too fast).
+
+Important points discussed
+\begin{description}
+\item Attempt to reduce speed of player movement (without breaking the playability of the game)
+\item Reduce jump length (we need to remember that it will be possible to jump further with pewter)
+\item We need checkpoints in our game, especially considering the fact that the second level will be longer than the first
+\item Started discussing ideas relating to the boss fight (phases, strategy to defeat, level layout)
+\item We need to work on the movement of the regular enemies, their fighting is very awkward
+\item Ranged Enemy: not started
+\item Implementation strategy for pewter.
+\end{description}
+
+\section{Meeting of November 13th, 2019}
+
+\subsection{Meeting Duration}
+90 Minutes
+
+\subsection{Notes}
+
+Demo of Level 2 layout so far (initial graveyard and ideas for puzzle 1), as well as initial boss mechanics in a test scene. We also discussed the need for a pause menu in the game and also ideas for the remaining cutscenes (the ones between level 1 and level 2 and the one right before the boss).\\*
+
+We also discussed an issue with the player jumping with the small delay at the end of platforms. Adding the delay allows the player to double jump if the spacebar is pressed twice within the delay which is totally doable. This is a game breaking issue and so we decided to remove the delay at the end. For now double jumping is actually super useful for testing since it allows us to go through levels very quickly and get to places that otherwise take a long time to get to.\\*
+
+Dicussion of adding prompts for the player to pick up objects or interact with doors and such.
+The rest of the session spent as a work session.
+
+\section{Meeting of November 20th, 2019}
+
+\subsection{Meeting Duration}
+90 Minutes
+
+\subsection{Notes}
+
+The session was spent play testing the game and discussing bugs that we found.\\*
+
+Bugs found
+\begin{description}
+\item Issues with player getting blocked by the chimney in level 2 puzzle 2.
+\item Issues with player glitching through doors and wooden planks and ball getting stuck in ramp in puzzle 2 level 2.
+\item Need for door opening at end of level 1 and animation bug on lever.
+\item Opening pause menu and closing it before getting to a note causes no notes to be opened in chests (probably due to the pause key and key to close notes being the same)
+\item Ranged enemy shooting at players feet (aim really poor) and coins damage player even after being shot.
+\end{description}
+
+
+\section{Meeting of November 27th, 2019}
+
+\subsection{Meeting Duration}
+90 Minutes
+
+\subsection{Notes}
+
+The session was spent play testing the game and discussing bugs that we found. Demo of teleport animations for the boss and Daniel fighting him (he is the best at fighting him and so we decided that he might be the best person to demo this part of our game since the boss fight is quite difficult). Luciano also showed us the transitions between levels and cutscenes and it seems very smooth. Sam showed us the credits and all of the cutscenes.\\*
+
+Bugs found
+\begin{description}
+\item Bandit able to hit player multiple times.
+\item Player able to hit boss multiple times if spam clicking.
+\item Boss getting stuck in build version of game
+\item Outline Shaders not showing in build version of game.
+\end{description}
 
 
 
