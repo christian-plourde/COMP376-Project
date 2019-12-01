@@ -7739,10 +7739,10 @@ RectTransform:
   m_Father: {fileID: 1103705935}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 240.2}
-  m_SizeDelta: {x: 100, y: 50.765}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -59.800003}
+  m_SizeDelta: {x: 100, y: 50.765015}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1426606979 stripped
 GameObject:
@@ -17691,6 +17691,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cd8108d98075d94fbb9335a64754488, type: 3}
+--- !u!1 &1811515951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1811515953}
+  - component: {fileID: 1811515952}
+  m_Layer: 0
+  m_Name: ExtraPewter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1811515952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811515951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b175f41c393834495cf8cb8c9b8118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerRef: {fileID: 1849408669}
+--- !u!4 &1811515953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811515951}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 217.9819, y: -21.150705, z: 157.85565}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1836057989 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7839584462639539456, guid: 691486ef3d57ccb44acb7bd90ca12bb9,
@@ -18838,6 +18882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a40757e8830b974b9229b87e63e8c8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fallDamageLimit: 2.6
   jumpDelay: 0
   onLadder: 0
   usingLadder: 0
@@ -18856,13 +18901,14 @@ MonoBehaviour:
   ironCount: 4
   usingIron: 0
   ironPotionTime: 30
-  pewterCount: 2
+  pewterCount: 3
   usingPewter: 0
   pewterPotionTime: 20
   checkpoint: {x: 0, y: 0, z: 0}
   steelCountCheckpoint: 0
   ironCountCheckpoint: 0
   pewterCountCheckpoint: 0
+  alreadyJumped: 0
   punching: 0
   comboPunch: 0
   LeftFistObject: {fileID: 1582466565}
@@ -19193,8 +19239,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.023905952, y: 0.009, z: 0.06289434}
-  m_Center: {x: 0.0006141615, y: 0.014689318, z: 0.0137868095}
+  m_Size: {x: 0.023905952, y: 0.009086236, z: 0.06289434}
+  m_Center: {x: 0.0006141615, y: 0.01464625, z: 0.013786853}
 --- !u!65 &2017232142
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19206,8 +19252,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.023905952, y: 0.005, z: 0.038667064}
-  m_Center: {x: 0.0006141615, y: -0.0116, z: 0.0016728672}
+  m_Size: {x: 0.023905952, y: 0.0052455026, z: 0.038667064}
+  m_Center: {x: 0.0006141615, y: -0.011477245, z: 0.0016728673}
 --- !u!65 &2017232143
 BoxCollider:
   m_ObjectHideFlags: 0
