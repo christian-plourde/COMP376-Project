@@ -1,5 +1,34 @@
 # Mistborn : Ragnarok
 ----------------------------------------------
-Link to our working game concept ideas
-https://docs.google.com/document/d/1Ga6ROwDAAjvgdjxxAoF2tsVFMqJd2H2o4qqAK7lhu00/edit
 
+Mistborn Ragnarok made by Aggresive Pigeon Game Studio, is a sidescroller 3D game made in Unity.
+The 3D models are all made in Maya and Blender
+The 2D art are made with PainttoolSai and Photoshop
+Only the enemy and the boss model are not made by the team.
+
+Link To Gameplay Video :
+
+
+Description Of Each Folder :
+
+    BlenderModels : Most 3D Model (All made by the team) some other model we made are directly added to assets and 
+    can't be found here such as the player model.
+
+    COMP376-Project : Main Unity Source File (May need Blender to render models to scene)
+
+    Concept_Art : contain concept art and actual art used in game (All made by the team)
+
+    Documentation : has 3 subfolder
+        GameDesignDocument : contains the GDD
+        MeetingSummaries : pdf file summarizing all our meeting
+        PrototypeToFinalChanges : ReadMe file explaining changes since prototype
+
+    Final demo presentation : Presentation for the final build of the game
+
+    Level Layouts (Draw.io) : draw.io files of our first concept for the level design (does not represent exactly what the actual level looks like)
+
+    Proposal : Presnetation used for the proposal
+
+    PrototypePresentation : Presentation used for the prototype
+
+    Build: Has a playable executable of the game
