@@ -16,23 +16,25 @@ Link to Final Build Gameplay Video:
 
 Description Of Each Folder :
 
-    BlenderModels : Most 3D Model (All made by the team) some other model we made are directly added to assets and can't be found here such as the player model.
+BlenderModels : Most 3D Model (All made by the team) some other model we made are directly added to assets and can't be found here such as the player model.
 
-    COMP376-Project : Main Unity Source File (May need Blender to render models to scene)
+COMP376-Project : Main Unity Source File (May need Blender to render models to scene)
 
-    Concept_Art : contain concept art and actual art used in game (All made by the team)
+Concept_Art : contain concept art and actual art used in game (All made by the team)
 
-    Documentation : has 3 subfolder
-        GameDesignDocument : contains the GDD
-        MeetingSummaries : pdf file summarizing all our meeting
-        PrototypeToFinalChanges : ReadMe file explaining changes since prototype
+Documentation : has 3 subfolder
 
-    Final demo presentation : Presentation for the final build of the game
+GameDesignDocument : contains the GDD
+MeetingSummaries : pdf file summarizing all our meeting
 
-    Level Layouts (Draw.io) : draw.io files of our first concept for the level design (does not represent exactly what the actual level looks like)
+PrototypeToFinalChanges : ReadMe file explaining changes since prototype
 
-    Proposal : Presnetation used for the proposal
+Final demo presentation : Presentation for the final build of the game
 
-    PrototypePresentation : Presentation used for the prototype
+Level Layouts (Draw.io) : draw.io files of our first concept for the level design (does not represent exactly what the actual level looks like)
 
-    Build: Has a playable executable of the game
+Proposal : Presnetation used for the proposal
+
+PrototypePresentation : Presentation used for the prototype
+
+Build: Has a playable executable of the game
