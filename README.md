@@ -33,7 +33,7 @@ Final demo presentation : Presentation for the final build of the game
 
 Level Layouts (Draw.io) : draw.io files of our first concept for the level design (does not represent exactly what the actual level looks like)
 
-Proposal : Presnetation used for the proposal
+Proposal : Presentation used for the proposal
 
 PrototypePresentation : Presentation used for the prototype
 
