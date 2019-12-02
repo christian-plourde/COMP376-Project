@@ -6,13 +6,17 @@ The 3D models are all made in Maya and Blender
 The 2D art are made with PainttoolSai and Photoshop
 Only the enemy and the boss model are not made by the team.
 
-Link To Gameplay Video :
+Link To Prototype Build Gameplay Video:
 
+[![Watch the video](https://img.youtube.com/vi/3NI3LvriNbM/maxresdefault.jpg)](https://youtu.be/3NI3LvriNbM)
+
+Link to Final Build Gameplay Video:
+
+[![Watch the video](https://img.youtube.com/vi/P9Xc8IxlYi4/maxresdefault.jpg)](https://youtu.be/P9Xc8IxlYi4)
 
 Description Of Each Folder :
 
-    BlenderModels : Most 3D Model (All made by the team) some other model we made are directly added to assets and 
-    can't be found here such as the player model.
+    BlenderModels : Most 3D Model (All made by the team) some other model we made are directly added to assets and can't be found here such as the player model.
 
     COMP376-Project : Main Unity Source File (May need Blender to render models to scene)
 
