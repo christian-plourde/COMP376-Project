@@ -10,6 +10,7 @@ public class Interactable : MonoBehaviour
     public bool isInteractableOnce = false;
     public bool isCannon = false;
     public bool isSatchel = false;
+    public bool isCheckpoint = false;
     bool istriggered = false;
     bool isInteracted = false;
     GameObject temp;
@@ -86,13 +87,17 @@ public class Interactable : MonoBehaviour
             {
                 Satchel();
             }
+            if(isCheckpoint)
+            {
+                Checkpoint();
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
 
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !isCheckpoint)
         {
             istriggered = false;
             Destroy(temp);
@@ -135,6 +140,14 @@ public class Interactable : MonoBehaviour
     {
         temp = Instantiate(eButton, eButton.transform.position, Quaternion.identity);
         temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
+    }
+
+    private void Checkpoint()
+    {
+        temp = Instantiate(eButton, eButton.transform.position, Quaternion.identity);
+        temp.transform.SetParent(GameObject.Find("UI-Canvas").transform, false);
+        temp.GetComponentInChildren<Text>().text = "CheckPoint Saved";
+        Destroy(temp, 3);
     }
 
     private void Cannon()
